@@ -11,7 +11,14 @@ import moment from 'moment'
 import { el, es } from 'date-fns/locale';
 import { NumericFormat } from 'react-number-format';
 import { InputComponent } from '../../components/DateInput';
-import { client_juridic_list, client_natural_list, contractor_juridic_list, contractor_natural_list, pep_juridic_list, pep_list } from '../../services/issue-policy/requerired-fields';
+import { 
+    client_juridic_list, 
+    client_natural_list, 
+    contractor_juridic_list, 
+    contractor_natural_list, 
+    pep_juridic_list, 
+    pep_list 
+} from '../../services/issue-policy/requerired-fields';
 import validators from '../../services/validators';
 
 function ToEmmitPolicyRegister() {
@@ -933,7 +940,7 @@ function ToEmmitPolicyRegister() {
                                 {fieldsContractor.includes("ApellidoContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdSexoContratante"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Apellido de casada <span className='text-primary font-bold'>*</span></p>
+                                <p className={"input-label"}>Apellido de casada</p>
                                 <input value={formObject.ApellidoCasadaContratante} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, ApellidoCasadaContratante: e.target.value}) }} type="text" className={"form-control"} />
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
@@ -1546,7 +1553,6 @@ function ToEmmitPolicyRegister() {
         if(isPep) setFieldsClientPEP(_fieldsClientPEP)
         if(isPepContractor) setFieldsContractorPEP(_fieldsContractorPEP)
 
-
         //Email Validation
         if(!validators.validateField("email", object["email"])){
             setErrorMessage("El email no es correcto")
@@ -1557,6 +1563,7 @@ function ToEmmitPolicyRegister() {
         //Natural client Validation
         if(formObject["typePersona"].toString() === "2"){
             if(_fieldsClient.length > 0){
+                console.log("Aca", _fieldsClient)
                 setErrorMessage("Los campos son requeridos")
                 setErrorStatus(true)
                 return false
@@ -1565,6 +1572,7 @@ function ToEmmitPolicyRegister() {
             }
         }else{
             if(_fieldsClientJuridic.length > 0){
+                console.log("Aca")
                 setErrorMessage("Los campos son requeridos")
                 setErrorStatus(true)
                 return false
@@ -1574,24 +1582,25 @@ function ToEmmitPolicyRegister() {
         }
 
         //Natural contractor Validation
-        if(object["IdTipoDocumentoContratante"] !== "3"){
-            
-            console.log("IdTipoDocumentoContratante", object["IdTipoDocumentoContratante"])
-            console.log(_fieldsContractor)
-            if(_fieldsContractor.length > 0){
-                setErrorMessage("Los campos son requeridos")
-                setErrorStatus(true)
-                return false
+        if(!sameDataContractor){
+            if(object["IdTipoDocumentoContratante"] !== "3"){
+                if(_fieldsContractor.length > 0){
+                    console.log("Aca", _fieldsContractor)
+                    setErrorMessage("Los campos son requeridos")
+                    setErrorStatus(true)
+                    return false
+                }else{
+                    setFieldsContractor([])
+                }
             }else{
-                setFieldsContractor([])
-            }
-        }else{
-            if(_fieldsContractorJuridic.length > 0){
-                setErrorMessage("Los campos son requeridos")
-                setErrorStatus(true)
-                return false
-            }else{
-                setFieldsContractorJuridic([])
+                if(_fieldsContractorJuridic.length > 0){
+                    console.log("Aca", _fieldsContractorJuridic)
+                    setErrorMessage("Los campos son requeridos")
+                    setErrorStatus(true)
+                    return false
+                }else{
+                    setFieldsContractorJuridic([])
+                }
             }
         }
 

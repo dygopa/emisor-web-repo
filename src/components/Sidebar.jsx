@@ -37,17 +37,17 @@ function Sidebar() {
                     <img src="/images/logo.jpg" className='my-0 mx-auto h-full box-border w-full object-contain' />
                 </div>
                 <div className="w-full flex flex-col relative h-[78%] mt-[5rem] justify-center overflow-y-auto">
-                    <LinkComponent fromParentLink="" linkTitle="Estadísticas" srcImgActive="/images/estadisticas-ico-active.png" srcImg="/images/estadisticas-ico.png" link={"/a"} hasSublinks={false} thisId={"e"} />
+                    {/* <LinkComponent fromParentLink="" linkTitle="Estadísticas" srcImgActive="/images/estadisticas-ico-active.png" srcImg="/images/estadisticas-ico.png" link={"/a"} hasSublinks={false} thisId={"e"} /> */}
 
                     <LinkComponent fromParentLink="" linkTitle="Configuración" srcImgActive="/images/configuracion-ico-active.png" srcImg="/images/configuracion-ico.png" link={"/"} hasSublinks={true} thisId={"c"}>
                         <LinkComponent fromParentLink="c" linkTitle="Daños a terceros" srcImgActive="/images/configuracion-ico-active.png" srcImg="/images/configuracion-ico.png" link={"/"} hasSublinks={false} thisId={"ca"} />
                     </LinkComponent>
-                    <LinkComponent fromParentLink="" linkTitle="Cotizadores" srcImgActive="/images/cotizadores-ico-active.png" srcImg="/images/cotizadores-ico.png" link={"/quotes"} hasSublinks={false} thisId={"m"} />
+                    {/* <LinkComponent fromParentLink="" linkTitle="Cotizadores" srcImgActive="/images/cotizadores-ico-active.png" srcImg="/images/cotizadores-ico.png" link={"/quotes"} hasSublinks={false} thisId={"m"} /> */}
                     <LinkComponent fromParentLink="" linkTitle="Emitir póliza" srcImgActive="/images/emitir-ico-active.png" srcImg="/images/emitir-ico.png" link={"/issue-policy"} hasSublinks={false} thisId={"n"} />
 
-                    <LinkComponent fromParentLink="" linkTitle="Reportes" srcImgActive="/images/reporte-ico-active.png" srcImg="/images/reporte-ico.png" link={"/c"} hasSublinks={false} thisId={"o"} />
-                    <LinkComponent fromParentLink="" linkTitle="Usuarios" srcImgActive="/images/usuario-ico-active.png" srcImg="/images/usuario-ico.png" link={"/users"} hasSublinks={false} thisId={"u"} />
-                    <LinkComponent fromParentLink="" linkTitle="Administración" srcImgActive="/images/agregar-usuario-ico-active.png" srcImg="/images/agregar-usuario-ico.png" link={"/d"} hasSublinks={false} thisId={"p"} />
+                    {/* <LinkComponent fromParentLink="" linkTitle="Reportes" srcImgActive="/images/reporte-ico-active.png" srcImg="/images/reporte-ico.png" link={"/c"} hasSublinks={false} thisId={"o"} /> */}
+                    {/* <LinkComponent fromParentLink="" linkTitle="Usuarios" srcImgActive="/images/usuario-ico-active.png" srcImg="/images/usuario-ico.png" link={"/users"} hasSublinks={false} thisId={"u"} /> */}
+                    {/* <LinkComponent fromParentLink="" linkTitle="Administración" srcImgActive="/images/agregar-usuario-ico-active.png" srcImg="/images/agregar-usuario-ico.png" link={"/d"} hasSublinks={false} thisId={"p"} /> */}
                 </div>
                 <div className="w-full absolute bottom-0 left-0 flex flex-col justify-center items-center">
                     <p className="mb-3 text-slate-500 text-sm">Hecho por <a href='https://swfactorygroup.com/' target="_blank" className='text-primary'>Software Factory</a></p>

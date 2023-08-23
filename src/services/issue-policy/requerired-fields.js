@@ -49,6 +49,7 @@ export const contractor_juridic_list = [
     "NombreComercialContratante",
     "RepresentanteLegalContratante",
     "ActividadComercialPrincipalContratante",
+    "EmailContratante",
     "NombreBeneficiarioContratante",
     "IdentificacionBeneficiarioContratante",
 ]
