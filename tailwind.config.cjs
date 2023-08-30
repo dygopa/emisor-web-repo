@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+require('dotenv').config()
+
 module.exports = {
   content: [
     './index.html',
@@ -7,7 +9,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary": "#687BFE"
+        "primary": process.env.VITE_PRIMARY_COLOR_APP,
+        "secondary": process.env.VITE_SECONDARY_COLOR_APP
       }
     },
   },

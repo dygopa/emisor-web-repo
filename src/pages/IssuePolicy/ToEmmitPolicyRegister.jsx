@@ -152,8 +152,8 @@ function ToEmmitPolicyRegister() {
     const SidebarLinkComponent = ({title, number, ownRef}) => {
         return (
             <div onClick={()=>{ setActiveLink(number); executeScroll(ownRef) }} className={`cursor-pointer flex w-full h-auto mb-3 rounded p-2 justify-start items-center ${activeLink === number ? "bg-white border-primary border-2" : "bg-transparent"}`}>
-                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-primary text-white border-primary" : "bg-transparent text-blue-700 border-blue-200"}`}>{number}</p>
-                <p className={`text-sm text-blue-900 ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
+                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-primary text-white border-primary" : "bg-transparent text-primary border-primary/40"}`}>{number}</p>
+                <p className={`text-sm text-secondary ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
             </div>
         )
     }
@@ -532,7 +532,7 @@ function ToEmmitPolicyRegister() {
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
 
-            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-20 bg-primary p-5 rounded cursor-pointer hover:bg-blue-900 transition shadow-xl">
+            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-20 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
                 <span className="text-white material-symbols-outlined">
                     {toggledSidebar ? <RiLayoutRowLine size={25}/> : <FiColumns size={25}/>}
                 </span>
@@ -602,7 +602,7 @@ function ToEmmitPolicyRegister() {
                 </div>}
                 <div className={`p-3 bg-white rounded-lg h-fit overflow-y-hidden ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4 relative" ref={firstRef}>
-                        <p className={`title-section text-blue-900`}>Datos asegurado</p>
+                        <p className={`title-section text-slate-900`}>Datos asegurado</p>
                         <div className="flex flex-wrap content-start items-end">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Tipo persona <span className='text-primary font-bold'>*</span></p>
@@ -613,7 +613,7 @@ function ToEmmitPolicyRegister() {
                                             <div onClick={()=>{
                                                 setFormObject({...formObject, typePersona: "1"}), chargeTypeOfDocument("1")
                                             }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.typePersona === "1" ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.typePersona === "1" ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>
@@ -624,7 +624,7 @@ function ToEmmitPolicyRegister() {
                                             <div onClick={()=>{
                                                 setFormObject({...formObject, typePersona: "2"}), chargeTypeOfDocument("2")
                                             }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.typePersona === "2" ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.typePersona === "2" ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>
@@ -763,7 +763,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setIsPep(!isPep)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${isPep ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${isPep ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -775,7 +775,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setSameDataContractor(!sameDataContractor)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${sameDataContractor ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${sameDataContractor ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -785,7 +785,7 @@ function ToEmmitPolicyRegister() {
                     </div>
 
                     {isPep && <div className="my-4">
-                        <p className={`title-section text-blue-900`}>Referencias personales</p>
+                        <p className={`title-section text-slate-900`}>Referencias personales</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Cantidad referencias personales</p>
@@ -854,7 +854,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     { (isPep && formObject["typePersona"] !== "1") && <div className="my-4" ref={thirdRef}>
-                        <p className='title-section text-blue-900'>PEP</p>
+                        <p className='title-section text-slate-900'>PEP</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Relacion/Cargo <span className='text-primary font-bold'>*</span></p>
@@ -892,7 +892,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setPoliceAnualPrime(!policeAnualPrime)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${policeAnualPrime ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${policeAnualPrime ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -901,7 +901,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
                     
                     {!sameDataContractor && <div className="my-4" ref={secondRef}>
-                        <p className={`title-section text-blue-900`}>Datos del contratante</p>
+                        <p className={`title-section text-slate-900`}>Datos del contratante</p>
                         <div className="flex flex-wrap content-start relative h-fit">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1020,7 +1020,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setIsPepContractor(!isPepContractor)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${isPepContractor ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${isPepContractor ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -1030,7 +1030,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     {isPepContractor && <div className="my-4">
-                        <p className={`title-section text-blue-900`}>Referencias personales - Contratante</p>
+                        <p className={`title-section text-slate-900`}>Referencias personales - Contratante</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Cantidad referencias personales</p>
@@ -1099,7 +1099,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     { (isPepContractor && formObject["IdTipoDocumentoContratante"] !== "3" && !sameDataContractor) && <div className="my-4" ref={thirdRef}>
-                        <p className='title-section text-blue-900'>PEP - Contratante</p>
+                        <p className='title-section text-slate-900'>PEP - Contratante</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Relacion/Cargo <span className='text-primary font-bold'>*</span></p>
@@ -1137,7 +1137,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setPoliceAnualPrimeContractor(!policeAnualPrimeContractor)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${policeAnualPrimeContractor ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${policeAnualPrimeContractor ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -1146,7 +1146,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     <div className="my-4" ref={thirdRef}>
-                        <p className='title-section text-blue-900'>Direccion</p>
+                        <p className='title-section text-slate-900'>Direccion</p>
                         <div className="flex flex-wrap content-start relative h-fit">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1204,7 +1204,7 @@ function ToEmmitPolicyRegister() {
                     </div>
 
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`title-section text-blue-900`}>Conductor adicional</p>
+                        <p className={`title-section text-slate-900`}>Conductor adicional</p>
                         <div className="flex flex-wrap content-start relative">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1227,7 +1227,7 @@ function ToEmmitPolicyRegister() {
                     </div>
 
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`title-section text-blue-900`}>Datos automovil</p>
+                        <p className={`title-section text-slate-900`}>Datos automovil</p>
                         <div className="flex flex-wrap content-start relative">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1265,7 +1265,7 @@ function ToEmmitPolicyRegister() {
                                         <div onClick={()=>{
                                             setImported(!imported)
                                         }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                            <span className={`rounded-full transition w-full content-none h-full relative ${imported ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                            <span className={`rounded-full transition w-full content-none h-full relative ${imported ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                         </div>
                                     </div>
                                 </p>
@@ -1277,7 +1277,7 @@ function ToEmmitPolicyRegister() {
                                         Nuevo
                                         <div className="ml-3 w-1/4">
                                             <div className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject["Ano"] >= "2023" ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject["Ano"] >= "2023" ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>
@@ -1286,7 +1286,7 @@ function ToEmmitPolicyRegister() {
                                         Usado
                                         <div className="ml-3 w-1/4">
                                             <div className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject["Ano"] < "2023" ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject["Ano"] < "2023" ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>
@@ -1301,7 +1301,7 @@ function ToEmmitPolicyRegister() {
                                             <div onClick={()=>{
                                                 setFormObject({...formObject, Remolque: 1})
                                             }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.Remolque === 1 ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.Remolque === 1 ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>
@@ -1312,7 +1312,7 @@ function ToEmmitPolicyRegister() {
                                             <div onClick={()=>{
                                                 setFormObject({...formObject, Remolque: 2})
                                             }} className="group rounded-full w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.Remolque === 2 ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                                <span className={`rounded-full transition w-full content-none h-full relative ${formObject.Remolque === 2 ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                             </div>
                                         </div>
                                     </p>

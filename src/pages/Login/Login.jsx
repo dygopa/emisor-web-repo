@@ -32,19 +32,19 @@ function Login() {
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
             <div className="h-full relative justify-center flex-col flex lg:w-1/2 md:w-1/2 sm:w-full p-40">
-                <img className='my-0 mx-auto h-1/2 w-full object-contain' src="/images/logo.jpg" />
+                <img className='my-0 mx-auto h-1/2 w-full object-contain' src={import.meta.env.VITE_LOGO_APP} />
                 <div className="mb-4">
                     <p className="input-label">{"Usuario"}</p>
-                    <input placeholder={"Ingresa tu usuario"} value={userObject.username} onChange={(e)=>{ setUserObject({...userObject, username: e.target.value}) }} type="text" className="focus:border-blue-900 outline-none hover:border-blue-900 transition block relative rounded-md mb-4 border-2 border-blue-300 w-full p-2" />
+                    <input placeholder={"Ingresa tu usuario"} value={userObject.username} onChange={(e)=>{ setUserObject({...userObject, username: e.target.value}) }} type="text" className="focus:border-secondary outline-none hover:border-secondary transition block relative rounded-md mb-4 border-2 border-primary/40 w-full p-2" />
                 </div>
                 <div className="mb-10">
                     <p className="input-label">{"Contraseña"}</p>
-                    <input placeholder={"Ingresa tu contraseña"} value={userObject.password} onChange={(e)=>{ setUserObject({...userObject, password: e.target.value}) }} type="password" className="focus:border-blue-900 outline-none hover:border-blue-900 transition block relative rounded-md mb-4 border-2 border-blue-300 w-full p-2" />
+                    <input placeholder={"Ingresa tu contraseña"} value={userObject.password} onChange={(e)=>{ setUserObject({...userObject, password: e.target.value}) }} type="password" className="focus:border-secondary outline-none hover:border-secondary transition block relative rounded-md mb-4 border-2 border-primary/40 w-full p-2" />
                 </div>
-                <div onClick={()=>{ manageSesionLogin() }} className="transition cursor-pointer w-full relative block text-center rounded-md text-white py-3 bg-primary hover:bg-blue-900">Iniciar sesion</div>
+                <div onClick={()=>{ manageSesionLogin() }} className="transition cursor-pointer w-full relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Iniciar sesion</div>
             </div>
             <div className="h-full relative block lg:w-1/2 md:w-1/2 sm:w-full">
-                <img className='w-full h-full' src="/images/img-login.jpg" />
+                <img className='w-full h-full' src={import.meta.env.VITE_COVER_APP} />
             </div>
         </div>
     )

@@ -57,7 +57,7 @@ function Quoters() {
         return(
             <div
             onClick={()=>{ history("/quoter-register", {state: data}) }}
-            className={`grid-cols-7 table-data-component ${ index % 2 === 0 ? "bg-blue-50" : "bg-transparent" }`}>
+            className={`grid-cols-7 table-data-component ${ index % 2 === 0 ? "bg-primary/20" : "bg-transparent" }`}>
                 <p className="table-data-bold">{data["idPlan"]}</p>
                 <p className="table-data">{data["nombreCompleto"]}</p>
                 <p className="table-data">{data["producto"]}</p>
@@ -66,7 +66,7 @@ function Quoters() {
                 <div className={data["idEstatus"] === "1" ? 
                 "font-bold px-5 py-1 w-fit relative flex flex-col justify-center text-center rounded-md bg-red-200 text-red-700" : 
                 "font-bold px-5 py-1 w-fit relative flex flex-col justify-center text-center rounded-md bg-green-100 text-green-700" }>{data["estatus"]}</div>
-                <p className="text-blue-700">{data["totalPlan"]}</p>
+                <p className="text-primary">{data["totalPlan"]}</p>
             </div>
         )
     }
@@ -138,7 +138,7 @@ function Quoters() {
 
     return (
         <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
-            <p className='title-section text-blue-900'>Consulta para la creacion de planes DT</p>
+            <p className='title-section text-slate-900'>Consulta para la creacion de planes DT</p>
             <div className="my-3 relative flex flex-wrap items-end">
                 {listOfInputs.map((v)=>{
                     if(v["type"] === "input"){
@@ -162,13 +162,13 @@ function Quoters() {
                 })}
                 <div onClick={()=>{ window.location.href = "/quoter-register" }} className="btn btn-primary mb-3">Nuevo</div>
             </div>
-            <p className='title-section text-blue-900'>Planes</p>
+            <p className='title-section text-slate-900'>Planes</p>
             <TableLabelsComponent/>
             {listOfData.length > 0 ? 
                 listOfData.map((d, i)=><TableDataComponent index={i} data={d}/>)
             : 
                 <div className="text-center flex justify-center align-middle h-10 w-full">
-                    <p className="font-light text-xl text-blue-700">{loadingData ? "Cargando datos..." : "No hay datos todavia"}</p>
+                    <p className="font-light text-xl text-primary">{loadingData ? "Cargando datos..." : "No hay datos todavia"}</p>
                 </div>
             }
         </div>

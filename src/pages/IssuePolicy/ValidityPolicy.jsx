@@ -82,7 +82,7 @@ function ValidityPolicy() {
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
             { !emmitedPolicy ? <div className="bg-white w-1/2 h-full p-8 block relative">
-                <p className='mb-2 title-section text-blue-900'>Inicio de vigencia de la poliza</p>
+                <p className='mb-2 title-section text-slate-900'>Inicio de vigencia de la poliza</p>
                 <div className="w-full flex mb-4">
                     <div className="mb-3 mr-3 w-1/2">
                         <p className="input-label">Desde</p>
@@ -93,7 +93,7 @@ function ValidityPolicy() {
                         <div className="bg-slate-200 cursor-default form-control">{dateObject.toShow ?? "-"}</div>
                     </div>
                 </div>
-                <p className='mb-3 title-section text-blue-900'>Pago de la poliza</p>
+                <p className='mb-3 title-section text-slate-900'>Pago de la poliza</p>
                 <div className="mb-3 w-full">
                     <p className="input-label">Forma de pago</p>
                     <select value={paymentObject.typePayment} onChange={(e)=>{ setPaymentObject({...paymentObject, typePayment: e.target.value}) }} type="number" className="form-control">
@@ -117,33 +117,33 @@ function ValidityPolicy() {
                         {errorInNumber && <p className="text-xs text-red-600 mt-2">Debe ser menor o igual al total</p>}
                     </div>
                 </div>
-                <div onClick={()=>{ !validatingPolicy && manageEmityPolice() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-blue-700 hover:bg-blue-900">
+                <div onClick={()=>{ !validatingPolicy && manageEmityPolice() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">
                     {validatingPolicy ? "Cargando..." : "Emitir"}
                 </div>
             </div> :
             <div className="bg-white w-1/2 h-full p-8 block relative">
-                <p className='mb-2 title-section text-blue-900'>Poliza emitida</p>
+                <p className='mb-2 title-section text-slate-900'>Poliza emitida</p>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-blue-300 mb">Asegurado</p>
-                    <p className="font-light text-2xl text-blue-900">{policy?.asegurado}</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Asegurado</p>
+                    <p className="font-light text-2xl text-secondary">{policy?.asegurado}</p>
                 </div>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-blue-300 mb">Marca - Modelo</p>
-                    <p className="font-light text-2xl text-blue-900">{policy?.marca + " - " + policy?.modelo}</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Marca - Modelo</p>
+                    <p className="font-light text-2xl text-secondary">{policy?.marca + " - " + policy?.modelo}</p>
                 </div>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-blue-300 mb">Numero de poliza</p>
-                    <p className="font-light text-2xl text-blue-900">{policy?.poliza}</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Numero de poliza</p>
+                    <p className="font-light text-2xl text-secondary">{policy?.poliza}</p>
                 </div>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-blue-300 mb">Vigencia desde</p>
-                    <p className="font-light text-2xl text-blue-900">{policy?.fechaDesde}</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Vigencia desde</p>
+                    <p className="font-light text-2xl text-secondary">{policy?.fechaDesde}</p>
                 </div>
                 <div className="mb-10 w-full">
-                    <p className="font-bold text-sm text-blue-300 mb">Vigencia hasta</p>
-                    <p className="font-light text-2xl text-blue-900">{policy?.fechaHasta}</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Vigencia hasta</p>
+                    <p className="font-light text-2xl text-secondary">{policy?.fechaHasta}</p>
                 </div>
-                <div onClick={()=>{ !errorInNumber && controllPrint() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-blue-700 hover:bg-blue-900">Imprimir poliza</div>
+                <div onClick={()=>{ !errorInNumber && controllPrint() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Imprimir poliza</div>
             </div>}
         </div>
     )

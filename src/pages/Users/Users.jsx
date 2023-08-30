@@ -76,7 +76,7 @@ function Users() {
 
     const TableDataComponent = ({data, index}) => {
         return(
-            <div className={`grid-cols-5 table-data-component ${ index % 2 === 0 ? "bg-blue-50" : "bg-transparent" }`}>
+            <div className={`grid-cols-5 table-data-component ${ index % 2 === 0 ? "bg-primary/20" : "bg-transparent" }`}>
                 <p className="table-data-bold">{data["aseguradora"]}</p>
                 <p className="table-data">{data["aseguradora"]}</p>
                 <p className="table-data">{data["producto"]}</p>
@@ -100,7 +100,7 @@ function Users() {
 
     return (
         <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
-            <p className='title-section text-blue-900'>Usuarios</p>
+            <p className='title-section text-slate-900'>Usuarios</p>
             <div className="my-3 relative flex flex-wrap items-end">
                 {listOfInputs.map((v)=>{
                     if(v["type"] === "input"){
@@ -124,13 +124,13 @@ function Users() {
                 <div onClick={()=>{}} className="btn btn-outline-primary mr-2 mb-3">Buscar</div>
                 <div onClick={()=>{ window.location.href = "/new-user" }} className="btn btn-primary mb-3">Nuevo usuario</div>
             </div>
-            <p className='title-section text-blue-900'>Resultados</p>
+            <p className='title-section text-slate-900'>Resultados</p>
             <TableLabelsComponent/>
             {listOfData.length > 0 ? 
                 listOfData.map((d, i)=><TableDataComponent index={i} data={d}/>)
             : 
                 <div className="text-center flex justify-center align-middle h-10 w-full">
-                    <p className="font-light text-xl text-blue-700">No hay datos todavia</p>
+                    <p className="font-light text-xl text-primary">No hay datos todavia</p>
                 </div>
             }
         </div>

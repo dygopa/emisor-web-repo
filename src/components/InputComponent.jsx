@@ -9,7 +9,7 @@ export const InputComponent = ({
     keyProperty
 }) => (
     <div>
-        {hasLabel && <p className="font-thin text-sm text-blue-700 mb-3">{label}</p>}
-        <input key={keyProperty} placeholder={placeholderProperty} value={valueProperty} onChange={onChangeProperty} type="text" className="focus:border-blue-700 outline-none hover:border-blue-700 transition block relative rounded-md mb-4 border-2 border-blue-400 w-full p-2" />
+        {hasLabel && <p className="font-thin text-sm text-primary mb-3">{label}</p>}
+        <input key={keyProperty} placeholder={placeholderProperty} value={valueProperty} onChange={onChangeProperty} type="text" className="focus:border-primary outline-none hover:border-primary transition block relative rounded-md mb-4 border-2 border-primary w-full p-2" />
     </div>
 )

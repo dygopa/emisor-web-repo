@@ -56,9 +56,9 @@ function NewUser() {
 
     const SidebarLinkComponent = ({title, number, ownRef, width}) => {
         return (
-            <div onClick={()=>{ setActiveLink(number); executeScroll(ownRef) }} className={`cursor-pointer flex w-[${width}] h-auto mb-3 rounded p-2 justify-start items-center ${activeLink === number ? "bg-white border-blue-700 border-2" : "bg-transparent"}`}>
-                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-blue-700 text-white border-blue-700" : "bg-transparent text-blue-700 border-blue-200"}`}>{number}</p>
-                <p className={`text-sm text-blue-900 ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
+            <div onClick={()=>{ setActiveLink(number); executeScroll(ownRef) }} className={`cursor-pointer flex w-[${width}] h-auto mb-3 rounded p-2 justify-start items-center ${activeLink === number ? "bg-white border-primary border-2" : "bg-transparent"}`}>
+                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-primary text-white border-primary" : "bg-transparent text-primary border-primary/40"}`}>{number}</p>
+                <p className={`text-sm text-secondary ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
             </div>
         )
     }
@@ -77,8 +77,8 @@ function NewUser() {
     })
 
     return (
-        <div className="ml-[18%] w-[82%] relative block h-screen bg-blue-50 p-8">
-            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-blue-700 p-5 rounded cursor-pointer hover:bg-blue-900 transition shadow-xl">
+        <div className="ml-[18%] w-[82%] relative block h-screen bg-primary/20 p-8">
+            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
                 <span className="text-white material-symbols-outlined">
                     {toggledSidebar ? "view_agenda" : "view_column_2"}
                 </span>
@@ -98,11 +98,11 @@ function NewUser() {
                     <SidebarLinkComponent width={"100%"} ownRef={firstRef} title={"Creacion de usuario"} number={"1"} />
                     <div onClick={()=>{
                         window.location.href = "/users"
-                    }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-blue-700 hover:bg-blue-900">Guardar</div>
+                    }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Guardar</div>
                 </div>}
                 <div className={`p-3 bg-white rounded-lg h-fit overflow-y-auto ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4" ref={firstRef}>
-                        <p className={`title-section text-blue-900`}>Datos personales</p>
+                        <p className={`title-section text-slate-900`}>Datos personales</p>
                         <div className="flex flex-wrap content-start">
                             {firstListOfInputs.map((v)=>{
                                 if(v["type"] === "input"){

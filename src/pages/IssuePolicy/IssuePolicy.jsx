@@ -25,7 +25,7 @@ function IssuePolicy() {
             }
         }
         
-        concacQueryString = "?idTipoInteres=2&" + listOfString.join("&")
+        concacQueryString = "?idTipoInteres=2&idProducto=2"
 
         apiProvider.getPlanPropertyTypeEndPoint(concacQueryString).then((res)=>{
             console.log(res.data)
@@ -37,7 +37,7 @@ function IssuePolicy() {
     }
 
     async function loadProductsFromAPI(){
-        apiProvider.getProductEndPoint("").then((res)=>{
+        apiProvider.getProductEndPoint("2").then((res)=>{
             setListOfProducts(res.data)
             setLoadedProducts(true)
         }).catch((e)=>{
@@ -67,10 +67,10 @@ function IssuePolicy() {
 
     return (
         <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
-            <div className="flex w-full justify-start items-center">
-                <p className='title-section text-blue-900'>Emitir poliza</p>
+            <div className="flex w-full justify-start items-center mb-5">
+                <p className='title-section text-slate-900'>Emitir poliza</p>
             </div>
-            <div className="my-3 relative flex flex-wrap items-end">
+            {/* <div className="my-3 relative flex flex-wrap items-end">
                 
                 <div className="mr-3 mb-3 w-[30%]">
                     <p className="input-label">Producto</p>
@@ -78,11 +78,11 @@ function IssuePolicy() {
                         {listOfProducts.map((value, i)=>{
                             return(
                                 <p key={i} className="input-label flex items-center justify-start leading-[2px] w-[50%]">
-                                    {value["titulo"]}
+                                    {value["titulo"] + value["idProducto"]}
                                     <div onClick={()=>{
                                         setSearchObject({...searchObject, idProducto: value["idProducto"]})
                                     }} className="group rounded-full ml-3 w-5 h-5 border-solid border-[2.2px] p-[0.9px] box-border border-slate-500 overflow-hidden cursor-pointer flex justify-center items-center">
-                                        <span className={`rounded-full transition w-full content-none h-full relative ${searchObject.idProducto === value["idProducto"] ? "group-hover:bg-slate-500 bg-blue-700" : "group-hover:bg-blue-500 bg-slate-300"}`}></span>
+                                        <span className={`rounded-full transition w-full content-none h-full relative ${searchObject.idProducto === value["idProducto"] ? "group-hover:bg-slate-500 bg-primary" : "group-hover:bg-secondary bg-slate-300"}`}></span>
                                     </div>
                                 </p>
                             )
@@ -91,15 +91,15 @@ function IssuePolicy() {
                     </div>
                 </div>
 
-            </div>
-            <p className='title-section text-blue-900'>Resultados</p>
+            </div> */}
+            {/* <p className='title-section text-slate-900'>Resultados</p> */}
             {listOfProperties.length > 0 ?
-                <div className="text-center flex justify-center gap-10 w-[80%] mx-auto">
+                <div className="w-full h-[90%] flex items-center justify-center gap-10 mx-auto">
                     {listOfProperties.map((d, i)=><TableDataComponent key={i} data={d}/>)}
                 </div>
             : 
                 <div className="text-center flex justify-center align-middle h-10 w-full">
-                    <p className="font-light text-xl text-blue-700">{loadingData ? "Cargando datos..." : "No hay datos todavia"}</p>
+                    <p className="font-light text-xl text-primary">{loadingData ? "Cargando datos..." : "No hay datos todavia"}</p>
                 </div>
             }
         </div>

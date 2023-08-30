@@ -354,7 +354,7 @@ function QuoterRegister() {
     const BenefitsDataComponent = ({data}) => {
         return(
             <div onClick={()=>{ selectBenefitInList(data) }} className={`benefits-component ${listOfBenefitsSelected.some((prv)=>( prv["idBeneficio"] === data["idBeneficio"] )) && "selected"}`}>
-                <p className="text-blue-700 font-light">#{data["idBeneficio"]}</p>
+                <p className="text-primary font-light">#{data["idBeneficio"]}</p>
                 <p className="table-data-bold">{data["descripcion"]}</p>
             </div>
         )
@@ -376,8 +376,8 @@ function QuoterRegister() {
     const SidebarLinkComponent = ({title, number, ownRef}) => {
         return (
             <div onClick={()=>{ setActiveLink(number); executeScroll(ownRef) }} className={`cursor-pointer flex w-full h-auto mb-3 rounded p-2 justify-start items-center ${activeLink === number ? "bg-white border-primary border-2" : "bg-transparent"}`}>
-                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-primary text-white border-primary" : "bg-transparent text-blue-700 border-blue-200"}`}>{number}</p>
-                <p className={`text-sm text-blue-900 ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
+                <p className={`mr-3 font-light flex w-[35px] h-[35px] rounded-full justify-center items-center text-lg border-2 ${activeLink === number ? "bg-primary text-white border-primary" : "bg-transparent text-primary border-primary/40"}`}>{number}</p>
+                <p className={`text-sm text-secondary ${activeLink === number ? "font-bold" : "font-light"}`}>{title}</p>
             </div>
         )
     }
@@ -764,7 +764,7 @@ function QuoterRegister() {
         <div className="ml-[18%] w-[82%] relative block h-auto bg-slate-50 p-8">
             {successAlert && <AlertComponent state={setSuccessAlert} type={"1"} msg={successAlertMessage} />}
             {errorAlert && <AlertComponent state={setErrorAlert} type={"2"} msg={errorAlertMessage} />}
-            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-blue-900 transition shadow-xl">
+            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
                 <span className="text-white material-symbols-outlined">
                     {toggledSidebar ? <RiLayoutRowLine size={25}/> : <FiColumns size={25}/>}
                 </span>
@@ -785,7 +785,7 @@ function QuoterRegister() {
                     </div>
                     <div onClick={()=>{ 
                         manageQuoterRegister()
-                    }} className="mb-3 transition cursor-pointer w-auto px-16 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-blue-900">Guardar</div>
+                    }} className="mb-3 transition cursor-pointer w-auto px-16 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Guardar</div>
                 </div>
             </div>}
             
@@ -804,7 +804,7 @@ function QuoterRegister() {
                 </div>
                 <div onClick={()=>{ 
                     manageQuoterRegister()
-                }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-blue-900">Guardar</div>
+                }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Guardar</div>
             </div>}
 
             <div className="flex w-full justify-between h-full">
@@ -816,12 +816,12 @@ function QuoterRegister() {
                     {/* <div onClick={()=>{}} className="btn btn-primary mb-3">Buscar</div> */}
                     <div onClick={()=>{ 
                         manageQuoterRegister()
-                    }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-blue-900">Guardar</div>
+                    }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Guardar</div>
 
                 </div>}
                 <div className={`p-3 bg-white rounded-lg h-full overflow-y-auto ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4" ref={firstRef}>
-                        <p className={`title-section text-blue-900 px-3 mb-3`}>Definición de planes por CIA</p>
+                        <p className={`title-section text-slate-900 px-3 mb-3`}>Definición de planes por CIA</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
                                 <p className="input-label">Descripcion</p>
@@ -910,7 +910,7 @@ function QuoterRegister() {
                     {errorStatus && <div className="text-red-700 font-bold text-base mt-6">{errorMessage}</div>}
                     {successStatus && <div className="text-green-700 font-bold text-base mt-6">{successMessage}</div>}
                     <div className="my-4" ref={secondRef}>
-                        <p className={`title-section text-blue-900 px-3 mb-3`}>Cotizar</p>
+                        <p className={`title-section text-slate-900 px-3 mb-3`}>Cotizar</p>
                         {showPricings && <div className='flex flex-wrap content-start'>
                             <>
                                 {disabledSubTotal ? <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
@@ -992,7 +992,7 @@ function QuoterRegister() {
                         </div>}
                     </div>
                     <div className="my-4" ref={thirdRef}>
-                        <p className='w-1/3 title-section text-blue-900 px-3 mb-3'>Tipo de plan</p>
+                        <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de plan</p>
                         <div className="w-1/3">
                             <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
                                 <option value="">{"Seleccionar"}</option>
@@ -1026,12 +1026,12 @@ function QuoterRegister() {
                                 })
                             : 
                             <div className="text-center flex justify-center align-middle h-10 w-full">
-                                <p className="font-light text-xl text-blue-700 mt-6">No hay coberturas todavia</p>
+                                <p className="font-light text-xl text-primary mt-6">No hay coberturas todavia</p>
                             </div>
                         }
                     </div>
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`w-1/3 title-section text-blue-900 px-3 mb-3`}>Beneficios</p>
+                        <p className={`w-1/3 title-section text-slate-900 px-3 mb-3`}>Beneficios</p>
                         <div className="w-1/2 flex justify-between">
                             <input placeholder='Agregar nuevo beneficio' onChange={(e)=>{ setBenefitData(e.target.value) }} className="form-control w-[48%!important]"/>
                             <div onClick={()=>{ handleAddBenefit() }} className="btn btn-primary w-[48%!important]">Agregar beneficio</div>
@@ -1041,7 +1041,7 @@ function QuoterRegister() {
                                 listOfBenefits.map((d, i)=><BenefitsDataComponent data={d}/>)
                             : 
                                 <div className="text-center flex justify-center align-middle h-10 w-full">
-                                    <p className="font-light text-xl text-blue-700 mt-6">No hay beneficios todavia</p>
+                                    <p className="font-light text-xl text-primary mt-6">No hay beneficios todavia</p>
                                 </div>
                             }
                         </div>
