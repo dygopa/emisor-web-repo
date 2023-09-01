@@ -201,7 +201,7 @@ input:focus{
 }
 
 .table-data-component:hover{
-    border: 1px solid #ffba9a;
+    border: 1px solid var(--primary);
 }
 
 .table-data{

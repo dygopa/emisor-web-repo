@@ -761,7 +761,7 @@ function QuoterRegister() {
     }, [loadedAPI])
 
     return (
-        <div className="ml-[18%] w-[82%] relative block h-auto bg-slate-50 p-8">
+        <div className="ml-[6%] w-[94%] relative block h-auto bg-slate-50 p-8">
             {successAlert && <AlertComponent state={setSuccessAlert} type={"1"} msg={successAlertMessage} />}
             {errorAlert && <AlertComponent state={setErrorAlert} type={"2"} msg={errorAlertMessage} />}
             <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">

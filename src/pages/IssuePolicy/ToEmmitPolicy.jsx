@@ -31,9 +31,18 @@ function ToEmmitPolicy() {
     }
 
     let type_of_plans = [
-        "BASICO",
-        "INTERMEDIO",
-        "RECOMENDADO",
+        {
+            title: "Básico",
+            value: "BASICO"
+        },
+        {
+            title: "Intermedio",
+            value: "INTERMEDIO"
+        },
+        {
+            title: "Recomendado",
+            value: "RECOMENDADO"
+        },
     ]
 
     let images_logos = [
@@ -80,6 +89,12 @@ function ToEmmitPolicy() {
         const [showBenefits, setShowBenefits] = useState(false)
         const [showToppings, setShowToppings] = useState(false)
 
+        let onlyThree = []
+
+        if(data["beneficio"][0]) onlyThree.push(data["beneficio"][0])
+        if(data["beneficio"][1]) onlyThree.push(data["beneficio"][1])
+        if(data["beneficio"][2]) onlyThree.push(data["beneficio"][2])
+
         return(
             <div className={`w-full h-[70vh] p-5 bg-white rounded-md border border-primary/30 shadow-md`}>
                 <div className='w-full h-full flex flex-col justify-between items-center'>
@@ -93,29 +108,13 @@ function ToEmmitPolicy() {
                         </div>
                     </div>
                     <div className="w-full relative flex flex-col justify-start items-center h-[70%]">
-                        {data["beneficio"].length > 0 && 
-                            <div className="w-full flex flex-col justify-start items-center">
-                                <div className='w-full py-2  flex justify-between items-center border-b '>
-                                    <div className="flex justify-start items-center gap-2">
-                                        <span className='text-primary text-lg'>
-                                            <FiStar/>
-                                        </span>
-                                        <p className='font-light text-slate-900 text-sm'>Beneficios</p>
-                                    </div>
-                                </div>
-                                <div className={`w-full h-fit overflow-y-auto flex flex-wrap justify-start items-start gap-1 mt-2`}>
-                                    {data["beneficio"].map((b, i)=>
-                                        <span key={i} className='bg-white rounded border px-3 py-1 text-xs text-slate-900 font-medium'>{b["descripcion"]}</span>
-                                    )}
-                                </div>
-                            </div>
-                        }
+                        {!showBenefits && <>
                         <div onClick={()=>{setShowToppings(!showToppings)}} className='w-full py-2 flex justify-between items-center border-b '>
                             <div className="flex justify-start items-center gap-2">
                                 <span className='text-primary text-lg'>
                                     <FiShield/>
                                 </span>
-                                <p className='font-light text-slate-900 text-sm'>Coberturas</p>
+                                <p className='font-semibold text-slate-900 text-sm'>Coberturas</p>
                             </div>
                         </div>
                         <div className={`w-full h-fit overflow-y-auto flex flex-col justify-start items-start gap-1 mt-2`}>
@@ -129,6 +128,29 @@ function ToEmmitPolicy() {
                                 })
                             }
                         </div>
+                        </>}
+                        {data["beneficio"].length > 0 && 
+                            <div className={`w-full flex flex-col justify-start items-center`}>
+                                <div className='w-full py-2 flex justify-between items-center border-b '>
+                                    <div className="flex justify-start items-center gap-2">
+                                        <span className='text-primary text-lg'>
+                                            <FiStar/>
+                                        </span>
+                                        <p className='font-semibold text-slate-900 text-sm'>Beneficios</p>
+                                    </div>
+                                    <span 
+                                    onClick={()=>{ setShowBenefits(!showBenefits) }}
+                                    className='text-slate-900 cursor-pointer text-xl'>
+                                        {showBenefits ? <FiChevronUp/> : <FiChevronDown/>}
+                                    </span>
+                                </div>
+                                <div className={`w-full flex flex-wrap justify-start items-start gap-1 mt-2 h-fit`}>
+                                    {( showBenefits ? data["beneficio"] : onlyThree).map((b, i)=>
+                                        <span key={i} className='bg-white rounded border px-3 py-1 text-xs text-slate-900 font-medium'>{b["descripcion"]}</span>
+                                    )}
+                                </div>
+                            </div>
+                        }
                     </div>
                     <div onClick={()=>{ history("/to-emmit-policy-register", {state: data}) }}  
                     className="bg-primary w-full h-fit py-3 rounded-md text-sm text-center text-white cursor-pointer">Comprar</div>
@@ -140,10 +162,10 @@ function ToEmmitPolicy() {
     const TypePlan = ({data}) => {
         return(
             <span
-                onClick={()=>{ setActiveTypePlan(data) }}
-                className={`cursor-pointer w-fit h-fit px-5 py-2 font-normal text-sm text-slate-primary rounded-md ${activeTypePlan === data ? "text-white bg-primary" : "bg-slate-200"}`}
+                onClick={()=>{ setActiveTypePlan(data["value"]) }}
+                className={`cursor-pointer w-fit h-fit px-5 py-2 font-normal text-sm text-slate-primary rounded-md ${activeTypePlan === data["value"] ? "text-white bg-primary" : "bg-slate-200"}`}
             >
-                {data}
+                {data["title"]}
             </span>
         )
     }
@@ -212,11 +234,11 @@ function ToEmmitPolicy() {
     }, [loadedAPI])
 
     return (
-        <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
-            <p className='title-section text-slate-900 mb-6'>Planes por aseguradora</p>
+        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
+            <p className='title-section text-slate-900 mb-6'>Planes por Aseguradora​</p>
             <div className="my-3 relative flex flex-wrap justify-start items-end">
                 <div className="mb-3 mr-3 w-fit">
-                    <p className="input-label">Tipo de plan</p>
+                    <p className="input-label">Tipo de Plan</p>
                     <div className="w-full flex justify-start items-center gap-2">
                         {type_of_plans.map((elem, i) => <TypePlan data={elem} key={i} />)}
                     </div>

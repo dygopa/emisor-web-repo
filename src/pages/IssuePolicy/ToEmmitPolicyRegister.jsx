@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useMemo } from 'react'
 import apiProvider from '../../services/apiProvider'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Compress from "react-image-file-resizer"
-import { FiColumns } from 'react-icons/fi';
+import { FiChevronLeft, FiColumns } from 'react-icons/fi';
 import { AiFillLock } from 'react-icons/ai';
 import { RiLayoutRowLine } from 'react-icons/ri';
 import DatePicker from "react-datepicker";
@@ -466,6 +466,7 @@ function ToEmmitPolicyRegister() {
 
         console.log(list)
         setListOfYears(list)
+        setLoadedYears(true)
     }
 
     const TermsPopup = () => {
@@ -507,12 +508,12 @@ function ToEmmitPolicyRegister() {
     }, [formObject["typePersona"]])
 
     useEffect(() => {
-        chargeYears()
-    }, loadedYears)
+        if(!loadedYears) chargeYears()
+    }, [loadedYears])
 
     useEffect(() => {
-        chargeAPI()
-    }, loadedAPI)
+        if(!loadedAPI) chargeAPI()
+    }, [loadedAPI])
 
     useEffect(() => {
         changeBackground()
@@ -526,71 +527,67 @@ function ToEmmitPolicyRegister() {
     }
 
     return (
-        <div className={`ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8 ${termsPopup && "overflow-hidden"}`}>
+        <div className={`ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8 ${termsPopup && "overflow-hidden"}`}>
             {termsPopup && <TermsPopup/>}
             {warningStatus && <AlertComponent state={setWarningStatus} type={"3"} msg={warningMessage} />}
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
 
-            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-20 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
+            {/* <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-20 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
                 <span className="text-white material-symbols-outlined">
                     {toggledSidebar ? <RiLayoutRowLine size={25}/> : <FiColumns size={25}/>}
                 </span>
-            </div>
+            </div> */}
 
             {/* Horizontal style fixed*/}
-            {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-20 fixed bg-white w-[82%] h-fit top-0 right-0">
-                <div className="p-4 flex justify-start relative h-auto w-full items-center overflow-x-auto">
-                    <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={firstRef} title={"Datos asegurado"} number={"1"} />
+            {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-20 fixed bg-white w-[94%] h-fit top-0 right-0">
+                <div className="p-4 flex justify-between relative h-auto w-full items-center overflow-x-auto">
+                    <div className="w-fit flex justify-start items-center gap-3">
+                        <div onClick={()=>{ history("/to-emmit-policy") }} className="mr-10 cursor-pointer w-fit flex justify-start items-center gap-3">
+                            <span className="text-2xl text-primary">
+                                <FiChevronLeft/>
+                            </span>
+                            <p className="text-slate-900 text-base font-medium">Regresar</p>
+                        </div>
+                        <div className="h-10 relative block">
+                            <img src={`./images/logos/logo-${data.state["imagen"]}`} className='h-full box-border w-full object-contain' />
+                        </div>
+                        <div className="flex flex-col relative text-left justify-center items-left">
+                            <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
+                            <p className="font-light text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                        </div>
                     </div>
-                    <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={secondRef} title={"Datos del contratante"} number={"2"} />
-                    </div>
-                    <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={thirdRef} title={"Direccion"} number={"3"} />
-                    </div>
-                    <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={fourthRef} title={"Datos automovil"} number={"4"} />
-                    </div>
-                    <div className="mr-10 w-[12%]">
-                        <img src="/images/logo.png" className='h-full box-border w-full object-contain' />
-                    </div>
-                    <div className="pl-5">
-                        <div onClick={()=>{
-                            checkChangeOfView()
-                        }} className="mb-3 btn btn-primary">Guardar</div>
-                    </div>    
+                    <div onClick={()=>{
+                        checkChangeOfView()
+                    }} className="btn btn-primary">Guardar</div>
                 </div>
             </div>}
             
             {/* Horizontal style bar */}
             {!toggledSidebar && <div className="flex justify-between relative items-center h-fit w-full overflow-x-auto">
-                <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={firstRef} title={"Datos asegurado"} number={"1"} />
+                <div className="w-fit flex justify-start items-center gap-3">
+                    <div onClick={()=>{ history("/to-emmit-policy") }} className="mr-10 cursor-pointer w-fit relative flex justify-start items-center gap-3">
+                        <span className="text-2xl text-primary">
+                            <FiChevronLeft/>
+                        </span>
+                        <p className="text-slate-900 text-base font-medium">Regresar</p>
+                    </div>
+                    <div className="h-10 relative block">
+                        <img src={`./images/logos/logo-${data.state["imagen"]}`} className='h-full box-border w-full object-contain' />
+                    </div>
+                    <div className="flex flex-col relative text-left justify-center items-left">
+                        <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
+                        <p className="font-light text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                    </div>
                 </div>
-                <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={secondRef} title={"Datos del contratante"} number={"2"} />
-                </div>
-                <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={thirdRef} title={"Direccion"} number={"3"} />
-                </div>
-                <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={fourthRef} title={"Datos automovil"} number={"4"} />
-                </div>
-                <div className="mr-10 w-[12%]">
-                    <img src="/images/logo.png" className='h-full box-border w-full object-contain' />
-                </div>
-                <div className="pl-5">
-                    <div onClick={()=>{
-                        checkChangeOfView()
-                    }} className="mb-3 btn btn-primary">Guardar</div>
-                </div>    
+                <div onClick={()=>{
+                    checkChangeOfView()
+                }} className="btn btn-primary">Guardar</div>
             </div>}
 
             <div className="flex w-full justify-between h-full">
                 {/* Vertical style bar */}
-                {toggledSidebar && <div className="block relative h-full w-1/3 pr-8">
+                {/* {toggledSidebar && <div className="block relative h-full w-1/3 pr-8">
                     <SidebarLinkComponent ownRef={firstRef} title={"Datos asegurado"} number={"1"} />
                     <SidebarLinkComponent ownRef={secondRef} title={"Datos del contratante"} number={"2"} />
                     <SidebarLinkComponent ownRef={thirdRef} title={"Direccion"} number={"3"} />
@@ -599,16 +596,16 @@ function ToEmmitPolicyRegister() {
                         checkChangeOfView()
                     }} className="btn btn-primary">Guardar</div>
 
-                </div>}
-                <div className={`p-3 bg-white rounded-lg h-fit overflow-y-hidden ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
+                </div>} */}
+                <div className={`mt-5 p-3 bg-white rounded-lg h-fit overflow-y-hidden ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4 relative" ref={firstRef}>
-                        <p className={`title-section text-slate-900`}>Datos asegurado</p>
+                        <p className={`title-section text-slate-900`}>Datos Asegurado</p>
                         <div className="flex flex-wrap content-start items-end">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Tipo persona <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Tipo Persona <span className='text-primary font-bold'>*</span></p>
                                 <div className="flex justify-between items-center">
                                     <p className="input-label flex items-center leading-[2px] mr-2">
-                                        Juridico
+                                        Jurídico​
                                         <div className="ml-3 w-1/4">
                                             <div onClick={()=>{
                                                 setFormObject({...formObject, typePersona: "1"}), chargeTypeOfDocument("1")
@@ -631,14 +628,14 @@ function ToEmmitPolicyRegister() {
                                 </div>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Tipo de documento de identidad</p>
+                                <p className="input-label">Tipo de Documento de Identidad​</p>
                                 <select onChange={(e)=>{ setFormObject({...formObject, idtipodocumento: e.target.value})  }} className="form-control">
                                     <option value="">Seleccione el tipo de documento de identidad</option>
                                     {listOfTypeDocument.map((type)=> <option value={type["IdTipoDocumento"]}>{type["TipoDocumento"]}</option> )}
                                 </select>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Número de identificación <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Número de Identificación​ <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder="Ingrese el número de identificación" onChange={(e)=>{ setFormObject({...formObject, numberId: e.target.value}) }} type="text" className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
@@ -670,50 +667,50 @@ function ToEmmitPolicyRegister() {
                                 {fieldsClient.includes("Apellidos") && <ErrorText/>}
                             </div>}
                             {(formObject["idsexo"] === "1" && formObject["typePersona"] !== "1") && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Apellido de casada</p>
+                                <p className="input-label">Apellido de Casada</p>
                                 <input value={formObject["marriedLastName"]} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, marriedLastName: e.target.value}) }} type="text" className="form-control" />
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre comercial <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Comercial <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["NombreComercial"]} placeholder="Ingrese el nombre comercial" onChange={(e)=>{ setFormObject({...formObject, NombreComercial: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("NombreComercial") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Representante legal <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Representante Legal <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["RepresentanteLegal"]} placeholder="Ingrese el representante legal" onChange={(e)=>{ setFormObject({...formObject, RepresentanteLegal: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("RepresentanteLegal") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad comercial principal <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Comercial Principal <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["ActividadComercialPrincipal"]} placeholder="Ingrese la actividad comercial principal" onChange={(e)=>{ setFormObject({...formObject, ActividadComercialPrincipal: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("ActividadComercialPrincipal") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre beneficiario</p>
+                                <p className="input-label">Nombre Beneficiario</p>
                                 <input value={formObject["NombreBeneficiario"]} placeholder="Ingrese el nombre del beneficiario" onChange={(e)=>{ setFormObject({...formObject, NombreBeneficiario: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("NombreBeneficiario") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Identificacion beneficiario</p>
+                                <p className="input-label">Identificación Beneficiario</p>
                                 <input value={formObject["IdentificacionBeneficiario"]} placeholder="Ingrese la identificacion del beneficiario" onChange={(e)=>{ setFormObject({...formObject, IdentificacionBeneficiario: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("IdentificacionBeneficiario") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Fecha de nacimiento <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
                                 <InputComponent customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
                             </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Correo electrónico <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Correo Electrónico <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["email"]} placeholder="Ingrese el correo electrónico" onChange={(e)=>{ setFormObject({...formObject, email: e.target.value}) }} type="email" className="form-control" />
                                 {fieldsClient.includes("email") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Número telefónico <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Número Telefónico <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["cellphone"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, cellphone: e.target.value}) }} type="phone" className="form-control" />
                                 {fieldsClient.includes("telefono") && <ErrorText/>}
                             </div>
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Pais <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">País <span className='text-primary font-bold'>*</span></p>
                                 <select value={formObject["PaisResidencia"]} onChange={(e)=>{ setFormObject({...formObject, PaisResidencia: e.target.value})  }} className="form-control">
                                     <option value="">Seleccione el pais</option>
                                     {listOfCountries.map((type)=> <option value={type["IdPais"]}>{type["Pais"]}</option> )}
@@ -729,7 +726,7 @@ function ToEmmitPolicyRegister() {
                                 {fieldsClient.includes("IdPais") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Estado civil <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Estado Civil <span className='text-primary font-bold'>*</span></p>
                                 <select onChange={(e)=>{ setFormObject({...formObject, idestadocivil: e.target.value})  }} className="form-control">
                                     <option value="">Seleccione el estado civil</option>
                                     {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
@@ -753,7 +750,7 @@ function ToEmmitPolicyRegister() {
                                 {fieldsClient.includes("IdOcupacion") && <ErrorText/>}
                             </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Documento de identidad <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Documento de Identidad <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder="Seleccionar" onChange={selectFiles} type="file" className="form-control" />
                             </div>
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3 flex justify-start items-center `}>
@@ -785,10 +782,10 @@ function ToEmmitPolicyRegister() {
                     </div>
 
                     {isPep && <div className="my-4">
-                        <p className={`title-section text-slate-900`}>Referencias personales</p>
+                        <p className={`title-section text-slate-900`}>Referencias Personales</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Cantidad referencias personales</p>
+                                <p className="input-label">Cantidad Rerencias Personales</p>
                                 <select defaultValue={formObject.cantidadReferencias} onChange={(e)=>{ setFormObject({...formObject, cantidadReferencias: e.target.value}) }} className="form-control">
                                     <option value="">Seleccione la cantidad</option>
                                     <option value="1">1</option>
@@ -799,55 +796,55 @@ function ToEmmitPolicyRegister() {
                         </div>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia1: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia1: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia1: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia1: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>
                         {(formObject.cantidadReferencias === "2"|| formObject.cantidadReferencias === "3") && <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia2: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia2: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia2: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia2: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>}
                         {formObject.cantidadReferencias === "3" && <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia3: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia3: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia3: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia3: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>}
@@ -857,7 +854,7 @@ function ToEmmitPolicyRegister() {
                         <p className='title-section text-slate-900'>PEP</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion/Cargo <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación/Cargo <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder='Escriba la relacion/cargo' onChange={(e)=>{ setFormObject({...formObject, RelacionCargoPep: e.target.value})  }} type="text" className="form-control"/>
                                 {fieldsClientPEP.includes("RelacionCargoPep") && <ErrorText/>}
                             </div>
@@ -870,16 +867,16 @@ function ToEmmitPolicyRegister() {
                                 <InputComponent fromYear={1950} toYear={moment().year().toString()} customOnChange={setUntilPEP} daySelected={untilPEP}/>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Observacion PEP</p>
+                                <p className="input-label">Observación PEP</p>
                                 <input placeholder='Escriba la observacion PEP' onChange={(e)=>{ setFormObject({...formObject, ObservacionPep: e.target.value})  }} type="text" className="form-control"/>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Otras actividades comerciales <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Otras Actividades Comerciales <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder='Escriba las otras actividades comerciales' onChange={(e)=>{ setFormObject({...formObject, OtrasActividadesComercPep: e.target.value})  }} type="text" className="form-control"/>
                                 {fieldsClientPEP.includes("OtrasActividadesComercPep") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Perfil financiero</p>
+                                <p className={"input-label"}>Perfil Financiero</p>
                                 <select value={formObject.IdPerfilFinanciero} onChange={(e)=>{ setFormObject({...formObject, IdPerfilFinanciero: e.target.value})  }} className={"form-control"} >
                                     <option value="">Seleccione el perfil financiero</option>
                                     {listOfFinancialProfiles.map((type)=> <option value={type["IdPerfil"]}>{type["Perfil"]}</option> )}
@@ -909,7 +906,7 @@ function ToEmmitPolicyRegister() {
                             </span>}
                             
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Tipo de documento de identidad</p>
+                                <p className="input-label">Tipo de Documento de Identidad</p>
                                 <select value={formObject.IdTipoDocumentoContratante} onChange={(e)=>{ changeTypePersonContractor(e.target.value)  }} className={"form-control"}>
                                     <option value="">Seleccione el tipo de documento de identidad</option>
                                     {listOfTypeDocumentContractor.map((type)=> <option value={type["IdTipoDocumento"]}>{type["TipoDocumento"]}</option> )}
@@ -917,7 +914,7 @@ function ToEmmitPolicyRegister() {
                                 {fieldsContractor.includes("IdTipoDocumentoContratante") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Número de identificación <span className='text-primary font-bold'>*</span></p>
+                                <p className={"input-label"}>Número de Identificación <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject.CedulaRucContratante} placeholder="Ingrese el número de identificación" onChange={(e)=>{ setFormObject({...formObject, CedulaRucContratante: e.target.value}) }} type="text" className={"form-control"} />
                                 {fieldsContractor.includes("CedulaRucContratante") && <ErrorText/>}
                             </div>
@@ -940,43 +937,43 @@ function ToEmmitPolicyRegister() {
                                 {fieldsContractor.includes("ApellidoContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdSexoContratante"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Apellido de casada</p>
+                                <p className={"input-label"}>Apellido de Casada</p>
                                 <input value={formObject.ApellidoCasadaContratante} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, ApellidoCasadaContratante: e.target.value}) }} type="text" className={"form-control"} />
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Fecha de nacimiento <span className='text-primary font-bold'>*</span></p>
+                                <p className={"input-label"}>Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
                                 <InputComponent customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
                             </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Correo electrónico <span className='text-primary font-bold'>*</span></p>
+                                <p className={"input-label"}>Correo Electrónico <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder="Ingrese el correo electrónico" value={formObject.EmailContratante} onChange={(e)=>{ setFormObject({...formObject, EmailContratante: e.target.value}) }} type="email" className={"form-control"} />
                                 {fieldsContractor.includes("EmailContratante") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Número telefónico</p>
+                                <p className={"input-label"}>Número Telefónico</p>
                                 <input placeholder="Ingrese el número telefónico" value={formObject.TelefonoContratante} onChange={(e)=>{ setFormObject({...formObject, TelefonoContratante: e.target.value}) }} type="phone" className={"form-control"} />
                             </div>
                             {formObject["IdTipoDocumentoContratante"] === "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre comercial <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Comercial <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["NombreComercialContratante"]} placeholder="Ingrese el nombre comercial" onChange={(e)=>{ setFormObject({...formObject, NombreComercialContratante: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsContractorJuridic.includes("NombreComercialContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] === "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Representante legal <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Representante Legal <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["RepresentanteLegalContratante"]} placeholder="Ingrese el representante legal" onChange={(e)=>{ setFormObject({...formObject, RepresentanteLegalContratante: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsContractorJuridic.includes("RepresentanteLegalContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] === "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad comercial principal <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Comercial Principal <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["ActividadComercialPrincipalContratante"]} placeholder="Ingrese la actividad comercial principal" onChange={(e)=>{ setFormObject({...formObject, ActividadComercialPrincipalContratante: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsContractorJuridic.includes("ActividadComercialPrincipalContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] === "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre beneficiario</p>
+                                <p className="input-label">Nombre Beneficiario</p>
                                 <input value={formObject["NombreBeneficiarioContratante"]} placeholder="Ingrese el nombre del beneficiario" onChange={(e)=>{ setFormObject({...formObject, NombreBeneficiarioContratante: e.target.value}) }} type="text" className="form-control" />
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] === "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Identificacion beneficiario</p>
+                                <p className="input-label">Identificacion Beneficiario</p>
                                 <input value={formObject["IdentificacionBeneficiarioContratante"]} placeholder="Ingrese la identificacion del beneficiario" onChange={(e)=>{ setFormObject({...formObject, IdentificacionBeneficiarioContratante: e.target.value}) }} type="text" className="form-control" />
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
@@ -987,7 +984,7 @@ function ToEmmitPolicyRegister() {
                                 </select>
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Estado civil <span className='text-primary font-bold'>*</span></p>
+                                <p className={"input-label"}>Estado Civil <span className='text-primary font-bold'>*</span></p>
                                 <select value={formObject.IdEsoCivilContratante} onChange={(e)=>{ setFormObject({...formObject, IdEsoCivilContratante: e.target.value})  }} className={"form-control"} >
                                     <option value="">Seleccione el estado civil</option>
                                     {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
@@ -1044,55 +1041,55 @@ function ToEmmitPolicyRegister() {
                         </div>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia1Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia1Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia1Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 1 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 1 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia1Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>
                         {(formObject.cantidadReferenciasContratante === "2"|| formObject.cantidadReferenciasContratante === "3") && <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia2Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia2Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia2Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 2 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 2 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia2Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>}
                         {formObject.cantidadReferenciasContratante === "3" && <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Nombre Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el nombre de la referencia"} onChange={(e)=>{ setFormObject({...formObject, NombreReferencia3Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Actividad referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Actividad Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la actividad de la referencia"} onChange={(e)=>{ setFormObject({...formObject, ActividadReferencia3Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion cliente referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación Cliente Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba la relacion cliente referencia"} onChange={(e)=>{ setFormObject({...formObject, RelacionClienteReferencia3Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Telefono referencia - 3 <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Teléfono Referencia - 3 <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder={"Escriba el telefono de la referencia"} onChange={(e)=>{ setFormObject({...formObject, TelefonoReferencia3Contratante: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>}
@@ -1102,7 +1099,7 @@ function ToEmmitPolicyRegister() {
                         <p className='title-section text-slate-900'>PEP - Contratante</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Relacion/Cargo <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Relación/Cargo <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder='Escriba la relacion/cargo' onChange={(e)=>{ setFormObject({...formObject, RelacionCargoPepContratante: e.target.value})  }} type="text" className="form-control"/>
                                 {fieldsContractorPEP.includes("RelacionCargoPepContratante") && <ErrorText/>}
                             </div>
@@ -1119,12 +1116,12 @@ function ToEmmitPolicyRegister() {
                                 <input placeholder='Escriba la observacion PEP' onChange={(e)=>{ setFormObject({...formObject, ObservacionPepContratante: e.target.value})  }} type="text" className="form-control"/>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Otras actividades comerciales <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Otras Actividades Comerciales <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder='Escriba las otras actividades comerciales' onChange={(e)=>{ setFormObject({...formObject, OtrasActividadesComercPepContratante: e.target.value})  }} type="text" className="form-control"/>
                                 {fieldsContractorPEP.includes("OtrasActividadesComercPepContratante") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Perfil financiero</p>
+                                <p className={"input-label"}>Perfil Financiero</p>
                                 <select value={formObject.IdPerfilFinancieroContratante} onChange={(e)=>{ setFormObject({...formObject, IdPerfilFinancieroContratante: e.target.value})  }} className={"form-control"} >
                                     <option value="">Seleccione el perfil financiero</option>
                                     {listOfFinancialProfiles.map((type)=> <option value={type["IdPerfil"]}>{type["Perfil"]}</option> )}
@@ -1146,7 +1143,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     <div className="my-4" ref={thirdRef}>
-                        <p className='title-section text-slate-900'>Direccion</p>
+                        <p className='title-section text-slate-900'>Dirección</p>
                         <div className="flex flex-wrap content-start relative h-fit">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1197,14 +1194,14 @@ function ToEmmitPolicyRegister() {
                                 {fieldsClient.includes("Direccion") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Observacion</p>
+                                <p className="input-label">Observación</p>
                                 <textarea placeholder={"Escriba la observacion"} onChange={(e)=>{ setFormObject({...formObject, Observacion: e.target.value}) }} type="text" className="form-control"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`title-section text-slate-900`}>Conductor adicional</p>
+                        <p className={`title-section text-slate-900`}>Conductor Adicional</p>
                         <div className="flex flex-wrap content-start relative">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1220,14 +1217,14 @@ function ToEmmitPolicyRegister() {
                                 <input defaultValue={formObject["ApellidoConductorAdic"]} placeholder={"Escriba los apellidos del conductor adicional"} onChange={(e)=>{ setFormObject({...formObject, ApellidoConductorAdic: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Identificacion</p>
+                                <p className="input-label">Identificación</p>
                                 <input defaultValue={formObject["IdentificacionAdic"]} placeholder={"Escriba el identificacion del conductor adicional"} onChange={(e)=>{ setFormObject({...formObject, IdentificacionAdic: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                         </div>
                     </div>
 
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`title-section text-slate-900`}>Datos automovil</p>
+                        <p className={`title-section text-slate-900`}>Datos Automovil</p>
                         <div className="flex flex-wrap content-start relative">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1271,7 +1268,7 @@ function ToEmmitPolicyRegister() {
                                 </p>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Estado del auto <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Estado del Auto <span className='text-primary font-bold'>*</span></p>
                                 <div className="flex justify-between items-center">
                                     <p className="input-label flex items-center leading-[2px] mr-2">
                                         Nuevo
@@ -1319,17 +1316,17 @@ function ToEmmitPolicyRegister() {
                                 </div>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Valor vehículo <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Valor Vehículo <span className='text-primary font-bold'>*</span></p>
                                 <NumericFormat value={formObject["ValorVehiculo"]} className="form-control" onChange={(e)=>{ setFormObject({...formObject, ValorVehiculo: e.target.value}) }} thousandSeparator="," />
                                 {fieldsClient.includes("ValorVehiculo") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Número de motor <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Número de Motor <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["numeroMotor"]} placeholder={"Ingrese el número del motor"} onChange={(e)=>{ setFormObject({...formObject, numeroMotor: e.target.value}) }} type={"text"} className="form-control" />
                                 {fieldsClient.includes("motor") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Número de chasis <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Número de Chasis <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["numeroChasis"]} placeholder={"Ingrese el número de chasis"} onChange={(e)=>{ setFormObject({...formObject, numeroChasis: e.target.value}) }} type={"text"} className="form-control" />
                                 {fieldsClient.includes("chasis") && <ErrorText/>}
                             </div>
@@ -1343,11 +1340,11 @@ function ToEmmitPolicyRegister() {
                                 <input value={formObject["Color"]} placeholder={"Escriba el color"} onChange={(e)=>{ setFormObject({...formObject, Color: e.target.value}) }} type={"text"} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Cantidad de pasajeros <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Cantidad de Pasajeros <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["CantidadPasajeros"]} placeholder={"Escriba la cantidad de pasajeros"} onChange={(e)=>{ setFormObject({...formObject, CantidadPasajeros: e.target.value}) }} type={"number"} min={0} className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Registro vehicular (pdf, jpg, png)</p>
+                                <p className="input-label">Registro Vehicular (pdf, jpg, png)</p>
                                 <input placeholder={"Seleccionar"} onChange={selectFiles} type={"file"} className="form-control" />
                             </div>
                         </div>

@@ -77,7 +77,7 @@ function ValidityPolicy() {
     }, [paymentObject.paymentAccepted, paymentObject.total])
 
     return (
-        <div className="ml-[18%] w-[82%] relative flex justify-center items-center h-screen bg-gray-50 p-8">
+        <div className="ml-[6%] w-[94%] relative flex justify-center items-center h-screen bg-gray-50 p-8">
             {validatingPolicy && <div className='fixed top-0 left-0 bg-transparent z-50 w-full h-full'></div>}
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}

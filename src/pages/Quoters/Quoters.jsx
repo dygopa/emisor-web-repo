@@ -28,7 +28,7 @@ function Quoters() {
 
     let listOfInputs = [
         {
-            label: "Tipo de plan",
+            label: "Tipo de Plan",
             value: "IdOpcionPlan",
             placeholder: "Seleccione el tipo de plan",
             typeOfInput: "text",
@@ -36,7 +36,7 @@ function Quoters() {
             type: "select"
         },
         {
-            label: "Nombre del producto",
+            label: "Nombre del Producto",
             value: "idProducto",
             placeholder: "Escriba el nombre del producto",
             typeOfInput: "text",
@@ -57,7 +57,7 @@ function Quoters() {
         return(
             <div
             onClick={()=>{ history("/quoter-register", {state: data}) }}
-            className={`grid-cols-7 table-data-component ${ index % 2 === 0 ? "bg-primary/20" : "bg-transparent" }`}>
+            className={`grid-cols-7 table-data-component ${ index % 2 === 0 ? "bg-primary/5" : "bg-transparent" }`}>
                 <p className="table-data-bold">{data["idPlan"]}</p>
                 <p className="table-data">{data["nombreCompleto"]}</p>
                 <p className="table-data">{data["producto"]}</p>
@@ -137,20 +137,20 @@ function Quoters() {
     }, [searchObject])
 
     return (
-        <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
+        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
             <p className='title-section text-slate-900'>Consulta para la creacion de planes DT</p>
             <div className="my-3 relative flex flex-wrap items-end">
-                {listOfInputs.map((v)=>{
+                {listOfInputs.map((v, i)=>{
                     if(v["type"] === "input"){
                         return (
-                            <div className="mr-3 mb-3">
+                            <div key={i} className="mr-3 mb-3">
                                 <p className="input-label">{v["label"]}</p>
                                 <input placeholder={v["placeholder"]} onChange={(e)=>{ setSearchObject({...searchObject, [v["value"]]: e.target.value}) }} type={v["typeOfInput"]} className="form-control" />
                             </div>
                         )
                     }else{
                         return (
-                            <div className="mr-3 mb-3">
+                            <div key={i} className="mr-3 mb-3">
                                 <p className="input-label">{v["label"]}</p>
                                 <select onChange={(e)=>{ setSearchObject({...searchObject, [v["value"]]: e.target.value}) }} className="form-control">
                                     <option value="">{v["placeholder"]}</option>

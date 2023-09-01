@@ -66,9 +66,9 @@ function IssuePolicy() {
     }, [loadedProducts])
 
     return (
-        <div className="ml-[18%] w-[82%] relative block h-screen bg-gray-50 p-8">
+        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
             <div className="flex w-full justify-start items-center mb-5">
-                <p className='title-section text-slate-900'>Emitir poliza</p>
+                <p className='title-section text-slate-900'>Emitir Póliza</p>
             </div>
             {/* <div className="my-3 relative flex flex-wrap items-end">
                 
