@@ -554,7 +554,7 @@ function ToEmmitPolicyRegister() {
                         </div>
                         <div className="flex flex-col relative text-left justify-center items-left">
                             <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
-                            <p className="font-light text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                            <p className="font-semibold text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
                         </div>
                     </div>
                     <div onClick={()=>{
@@ -577,7 +577,7 @@ function ToEmmitPolicyRegister() {
                     </div>
                     <div className="flex flex-col relative text-left justify-center items-left">
                         <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
-                        <p className="font-light text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                        <p className="font-semibold text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
                     </div>
                 </div>
                 <div onClick={()=>{
@@ -599,7 +599,7 @@ function ToEmmitPolicyRegister() {
                 </div>} */}
                 <div className={`mt-5 p-3 bg-white rounded-lg h-fit overflow-y-hidden ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4 relative" ref={firstRef}>
-                        <p className={`title-section text-slate-900`}>Datos Asegurado</p>
+                        <p className={`title-section text-slate-900`}>Datos del Asegurado</p>
                         <div className="flex flex-wrap content-start items-end">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Tipo Persona <span className='text-primary font-bold'>*</span></p>
@@ -898,7 +898,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
                     
                     {!sameDataContractor && <div className="my-4" ref={secondRef}>
-                        <p className={`title-section text-slate-900`}>Datos del contratante</p>
+                        <p className={`title-section text-slate-900`}>Datos del Contratante</p>
                         <div className="flex flex-wrap content-start relative h-fit">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>
@@ -1027,7 +1027,7 @@ function ToEmmitPolicyRegister() {
                     </div>}
 
                     {isPepContractor && <div className="my-4">
-                        <p className={`title-section text-slate-900`}>Referencias personales - Contratante</p>
+                        <p className={`title-section text-slate-900`}>Referencias Personales - Contratante</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Cantidad referencias personales</p>
@@ -1224,7 +1224,7 @@ function ToEmmitPolicyRegister() {
                     </div>
 
                     <div className="my-4" ref={fourthRef}>
-                        <p className={`title-section text-slate-900`}>Datos Automovil</p>
+                        <p className={`title-section text-slate-900`}>Datos del Automóvil</p>
                         <div className="flex flex-wrap content-start relative">
                             
                             {!loadedIDFromAPI && <span className='w-full h-full absolute bg-white/40 backdrop-blur-sm bottom-0 left-0 z-10 flex flex-col justify-center items-center'>

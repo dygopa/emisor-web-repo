@@ -78,9 +78,9 @@ function Quoters() {
                 <p className="table-label">Aseguradora</p>
                 <p className="table-label">Producto</p>
                 <p className="table-label">Plan</p>
-                <p className="table-label">Descripcion</p>
+                <p className="table-label">Descripción</p>
                 <p className="table-label">Estatus</p>
-                <p className="table-label">Prima plan</p>
+                <p className="table-label">Prima Plan</p>
             </div>
         )
     }
@@ -138,7 +138,7 @@ function Quoters() {
 
     return (
         <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
-            <p className='title-section text-slate-900'>Consulta para la creacion de planes DT</p>
+            <p className='title-section text-slate-900'>Consulta para la creación de planes DT</p>
             <div className="my-3 relative flex flex-wrap items-end">
                 {listOfInputs.map((v, i)=>{
                     if(v["type"] === "input"){

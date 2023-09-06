@@ -764,21 +764,16 @@ function QuoterRegister() {
         <div className="ml-[6%] w-[94%] relative block h-auto bg-slate-50 p-8">
             {successAlert && <AlertComponent state={setSuccessAlert} type={"1"} msg={successAlertMessage} />}
             {errorAlert && <AlertComponent state={setErrorAlert} type={"2"} msg={errorAlertMessage} />}
-            <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
-                <span className="text-white material-symbols-outlined">
-                    {toggledSidebar ? <RiLayoutRowLine size={25}/> : <FiColumns size={25}/>}
-                </span>
-            </div>
-            {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-10 fixed bg-white w-[82%] h-fit top-0 right-0">
+            {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-10 fixed bg-white w-[94%] h-fit top-0 right-0">
                 <div className="p-4 flex justify-between relative h-auto w-full items-center overflow-x-auto">
                     <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={firstRef} title={"Definición de planes por CIA"} number={"1"} />
+                        <SidebarLinkComponent ownRef={firstRef} title={"Definición de Planes por CIA"} number={"1"} />
                     </div>
                     <div className="mr-10 w-auto">
                         <SidebarLinkComponent ownRef={secondRef} title={"Cotizar"} number={"2"} />
                     </div>
                     <div className="mr-10 w-auto">
-                        <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de plan"} number={"3"} />
+                        <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de Plan"} number={"3"} />
                     </div>
                     <div className="mr-10 w-auto">
                         <SidebarLinkComponent ownRef={fourthRef} title={"Beneficios"} number={"4"} />
@@ -791,13 +786,13 @@ function QuoterRegister() {
             
             {!toggledSidebar && <div className="flex justify-between relative items-center h-20 w-full overflow-x-auto">
                 <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={firstRef} title={"Definición de planes por CIA"} number={"1"} />
+                    <SidebarLinkComponent ownRef={firstRef} title={"Definición de Planes por CIA"} number={"1"} />
                 </div>
                 <div className="mr-10 w-auto">
                     <SidebarLinkComponent ownRef={secondRef} title={"Cotizar"} number={"2"} />
                 </div>
                 <div className="mr-10 w-auto">
-                    <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de plan"} number={"3"} />
+                    <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de Plan"} number={"3"} />
                 </div>
                 <div className="mr-10 w-auto">
                     <SidebarLinkComponent ownRef={fourthRef} title={"Beneficios"} number={"4"} />
@@ -809,9 +804,9 @@ function QuoterRegister() {
 
             <div className="flex w-full justify-between h-full">
                 {toggledSidebar && <div className="block relative h-full w-1/3 pr-8">
-                    <SidebarLinkComponent ownRef={firstRef} title={"Definición de planes por CIA"} number={"1"} />
+                    <SidebarLinkComponent ownRef={firstRef} title={"Definición de Planes por CIA"} number={"1"} />
                     <SidebarLinkComponent ownRef={secondRef} title={"Cotizar"} number={"2"} />
-                    <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de plan"} number={"3"} />
+                    <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de Plan"} number={"3"} />
                     <SidebarLinkComponent ownRef={fourthRef} title={"Beneficios"} number={"4"} />
                     {/* <div onClick={()=>{}} className="btn btn-primary mb-3">Buscar</div> */}
                     <div onClick={()=>{ 
@@ -821,7 +816,7 @@ function QuoterRegister() {
                 </div>}
                 <div className={`p-3 bg-white rounded-lg h-full overflow-y-auto ${!toggledSidebar ? "w-full" : "w-2/3"}`}>
                     <div className="my-4" ref={firstRef}>
-                        <p className={`title-section text-slate-900 px-3 mb-3`}>Definición de planes por CIA</p>
+                        <p className={`title-section text-slate-900 px-3 mb-3`}>Definición de Planes por CIA</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
                                 <p className="input-label">Descripcion</p>
@@ -914,11 +909,11 @@ function QuoterRegister() {
                         {showPricings && <div className='flex flex-wrap content-start'>
                             <>
                                 {disabledSubTotal ? <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                        <p className="input-label">Sub total</p>
+                                        <p className="input-label">Sub Total</p>
                                         <div className="bg-slate-200 cursor-default form-control">{pricingData["subTotal"]}</div>
                                     </div> : 
                                     <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                        <p className="input-label">Sub total</p>
+                                        <p className="input-label">Sub Total</p>
                                         <input value={pricingData["subTotal"]} placeholder="0" onChange={(e)=>{ handleChangeInPricingData("subtotal", e.target.value) }} type="number" className="form-control" />
                                     </div>
                                 }
@@ -941,11 +936,11 @@ function QuoterRegister() {
                                 </div>           
                             </>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Polizas vendidas</p>
+                                <p className="input-label">Polizas Vendidas</p>
                                 <input value={formObject.polizasVendidas} onChange={(e)=>{ setFormObject({...formObject, polizasVendidas: e.target.value}) }} type="text" placeholder='' className=" form-control"/>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Vigencia de la poliza</p>
+                                <p className="input-label">Vigencia de la Póliza</p>
                                 <select value={formObject.vigenciaPoliza} onChange={(e)=>{setFormObject({...formObject, vigenciaPoliza: e.target.value})}} className="form-control">
                                     <option value="">Seleccione la vigencia de la poliza</option>
                                     {listOfVigencias.map((v, i)=>(
@@ -956,16 +951,16 @@ function QuoterRegister() {
                         </div>}
                         {!showPricings && <div className="flex flex-wrap content-start">
                             {disabledSubTotal ? <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                    <p className="input-label">Sub total</p>
+                                    <p className="input-label">Sub Total</p>
                                     <div className="bg-slate-200 cursor-default form-control">{pricingData["subTotal"]}</div>
                                 </div> : 
                                 <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                    <p className="input-label">Sub total</p>
+                                    <p className="input-label">Sub Total</p>
                                     <input value={pricingData["subTotal"]} placeholder="0" onChange={(e)=>{ handleChangeInPricingData("subtotal", +e.target.value) }} type="number" className="form-control" />
                                 </div>
                             }
                             <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Monto descuento</p>
+                                <p className="input-label">Monto Descuento</p>
                                 <input defaultValue={pricingData["montoDescuento"]} placeholder="0" onChange={(e)=>{ handleChangeInPricingData("montoDescuento", +e.target.value) }} type="number" className="form-control" />
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
@@ -973,15 +968,15 @@ function QuoterRegister() {
                                 <div className="bg-slate-200 cursor-default form-control">{pricingData["impuesto"]}</div>
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Total plan</p>
+                                <p className="input-label">Total Plan</p>
                                 <div className="bg-slate-200 cursor-default form-control">{loadingTotalPlan ? "..." : pricingData["totalPlan"]}</div>
                             </div>
                             <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Polizas vendidas</p>
+                                <p className="input-label">Polizas Vendidas</p>
                                 <input value={formObject["polizasVendidas"]} placeholder="0" onChange={(e)=>{ setFormObject({...formObject, polizasVendidas: +e.target.value}) }} type="number" className="form-control" />
                             </div>
                             <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Vigencia de la poliza</p>
+                                <p className="input-label">Vigencia de la Póliza</p>
                                 <select value={formObject.vigenciaPoliza} onChange={(e)=>{setFormObject({...formObject, vigenciaPoliza: e.target.value})}} className="form-control">
                                     <option value="">Seleccione la vigencia de la poliza</option>
                                     {formatListStandart(listOfVigencias, "IdVigencia", "Vigencia").map((v, i)=>(
@@ -992,7 +987,7 @@ function QuoterRegister() {
                         </div>}
                     </div>
                     <div className="my-4" ref={thirdRef}>
-                        <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de plan</p>
+                        <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de Plan</p>
                         <div className="w-1/3">
                             <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
                                 <option value="">{"Seleccionar"}</option>
@@ -1019,7 +1014,10 @@ function QuoterRegister() {
                                                     )}
                                                 </select>
                                             : <p className="table-data">{(d["totalCobertra"] > 0 ? d["totalCobertra"] : d[idToLimit]) ?? "-"}</p>}
-                                            {!showPricings ? <input value={d["prima"]} onChange={(e)=>{ handleChangeInToppingList(parseFloat(e.target.value), i, "prima", "prima") }} type="number" className="form-control" /> : <p className="table-data">{(d["prima"] ?? d["PrimaCobertura"]) ?? "-"}</p>}
+                                            {!showPricings ? <input value={d["prima"]} onChange={(e)=>{
+                                                if(e.target.value.length > 0 && !applies) selectToppingInList(d, i)
+                                                handleChangeInToppingList(parseFloat(e.target.value), i, "prima", "prima");
+                                            }} type="number" className="form-control" /> : <p className="table-data">{(d["prima"] ?? d["PrimaCobertura"]) ?? "-"}</p>}
                                             {!showPricings && <div onClick={()=>{ selectToppingInList(d, i) }} className={`checkbox-custom-text ${applies ? "checked" : ""}`}></div>}
                                         </div>
                                     )
@@ -1030,13 +1028,13 @@ function QuoterRegister() {
                             </div>
                         }
                     </div>
-                    <div className="my-4" ref={fourthRef}>
+                    <div className="w-full my-4 flex flex-col justify-start items-start gap-5" ref={fourthRef}>
                         <p className={`w-1/3 title-section text-slate-900 px-3 mb-3`}>Beneficios</p>
                         <div className="w-1/2 flex justify-between">
-                            <input placeholder='Agregar nuevo beneficio' onChange={(e)=>{ setBenefitData(e.target.value) }} className="form-control w-[48%!important]"/>
+                            <input placeholder='Agregar nuevo beneficio' value={benefitData} onChange={(e)=>{ setBenefitData(e.target.value) }} className="form-control w-[48%!important]"/>
                             <div onClick={()=>{ handleAddBenefit() }} className="btn btn-primary w-[48%!important]">Agregar beneficio</div>
                         </div>
-                        <div className="flex flex-wrap justify-between content-start">
+                        <div className="w-full grid grid-cols-3 gap-5 justify-start content-start">
                             {listOfBenefits.length > 0 ? 
                                 listOfBenefits.map((d, i)=><BenefitsDataComponent data={d}/>)
                             : 
@@ -1066,13 +1064,12 @@ function QuoterRegister() {
         form_data.append("Json", JSON.stringify(object))
 
         apiProvider.addBenefitEndPoint(object).then((res)=>{
-            console.log(res)
             apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}`).then((res)=>{
-                setBenefitData("")
                 if(res.status === 200){
                     setListOfBenefits(res.data)
                 }
             })
+            setBenefitData("")
         })
 
     }
