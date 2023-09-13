@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useMemo } from 'react'
 import apiProvider from '../../services/apiProvider'
 import { useLocation } from 'react-router-dom'
-import { FiColumns } from 'react-icons/fi';
+import { FiCheck, FiColumns, FiEdit, FiSave, FiTrash } from 'react-icons/fi';
 import { RiLayoutRowLine } from 'react-icons/ri';
 function QuoterRegister() {
 
@@ -26,6 +26,7 @@ function QuoterRegister() {
     const [errorAlert, setErrorAlert] = useState(false)
     const [updatedPlan, setUpdatedPlan] = useState(false)
     const [disabledSubTotal, setDisabledSubTotal] = useState(false)
+    const [loadingPrices, setLoadingPrices] = useState(false)
 
     const [activeLink, setActiveLink] = useState("1")
     const [errorMessage, setErrorMessage] = useState("Ocurrio un error, intentelo otra vez ")
@@ -312,8 +313,9 @@ function QuoterRegister() {
         setListOfBenefitsSelected(list)
         setListOfBenefits(listOfBenefits)
     }
-
     
+    useMemo(()=> !showPricings && calculatePricesFromUpdate(),[listOfTypePlan])
+
     function handleChangeInToppingList(propValue, indexInList, typeOfValue, typeOfPrice){
         let list = [...listOfTypePlan]
         list[indexInList][typeOfValue] = propValue
@@ -352,14 +354,44 @@ function QuoterRegister() {
     }
 
     const BenefitsDataComponent = ({data}) => {
+        
+        const [field, setField] = useState(data["descripcion"])
+
+        const [wantsToUpdate, setWantsToUpdate] = useState(false)
+        let isSelected = listOfBenefitsSelected.some((prv)=>( prv["idBeneficio"] === data["idBeneficio"] ))
+
         return(
-            <div onClick={()=>{ selectBenefitInList(data) }} className={`benefits-component ${listOfBenefitsSelected.some((prv)=>( prv["idBeneficio"] === data["idBeneficio"] )) && "selected"}`}>
-                <p className="text-primary font-light">#{data["idBeneficio"]}</p>
-                <p className="table-data-bold">{data["descripcion"]}</p>
+            <div className={`benefits-component ${isSelected && "selected"}`}>
+                <div className="w-full flex justify-between items-center">
+                    <p className="text-primary font-light">#{data["idBeneficio"]}</p>
+                    <div className='w-fit flex justify-end items-center gap-2'>
+                        <span 
+                        onClick={()=>{}}
+                        className='w-6 h-6 cursor-pointer rounded-md bg-red-200 text-red-500 flex justify-center items-center text-sm'>
+                            <FiTrash/>
+                        </span>
+                        <span 
+                        onClick={()=>{ selectBenefitInList(data) }}
+                        className={`
+                            w-6 h-6 cursor-pointer rounded-md border border-green-600 text-white flex justify-center items-center text-sm
+                            ${isSelected ? "bg-green-600" : "bg-white"}
+                        `}>
+                            {isSelected && <FiCheck/>}
+                        </span>
+                    </div>
+                </div>
+                <div className='w-full flex justify-start items-center gap-4 mt-5'>
+                    <input type='text' className='form-control' defaultValue={field} disabled={!wantsToUpdate} onChange={(e)=>{ setField(e.target.value) }} />
+                    <span 
+                    onClick={()=>{ setWantsToUpdate(!wantsToUpdate) }}
+                    className='cursor-pointer text-primary text-lg'>
+                        { wantsToUpdate ? <FiSave/> : <FiEdit/>}
+                    </span>
+                </div>
+                    
             </div>
         )
     }
-
     
     const TypePlanLabelsComponent = () => {
         return(
@@ -382,7 +414,6 @@ function QuoterRegister() {
         )
     }
 
-    
     const AlertComponent = ({type, msg, state}) => {
         return(
             <div onClick={()=>{ state(false) }} className={`transition shadow-md z-20 rounded p-[1%_2%] text-left h-auto w-auto cursor-pointer fixed right-[2.3%] bottom-[15%] block ${type === "1" 
@@ -500,7 +531,7 @@ function QuoterRegister() {
     }
 
     const handleGetPrices = () => {
-
+        setLoadingPrices(true)
         let query = `?IdTipoBien=${formObject["tipoBien"]}&AplicaEndoso=${formObject["aplicaEndoso"]}`
         apiProvider.GetDatosValidQuoteEndPoint(query).then((res)=>{
             let object = res.data
@@ -520,8 +551,10 @@ function QuoterRegister() {
             form_data.append("Json", JSON.stringify(object))
             
             handleAddQuota(object)
-
+            calculatePricesFromUpdate()
+            setLoadingPrices(false)
         }).catch((e)=>{
+            setLoadingPrices(false)
             console.log(e)
         })
     }
@@ -585,6 +618,7 @@ function QuoterRegister() {
                 setSuccessMessage("Coberturas generadas")
             }else{
                 setDisabledSubTotal(false)
+                setListOfTypePlan([])
                 setErrorStatus(true)
                 setErrorMessage("No hubo resultado")
             }
@@ -608,7 +642,8 @@ function QuoterRegister() {
     }
 
     function calculatePricesFromUpdate(){
-        let selected = listOfTypePlan.filter((prv)=>(prv["prima"] > 0 && prv["idLimite"] !== undefined))
+
+        let selected = listOfTypePlan.filter((prv)=>( prv["prima"] > 0 && prv["idLimite"] !== undefined))
         let list = selected.map((o)=>(parseFloat(o["prima"] ?? 0)))
         let subTotal = list.reduce(getSum, 0)
         
@@ -629,8 +664,9 @@ function QuoterRegister() {
     }
     
     function formatPlanToUpdate(){
+        
         let object = {...location.state}
-        console.log(object)
+
         setFormObject({
             description: object["descripcion"],
             idAseguradora: object["idCompania"],
@@ -736,10 +772,6 @@ function QuoterRegister() {
             console.log(e)
         })
     }
-
-    useEffect(() => {
-        calculatePricesFromUpdate()
-    }, [listOfTypePlan])
 
     useEffect(() => {
         if(location.state !== null){
@@ -898,9 +930,9 @@ function QuoterRegister() {
                     </div>
                     {showPricings && <div className="my-2 flex">
                         <div onClick={()=>{ 
-                            handleGetPrices() 
+                            !loadingPrices && handleGetPrices() 
                             //console.log(formObject)
-                        }} className="btn btn-primary w-2">Obtener Precios y Coberturas</div>
+                        }} className="btn btn-primary w-2">{loadingPrices ? "Cargando..." : "Obtener Precios y Coberturas"}</div>
                     </div>}
                     {errorStatus && <div className="text-red-700 font-bold text-base mt-6">{errorMessage}</div>}
                     {successStatus && <div className="text-green-700 font-bold text-base mt-6">{successMessage}</div>}
@@ -995,7 +1027,8 @@ function QuoterRegister() {
                             </select>
                         </div>
                         <TypePlanLabelsComponent/>
-                        {listOfTypePlan.length > 0 ? 
+                        {listOfTypePlan.length > 0 
+                            ? 
                                 listOfTypePlan.map((d, i)=>{
                                     let idToLimit = location.state !== null ? "limite" : "Limite"
                                     let id = showPricings ? "IdCobertura" : "idCobertura"
@@ -1014,18 +1047,20 @@ function QuoterRegister() {
                                                     )}
                                                 </select>
                                             : <p className="table-data">{(d["totalCobertra"] > 0 ? d["totalCobertra"] : d[idToLimit]) ?? "-"}</p>}
-                                            {!showPricings ? <input value={d["prima"]} onChange={(e)=>{
-                                                if(e.target.value.length > 0 && !applies) selectToppingInList(d, i)
-                                                handleChangeInToppingList(parseFloat(e.target.value), i, "prima", "prima");
-                                            }} type="number" className="form-control" /> : <p className="table-data">{(d["prima"] ?? d["PrimaCobertura"]) ?? "-"}</p>}
+                                            {!showPricings ? 
+                                                <input value={d["prima"]} onChange={(e)=>{
+                                                    if(e.target.value.length > 0 && !applies){ selectToppingInList(d, i) };
+                                                    handleChangeInToppingList(parseFloat(e.target.value), i, "prima", "prima");
+                                                }} type="number" className="form-control" /> 
+                                            : <p className="table-data">{(d["prima"] ?? d["PrimaCobertura"]) ?? "-"}</p>}
                                             {!showPricings && <div onClick={()=>{ selectToppingInList(d, i) }} className={`checkbox-custom-text ${applies ? "checked" : ""}`}></div>}
                                         </div>
                                     )
                                 })
                             : 
-                            <div className="text-center flex justify-center align-middle h-10 w-full">
-                                <p className="font-light text-xl text-primary mt-6">No hay coberturas todavia</p>
-                            </div>
+                                <div className="text-center flex justify-center align-middle h-10 w-full">
+                                    <p className="font-light text-xl text-primary mt-6">No hay coberturas todavia</p>
+                                </div>
                         }
                     </div>
                     <div className="w-full my-4 flex flex-col justify-start items-start gap-5" ref={fourthRef}>

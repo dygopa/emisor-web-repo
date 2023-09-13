@@ -629,7 +629,7 @@ function ToEmmitPolicyRegister() {
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Tipo de Documento de Identidad​</p>
-                                <select onChange={(e)=>{ setFormObject({...formObject, idtipodocumento: e.target.value})  }} className="form-control">
+                                <select autoFocus onChange={(e)=>{ setFormObject({...formObject, idtipodocumento: e.target.value})  }} className="form-control">
                                     <option value="">Seleccione el tipo de documento de identidad</option>
                                     {listOfTypeDocument.map((type)=> <option value={type["IdTipoDocumento"]}>{type["TipoDocumento"]}</option> )}
                                 </select>
