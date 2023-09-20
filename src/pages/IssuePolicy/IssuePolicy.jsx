@@ -51,7 +51,7 @@ function IssuePolicy() {
                 history("/to-emmit-policy", {state: `idTipoInteres=2&idProducto=${searchObject.idProducto}&idTipoBien=${data["idTipoBien"]}`})
             }}
             className='overflow-hidden border border-primary w-[300px] h-[300px] bg-primary/10 rounded-lg flex flex-col justify-center items-center cursor-pointer shadow-xl hover:shadow-sm transition'>
-                <img src={data["urlImage"] ?? ""} className="w-full h-full object-cover z-10"/>
+                <img src={`/images/${data["imagen"]}`} className="w-full h-full object-cover z-10"/>
                 <p className='text-primary font-semibold text-xl tracking-wider absolute'>{data["tipoBien"] ?? "-"}</p>
             </div>
         )

@@ -243,7 +243,17 @@ function QuoterRegister() {
         },
     ]
 
-    
+    function getDTPlans(){
+
+        let object = {...location.state}
+
+        apiProvider.getDTPlans(`?IdCompania=${object["idCompania"]}&TokenCorredor=${localStorage.getItem("token_api")}`).then((res)=>{
+            console.log(res.data)
+        }).catch((e)=>{
+            console.log(e)
+        })
+    }
+
     function getDataFromValue(value, type){
         setErrorStatus(false)
         setSuccessStatus(false)
@@ -360,13 +370,47 @@ function QuoterRegister() {
         const [wantsToUpdate, setWantsToUpdate] = useState(false)
         let isSelected = listOfBenefitsSelected.some((prv)=>( prv["idBeneficio"] === data["idBeneficio"] ))
 
+        async function deleteBenefit(){
+            let res = await apiProvider.updateBenefit({
+                IdBeneficio: data["idBeneficio"],
+                Descripcion: field,
+                Accion: "E"
+            })
+
+            if(res.status !== 200) console.log(res.data)
+
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}`).then((res)=>{
+                if(res.status === 200){
+                    setListOfBenefits(res.data)
+                }
+            })
+        }
+
+        async function saveBenefit(){
+            let res = await apiProvider.updateBenefit({
+                IdBeneficio: data["idBeneficio"],
+                Descripcion: field,
+                Accion: "A"
+            })
+
+            if(res.status !== 200) console.log(res.data)
+
+            setWantsToUpdate(false)
+
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}`).then((res)=>{
+                if(res.status === 200){
+                    setListOfBenefits(res.data)
+                }
+            })
+        }
+
         return(
             <div className={`benefits-component ${isSelected && "selected"}`}>
                 <div className="w-full flex justify-between items-center">
                     <p className="text-primary font-light">#{data["idBeneficio"]}</p>
                     <div className='w-fit flex justify-end items-center gap-2'>
                         <span 
-                        onClick={()=>{}}
+                        onClick={()=>{ deleteBenefit() }}
                         className='w-6 h-6 cursor-pointer rounded-md bg-red-200 text-red-500 flex justify-center items-center text-sm'>
                             <FiTrash/>
                         </span>
@@ -383,7 +427,7 @@ function QuoterRegister() {
                 <div className='w-full flex justify-start items-center gap-4 mt-5'>
                     <input type='text' className='form-control' defaultValue={field} disabled={!wantsToUpdate} onChange={(e)=>{ setField(e.target.value) }} />
                     <span 
-                    onClick={()=>{ setWantsToUpdate(!wantsToUpdate) }}
+                    onClick={()=>{ wantsToUpdate ? saveBenefit() : setWantsToUpdate(true) }}
                     className='cursor-pointer text-primary text-lg'>
                         { wantsToUpdate ? <FiSave/> : <FiEdit/>}
                     </span>
@@ -434,6 +478,7 @@ function QuoterRegister() {
     }
 
     function chargeAPI(){
+        getDTPlans()
         apiProvider.getLimitEndPoint("?idCobertura=1").then((res)=>{
             setListOfBodilyInjury(res.data)
         })
@@ -1020,10 +1065,13 @@ function QuoterRegister() {
                     </div>
                     <div className="my-4" ref={thirdRef}>
                         <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de Plan</p>
-                        <div className="w-1/3">
+                        <div className="w-1/2 flex justify-start items-center gap-5">
                             <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
                                 <option value="">{"Seleccionar"}</option>
                                 {listOfPlanTypes.map((type)=> <option value={type["Id"]}>{type["Descripcion"]}</option> )}
+                            </select>
+                            <select onChange={(e)=>{ console.log(e.target.value) }} className="form-control">
+                                <option value="">{"Planes aseguradora"}</option>
                             </select>
                         </div>
                         <TypePlanLabelsComponent/>
@@ -1073,7 +1121,7 @@ function QuoterRegister() {
                             {listOfBenefits.length > 0 ? 
                                 listOfBenefits.map((d, i)=><BenefitsDataComponent data={d}/>)
                             : 
-                                <div className="text-center flex justify-center align-middle h-10 w-full">
+                                <div className="text-center col-span-3 flex justify-center items-center h-10">
                                     <p className="font-light text-xl text-primary mt-6">No hay beneficios todavia</p>
                                 </div>
                             }

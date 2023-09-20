@@ -12,6 +12,7 @@ let getProductEndPoint = "api/Configuration/get_product?IdTipoInteres=2"
 let getPlanPropertyTypeEndPoint = "api/Companies/get_plan_property_type"
 let getPlanOpcionEndPoint = "api/Configuration/get_plan_opcion"
 let getPropertyTypeEndPoint = "api/Configuration/get_property_type?IdProducto="
+let getDTPlansEndpoint = "api/Companies/GetPlanesDT"
 let getStatusPlanEndPoint = "api/Configuration/get_status_plan"
 let getVigeniciasEndPoint = "api/Configuration/get_vigenicias"
 let getTipoAplicacionPlanEndPoint = "api/Configuration/get_tipoaplicacion_plan"
@@ -46,6 +47,7 @@ let addQuotaEndPoint = "api/Quotation/add_quota"
 let getLimitEndPoint = "api/Configuration/get_limit"
 let GetDatosIdentidadxIdentificacionEndPoint = "api/Configuration/Get_DatosIdentidadxIdentificacion"
 let GetDatosContratanteEndPoint = "api/Configuration/Get_DatosContratante"
+let updateBenefitEndPoint = "api/Configuration/Update_benefit"
 
 let token = localStorage.getItem('token');
 
@@ -241,6 +243,12 @@ class ApiProvider{
         return await axios.get(url, config)
     }
     
+    async getDTPlans(queryString){
+        let url = urlAPI + getDTPlansEndpoint + queryString
+
+        return await axios.get(url, config)
+    }
+
     async getPropertyTypeEndPoint(queryString){
         let url = urlAPI + getPropertyTypeEndPoint + queryString
 
@@ -271,6 +279,11 @@ class ApiProvider{
         return await axios.get(url, config)
     }
     
+    async updateBenefit(data){
+        let url = urlAPI + updateBenefitEndPoint
+        return await axios.post(url, data, config)
+    }
+
     async postCrearOrdenCR(data){
         let url = urlAPI + postCrearOrdenCREndPoint
         return await axios.post(url, data, config)
