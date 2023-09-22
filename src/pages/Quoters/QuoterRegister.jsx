@@ -59,6 +59,7 @@ function QuoterRegister() {
     const [listOfBenefitsSelected, setListOfBenefitsSelected] = useState([])
     const [listOfToppingsSelected, setListOfToppingsSelected] = useState([])
     const [listOfLimits, setListOfLimits] = useState([])
+    const [listOfPlansOfInsurence, setListOfPlansOfInsurence] = useState([])
 
     let listOfTypeOfToppings = [listOfBodilyInjury, listOfMedicalExpenses, listOfPropertyDamage]
 
@@ -248,7 +249,9 @@ function QuoterRegister() {
         let object = {...location.state}
 
         apiProvider.getDTPlans(`?IdCompania=${object["idCompania"]}&TokenCorredor=${localStorage.getItem("token_api")}`).then((res)=>{
-            console.log(res.data)
+            if(res.data.length > 0){
+                setListOfPlansOfInsurence(res.data)
+            }
         }).catch((e)=>{
             console.log(e)
         })
@@ -272,7 +275,7 @@ function QuoterRegister() {
             handleCalculateCIA(value)
         }
         if(type === "compania"){
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${value}`).then((res)=>{
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${value}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
                 }
@@ -379,7 +382,7 @@ function QuoterRegister() {
 
             if(res.status !== 200) console.log(res.data)
 
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}`).then((res)=>{
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
                 }
@@ -397,7 +400,7 @@ function QuoterRegister() {
 
             setWantsToUpdate(false)
 
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}`).then((res)=>{
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
                 }
@@ -738,7 +741,7 @@ function QuoterRegister() {
 
         setListOfBenefitsSelected(object["beneficio"])
 
-        apiProvider.getBeneficiosEndPoint(`?idCompania=${object["idCompania"]}`).then((res)=>{
+        apiProvider.getBeneficiosEndPoint(`?idCompania=${object["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
             if(res.status === 200){
                 setListOfBenefits(res.data)
             }
@@ -1065,14 +1068,15 @@ function QuoterRegister() {
                     </div>
                     <div className="my-4" ref={thirdRef}>
                         <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de Plan</p>
-                        <div className="w-1/2 flex justify-start items-center gap-5">
+                        <div className="w-1/2 grid grid-cols-2 justify-start items-center gap-5">
                             <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
                                 <option value="">{"Seleccionar"}</option>
                                 {listOfPlanTypes.map((type)=> <option value={type["Id"]}>{type["Descripcion"]}</option> )}
                             </select>
-                            <select onChange={(e)=>{ console.log(e.target.value) }} className="form-control">
+                            { listOfPlansOfInsurence.length > 0 && <select defaultValue={location.state["planAseguradora"]} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
                                 <option value="">{"Planes aseguradora"}</option>
-                            </select>
+                                {listOfPlansOfInsurence.map((type)=> <option value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - ${type['prima']} `}</option> )}
+                            </select>}
                         </div>
                         <TypePlanLabelsComponent/>
                         {listOfTypePlan.length > 0 
@@ -1146,7 +1150,7 @@ function QuoterRegister() {
         form_data.append("Json", JSON.stringify(object))
 
         apiProvider.addBenefitEndPoint(object).then((res)=>{
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}`).then((res)=>{
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
                 }
@@ -1243,6 +1247,7 @@ function QuoterRegister() {
           AplicaEndoso: "SI",
           CantidadLetras: 1,
           idEntidad: 1,
+          planAseguradora: formObject["planAseguradora"] ?? null,
           detalle: formatQuotesList().length > 0 ? formatQuotesList() : [],
           Beneficio: listOfBenefitsSelected.length > 0 ? listOfBenefitsSelected.map((b)=>({
             IdBeneficio: b["idBeneficio"],
@@ -1272,12 +1277,13 @@ function QuoterRegister() {
         let url = "https://emisorapi.azurewebsites.net/api/Configuration/add_plan"
 
         fetch(url, requestOptions)
-        .then((response)=>{
-            console.log(response.json())
+        .then(async(response)=>{
+            let data = await response.json()
             if(response.ok){
                 setErrorAlert(false)
                 setSuccessAlertMessage( location.state !== null ? "Plan actualizado exitosamente" : "Plan creado exitosamente")
                 setSuccessAlert(true)
+                console.log(data)
                 setTimeout(() => {
                     window.location.reload()
                 }, 2000);

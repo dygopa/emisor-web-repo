@@ -553,8 +553,8 @@ function ToEmmitPolicyRegister() {
                             <img src={`./images/logos/logo-${data.state["imagen"]}`} className='h-full box-border w-full object-contain' />
                         </div>
                         <div className="flex flex-col relative text-left justify-center items-left">
-                            <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
-                            <p className="font-semibold text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                            <p className="font-light text-base text-slate-500">{data.state["descripcion"]}</p>
+                            <p className="font-semibold text-base text-slate-900">Total del plan: <span className="text-xl">${data.state["totalPlan"]}</span></p>
                         </div>
                     </div>
                     <div onClick={()=>{
@@ -657,23 +657,16 @@ function ToEmmitPolicyRegister() {
                                 {fieldsClient.includes("idsexo") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre(s) <span className='text-primary font-bold'>*</span></p>
-                                <input value={formObject["names"]} placeholder="Ingrese los nombres" onChange={(e)=>{ setFormObject({...formObject, names: e.target.value}) }} type="text" className="form-control" />
-                                {fieldsClient.includes("idsexo") && <ErrorText/>}
+                                <p className="input-label">Estado Civil <span className='text-primary font-bold'>*</span></p>
+                                <select onChange={(e)=>{ setFormObject({...formObject, idestadocivil: e.target.value})  }} className="form-control">
+                                    <option value="">Seleccione el estado civil</option>
+                                    {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
+                                </select>
+                                {fieldsClient.includes("idestadocivil") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Apellido(s) <span className='text-primary font-bold'>*</span></p>
-                                <input value={formObject["lastNames"]} placeholder="Ingrese los apellidos" onChange={(e)=>{ setFormObject({...formObject, lastNames: e.target.value}) }} type="text" className="form-control" />
-                                {fieldsClient.includes("Apellidos") && <ErrorText/>}
-                            </div>}
-                            {(formObject["idsexo"] === "1" && formObject["typePersona"] !== "1") && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Apellido de Casada</p>
-                                <input value={formObject["marriedLastName"]} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, marriedLastName: e.target.value}) }} type="text" className="form-control" />
-                            </div>}
-                            {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Nombre Comercial <span className='text-primary font-bold'>*</span></p>
-                                <input value={formObject["NombreComercial"]} placeholder="Ingrese el nombre comercial" onChange={(e)=>{ setFormObject({...formObject, NombreComercial: e.target.value}) }} type="text" className="form-control" />
-                                {fieldsClientJuridic.includes("NombreComercial") && <ErrorText/>}
+                                <p className="input-label">Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
+                                <InputComponent customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Representante Legal <span className='text-primary font-bold'>*</span></p>
@@ -695,15 +688,30 @@ function ToEmmitPolicyRegister() {
                                 <input value={formObject["IdentificacionBeneficiario"]} placeholder="Ingrese la identificacion del beneficiario" onChange={(e)=>{ setFormObject({...formObject, IdentificacionBeneficiario: e.target.value}) }} type="text" className="form-control" />
                                 {fieldsClientJuridic.includes("IdentificacionBeneficiario") && <ErrorText/>}
                             </div>}
-                            {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
-                            </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Correo Electrónico <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["email"]} placeholder="Ingrese el correo electrónico" onChange={(e)=>{ setFormObject({...formObject, email: e.target.value}) }} type="email" className="form-control" />
                                 {fieldsClient.includes("email") && <ErrorText/>}
                             </div>
+                            {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className="input-label">Nombre(s) <span className='text-primary font-bold'>*</span></p>
+                                <input value={formObject["names"]} placeholder="Ingrese los nombres" onChange={(e)=>{ setFormObject({...formObject, names: e.target.value}) }} type="text" className="form-control" />
+                                {fieldsClient.includes("idsexo") && <ErrorText/>}
+                            </div>}
+                            {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className="input-label">Apellido(s) <span className='text-primary font-bold'>*</span></p>
+                                <input value={formObject["lastNames"]} placeholder="Ingrese los apellidos" onChange={(e)=>{ setFormObject({...formObject, lastNames: e.target.value}) }} type="text" className="form-control" />
+                                {fieldsClient.includes("Apellidos") && <ErrorText/>}
+                            </div>}
+                            {(formObject["idsexo"] === "1" && formObject["typePersona"] !== "1" && formObject["idestadocivil"] !== "1") && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className="input-label">Apellido de Casada</p>
+                                <input value={formObject["marriedLastName"]} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, marriedLastName: e.target.value}) }} type="text" className="form-control" />
+                            </div>}
+                            {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className="input-label">Nombre Comercial <span className='text-primary font-bold'>*</span></p>
+                                <input value={formObject["NombreComercial"]} placeholder="Ingrese el nombre comercial" onChange={(e)=>{ setFormObject({...formObject, NombreComercial: e.target.value}) }} type="text" className="form-control" />
+                                {fieldsClientJuridic.includes("NombreComercial") && <ErrorText/>}
+                            </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Número Telefónico <span className='text-primary font-bold'>*</span></p>
                                 <input value={formObject["cellphone"]} placeholder="Ingrese el número telefónico" onChange={(e)=>{ setFormObject({...formObject, cellphone: e.target.value}) }} type="phone" className="form-control" />
@@ -724,14 +732,6 @@ function ToEmmitPolicyRegister() {
                                     {listOfNationalitys.map((type)=> <option value={type["IdNacionalidad"]}>{type["Nacionalidad"]}</option> )}
                                 </select>
                                 {fieldsClient.includes("IdPais") && <ErrorText/>}
-                            </div>}
-                            {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Estado Civil <span className='text-primary font-bold'>*</span></p>
-                                <select onChange={(e)=>{ setFormObject({...formObject, idestadocivil: e.target.value})  }} className="form-control">
-                                    <option value="">Seleccione el estado civil</option>
-                                    {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
-                                </select>
-                                {fieldsClient.includes("idestadocivil") && <ErrorText/>}
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Profesión</p>
@@ -927,6 +927,18 @@ function ToEmmitPolicyRegister() {
                                 </select>
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className={"input-label"}>Estado Civil <span className='text-primary font-bold'>*</span></p>
+                                <select value={formObject.IdEsoCivilContratante} onChange={(e)=>{ setFormObject({...formObject, IdEsoCivilContratante: e.target.value})  }} className={"form-control"} >
+                                    <option value="">Seleccione el estado civil</option>
+                                    {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
+                                </select>
+                                {fieldsContractor.includes("IdEsoCivilContratante") && <ErrorText/>}
+                            </div>}
+                            {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                                <p className={"input-label"}>Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
+                                <InputComponent customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
+                            </div>}
+                            {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Nombre(s) <span className='text-primary font-bold'>*</span></p>
                                 <input placeholder="Ingrese los nombres" value={formObject.NombreContratante} onChange={(e)=>{ setFormObject({...formObject, NombreContratante: e.target.value}) }} type="text" className={"form-control"} />
                                 {fieldsContractor.includes("NombreContratante") && <ErrorText/>}
@@ -936,13 +948,9 @@ function ToEmmitPolicyRegister() {
                                 <input placeholder="Ingrese los apellidos" value={formObject.ApellidoContratante} onChange={(e)=>{ setFormObject({...formObject, ApellidoContratante: e.target.value}) }} type="text" className={"form-control"} />
                                 {fieldsContractor.includes("ApellidoContratante") && <ErrorText/>}
                             </div>}
-                            {formObject["IdSexoContratante"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
+                            {(formObject["IdSexoContratante"] === "1" && formObject["IdEsoCivilContratante"] !== "1") && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Apellido de Casada</p>
                                 <input value={formObject.ApellidoCasadaContratante} placeholder="Ingrese el apellido de casada" onChange={(e)=>{ setFormObject({...formObject, ApellidoCasadaContratante: e.target.value}) }} type="text" className={"form-control"} />
-                            </div>}
-                            {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
                             </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Correo Electrónico <span className='text-primary font-bold'>*</span></p>
@@ -982,14 +990,6 @@ function ToEmmitPolicyRegister() {
                                     <option value="">Seleccione la nacionalidad</option>
                                     {listOfNationalitys.map((type)=> <option value={type["IdNacionalidad"]}>{type["Nacionalidad"]}</option> )}
                                 </select>
-                            </div>}
-                            {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className={"input-label"}>Estado Civil <span className='text-primary font-bold'>*</span></p>
-                                <select value={formObject.IdEsoCivilContratante} onChange={(e)=>{ setFormObject({...formObject, IdEsoCivilContratante: e.target.value})  }} className={"form-control"} >
-                                    <option value="">Seleccione el estado civil</option>
-                                    {listOfCivilStatus.map((type)=> <option value={type["idEstadoCivil"]}>{type["estadoCivil"]}</option> )}
-                                </select>
-                                {fieldsContractor.includes("IdEsoCivilContratante") && <ErrorText/>}
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Profesión</p>

@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let localHostURL = "http://swfcalidad.eastus.cloudapp.azure.com/sf-cotizador-api/"
+let localHostURL = "https://emisorapi.azurewebsites.net/"
 let webDevURL = "https://emisorapi.azurewebsites.net/"
 let url = window.location.href
 let urlAPI = url.includes("http://127.0.0.1:5173/") 
