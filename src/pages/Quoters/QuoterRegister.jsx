@@ -1134,12 +1134,11 @@ function QuoterRegister() {
 
     function handleAddBenefit(){
 
-        let index = listOfBenefits.length + 1
-
         let object = {
             Imagen: "",
             Descripcion: benefitData.toString(),
             IdBeneficio: null,
+            IdCorredor: parseInt(localStorage.getItem("idCorredor")),
             IdCompania: parseInt(formObject["idAseguradora"])
         }
 

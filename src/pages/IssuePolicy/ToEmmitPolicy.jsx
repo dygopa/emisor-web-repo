@@ -100,7 +100,7 @@ function ToEmmitPolicy() {
                 <div className='w-full h-full flex flex-col justify-between items-center'>
                     <div className="w-full h-[17%] relative text-center flex justify-between items-center gap-1">
                         <span className='w-1/2 h-14 overflow-hidden'>
-                            <img className='w-full h-full object-contain' alt={data["descripcion"]} src={`./images/logos/logo-${data["imagen"]}`} />
+                            <img className='w-full h-full object-contain' alt={data["descripcion"]} src={`/images/logos/logo-${data["imagen"]}`} />
                         </span>
                         <div className="w-1/2 relative flex flex-col justify-center items-center">
                             <p className="text-primary text-[1.30rem] font-bold">${data["totalPlan"]}</p>

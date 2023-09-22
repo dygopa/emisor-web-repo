@@ -565,19 +565,19 @@ function ToEmmitPolicyRegister() {
             
             {/* Horizontal style bar */}
             {!toggledSidebar && <div className="flex justify-between relative items-center h-fit w-full overflow-x-auto">
-                <div className="w-fit flex justify-start items-center gap-3">
-                    <div onClick={()=>{ history("/to-emmit-policy") }} className="mr-10 cursor-pointer w-fit relative flex justify-start items-center gap-3">
+                <div className="w-fit flex justify-start items-center gap-4">
+                    <div onClick={()=>{ history("/to-emmit-policy") }} className="bg-white mr-5 rounded-full px-3 py-1 border shadow cursor-pointer w-fit relative flex justify-start items-center gap-3">
                         <span className="text-2xl text-primary">
                             <FiChevronLeft/>
                         </span>
                         <p className="text-slate-900 text-base font-medium">Regresar</p>
                     </div>
                     <div className="h-10 relative block">
-                        <img src={`./images/logos/logo-${data.state["imagen"]}`} className='h-full box-border w-full object-contain' />
+                        <img src={`/images/logos/logo-${data.state["imagen"]}`} className='h-full box-border w-full object-contain' />
                     </div>
                     <div className="flex flex-col relative text-left justify-center items-left">
-                        <p className="font-semibold text-lg text-slate-900">{data.state["descripcion"]}</p>
-                        <p className="font-semibold text-sm text-slate-500">Total del plan: ${data.state["totalPlan"]}</p>
+                        <p className="font-light text-base text-slate-500">{data.state["descripcion"]}</p>
+                        <p className="font-semibold text-base text-slate-900">Total del plan: <span className="text-xl">${data.state["totalPlan"]}</span></p>
                     </div>
                 </div>
                 <div onClick={()=>{
