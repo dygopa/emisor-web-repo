@@ -65,6 +65,7 @@ function ToEmmitPolicyRegister() {
     const [formObject, setFormObject] = useState({
         typePersona: "2",
         CantidadPasajeros: 5,
+        ValorVehiculo: 0,
         EstadoAuto: 2,
         cantidadReferencias: "1",
         IdPais: 14,
@@ -111,8 +112,6 @@ function ToEmmitPolicyRegister() {
         let files = [...e.target.files]
         var list = [...filesImg]
         
-        console.log(files)
-        
         Promise.all(files.map(async (file) => {
             list.push({
                 url: "",
@@ -121,7 +120,6 @@ function ToEmmitPolicyRegister() {
         }))
         setTimeout(() => {
             setFilesImg(list)
-            console.log(list)
             setLoadingFiles(false)
         }, files.length * 1000);
 
@@ -157,12 +155,6 @@ function ToEmmitPolicyRegister() {
             </div>
         )
     }
-
-    /**
-     * TODO: Una vez cambia el tipo de persona se deberian
-     * de limpiar todos los cambios dependiendo del tipo de persona
-     * incluido el PEP y todo lo relacionado el PEP
-     */
 
     function changeTypePersonContractor(prop){
         
@@ -362,7 +354,6 @@ function ToEmmitPolicyRegister() {
     function chargeTypeOfDocument(type){
         apiProvider.GetTipoDocumentoEndPoint("").then((res)=>{
             let list = [...res.data]
-            console.log(list)
             if(type === "2"){
                 list = list.filter(prv => prv["IdTipoDocumento"] !== 3)
                 setListOfTypeDocument(list)
@@ -464,7 +455,6 @@ function ToEmmitPolicyRegister() {
             list.push(year)
         }
 
-        console.log(list)
         setListOfYears(list)
         setLoadedYears(true)
     }
@@ -481,7 +471,7 @@ function ToEmmitPolicyRegister() {
                         <div className='text-base text-slate-900 font-light cursor-pointer' onClick={()=>{ setTermsPopup(false) }}>No acepto</div>
                         <div onClick={()=>{
                             let object = handleValidationFunction()
-                            history("/validity-policy", {state: [object, filesImg]})
+                            history("/validity-policy", {state: [object, filesImg, data.state]})
                         }} className='btn btn-primary'>Acepto</div>
                     </div>
                 </div>

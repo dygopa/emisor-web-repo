@@ -44,6 +44,14 @@ function Quoters() {
             type: "select"
         },
         {
+            label: "Descripción",
+            value: "descripcion",
+            placeholder: "Escriba la descripcion del producto",
+            typeOfInput: "text",
+            listOfInput: [],
+            type: "input"
+        },
+        {
             label: "Aseguradora",
             value: "idCompania",
             placeholder: "Escriba la aseguradora",
@@ -118,9 +126,7 @@ function Quoters() {
         }
         
         concacQueryString = "?" + listOfString.join("&")
-        console.log(concacQueryString)
         apiProvider.getPlanEndPoint(concacQueryString).then((res)=>{
-            console.log(res.data)
             setListOfData([...res.data].sort((a, b) => b["idPlan"] - a["idPlan"] ))
             setLoadingData(false)
         }).catch((e)=>{

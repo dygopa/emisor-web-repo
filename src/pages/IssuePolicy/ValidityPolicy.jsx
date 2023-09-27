@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import apiProvider from '../../services/apiProvider'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import DatePicker from "react-datepicker";
+import {FiChevronLeft} from "react-icons/fi";
 import moment from 'moment'
 import { es } from 'date-fns/locale';
 import { InputComponent } from '../../components/DateInput';
@@ -10,6 +11,7 @@ function ValidityPolicy() {
 
     let minDate = moment().toDate()
     let data = useLocation()
+    let history = useNavigate()
 
     const [maxDate, setMaxDate] = useState("-")
     const [sinceDate, setSinceDate] = useState("")
@@ -37,10 +39,10 @@ function ValidityPolicy() {
     const [paymentObject, setPaymentObject] = useState({
         typePayment: "",
         //total: data.state[0]["totalplan"],
-        total: 34.8,
+        total: data.state ? data.state[0]["totalplan"] : 0,
         minimum: 0,
         //paymentAccepted: data.state[0]["totalplan"]
-        paymentAccepted: 34.8
+        paymentAccepted: data.state ? data.state[0]["totalplan"] : 0
     })
 
     const [policy, setPolicy] = useState({})
@@ -81,8 +83,28 @@ function ValidityPolicy() {
             {validatingPolicy && <div className='fixed top-0 left-0 bg-transparent z-50 w-full h-full'></div>}
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
-            { !emmitedPolicy ? <div className="bg-white w-1/2 h-full p-8 block relative">
-                <p className='mb-2 title-section text-slate-900'>Inicio de vigencia de la poliza</p>
+            { !emmitedPolicy ? 
+                <div className="bg-white w-1/2 h-full p-8 block relative">
+                
+                <div className="w-fit flex justify-start items-center gap-3 mb-3">
+                    <div 
+                    onClick={()=>{ history("/to-emmit-policy-register", {state: data.state[2]}) }}
+                    className="mr-3 cursor-pointer w-fit flex justify-start items-center gap-3">
+                        <span className="text-2xl text-primary">
+                            <FiChevronLeft/>
+                        </span>
+                        <p className="text-slate-900 text-base font-medium">Regresar</p>
+                    </div>
+                    <div className="h-10 relative block">
+                        <img src={`./images/logos/logo-${data.state[2]["imagen"]}`} className='h-full box-border w-full object-contain' />
+                    </div>
+                    <div className="flex flex-col relative text-left justify-center items-left">
+                        <p className="font-light text-base text-slate-500">{data.state[2]["descripcion"]}</p>
+                        <p className="font-semibold text-base text-slate-900">Total del Plan: <span className="text-xl">${data.state[2]["totalPlan"]}</span></p>
+                    </div>
+                </div>
+
+                <p className='mb-2 title-section text-slate-900'>Fecha de Vigencia de la Póliza</p>
                 <div className="w-full flex mb-4">
                     <div className="mb-3 mr-3 w-1/2">
                         <p className="input-label">Desde</p>
@@ -93,9 +115,9 @@ function ValidityPolicy() {
                         <div className="bg-slate-200 cursor-default form-control">{dateObject.toShow ?? "-"}</div>
                     </div>
                 </div>
-                <p className='mb-3 title-section text-slate-900'>Pago de la poliza</p>
+                <p className='mb-3 title-section text-slate-900'>Pago de la Póliza</p>
                 <div className="mb-3 w-full">
-                    <p className="input-label">Forma de pago</p>
+                    <p className="input-label">Forma de Pago</p>
                     <select value={paymentObject.typePayment} onChange={(e)=>{ setPaymentObject({...paymentObject, typePayment: e.target.value}) }} type="number" className="form-control">
                         <option value="">Seleccionar</option>
                         <option value="1">Efectivo</option>
@@ -105,15 +127,15 @@ function ValidityPolicy() {
                 <div className="w-full flex mb-12">
                     <div className="mb-3 mr-3 w-1/3">
                         <p className="input-label">Total</p>
-                        <input value={paymentObject.total} onChange={(e)=>{ setPaymentObject({...paymentObject, total: e.target.value}) }} type="number" className="form-control" />
+                        <input disabled={true} value={paymentObject.total} onChange={(e)=>{ setPaymentObject({...paymentObject, total: e.target.value}) }} type="number" className="form-control" />
                     </div>
                     <div className="mb-3 mr-3 w-1/3">
                         <p className="input-label-disabled">Minimo</p>
                         <input disabled={true} value={paymentObject.minimum} onChange={(e)=>{ setPaymentObject({...paymentObject, minimum: e.target.value}) }} type="number" className="form-control-disabled" />
                     </div>
                     <div className="mb-3 mr-3 w-1/3">
-                        <p className={`input-label ${errorInNumber && "error"}`}>Pago aceptado</p>
-                        <input placeholder='Pago aceptado' min={1} max={paymentObject.total.toString()} value={paymentObject.paymentAccepted} onChange={(e)=>{ setPaymentObject({...paymentObject, paymentAccepted: +e.target.value}) }} type="number" className={`form-control ${errorInNumber && "error"}`} />
+                        <p className={`input-label ${errorInNumber && "error"}`}>Pago Aceptado</p>
+                        <input disabled={true} placeholder='Pago Aceptado' min={1} max={paymentObject.total.toString()} value={paymentObject.paymentAccepted} onChange={(e)=>{ setPaymentObject({...paymentObject, paymentAccepted: +e.target.value}) }} type="number" className={`form-control ${errorInNumber && "error"}`} />
                         {errorInNumber && <p className="text-xs text-red-600 mt-2">Debe ser menor o igual al total</p>}
                     </div>
                 </div>
@@ -122,7 +144,7 @@ function ValidityPolicy() {
                 </div>
             </div> :
             <div className="bg-white w-1/2 h-full p-8 block relative">
-                <p className='mb-2 title-section text-slate-900'>Poliza emitida</p>
+                <p className='mb-2 title-section text-slate-900'>Poliza Emitida</p>
                 <div className="mb-5 w-full">
                     <p className="font-bold text-sm text-primary/40 mb">Asegurado</p>
                     <p className="font-light text-2xl text-secondary">{policy?.asegurado}</p>
@@ -132,18 +154,18 @@ function ValidityPolicy() {
                     <p className="font-light text-2xl text-secondary">{policy?.marca + " - " + policy?.modelo}</p>
                 </div>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-primary/40 mb">Numero de poliza</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Numero de Póliza</p>
                     <p className="font-light text-2xl text-secondary">{policy?.poliza}</p>
                 </div>
                 <div className="mb-5 w-full">
-                    <p className="font-bold text-sm text-primary/40 mb">Vigencia desde</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Vigencia Desde</p>
                     <p className="font-light text-2xl text-secondary">{policy?.fechaDesde}</p>
                 </div>
                 <div className="mb-10 w-full">
-                    <p className="font-bold text-sm text-primary/40 mb">Vigencia hasta</p>
+                    <p className="font-bold text-sm text-primary/40 mb">Vigencia Hasta</p>
                     <p className="font-light text-2xl text-secondary">{policy?.fechaHasta}</p>
                 </div>
-                <div onClick={()=>{ !errorInNumber && controllPrint() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Imprimir poliza</div>
+                <div onClick={()=>{ !errorInNumber && controllPrint() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Imprimir Póliza</div>
             </div>}
         </div>
     )
@@ -166,10 +188,6 @@ function ValidityPolicy() {
         setValidatingPolicy(true)
         
         let object = handleValidationFunction()
-        console.log("------JSON Enviado por el emisor------")
-        console.log(object)
-        console.log("------JSON Enviado por el emisor------")
-        
         
         const form_data = new FormData()
         form_data.append("Data", JSON.stringify(object))
@@ -180,14 +198,12 @@ function ValidityPolicy() {
         
         apiProvider.EmisorInternoEndPoint(form_data).then((res)=>{
             if(res.data){
-                console.log(res.data)
                 manageShowPolice(res.data)
             }
         }).catch(function (e) {
             setSuccessStatus(false)
             setErrorStatus(true)
             setValidatingPolicy(false)
-            console.log("Error")
             if (e.response) {
                 let status = e.response.status
                 console.log(e.response)
@@ -202,7 +218,6 @@ function ValidityPolicy() {
 
     function manageShowPolice(id){
         apiProvider.getPolizaEndPoint(`?IdPoliza=${id}`).then((res)=>{
-            console.log(res.data[0])
 
             setEmmitedPolicy(true)
             setValidatingPolicy(false)

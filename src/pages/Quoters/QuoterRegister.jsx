@@ -3,6 +3,8 @@ import apiProvider from '../../services/apiProvider'
 import { useLocation } from 'react-router-dom'
 import { FiCheck, FiColumns, FiEdit, FiSave, FiTrash } from 'react-icons/fi';
 import { RiLayoutRowLine } from 'react-icons/ri';
+import validators from '../../services/validators';
+
 function QuoterRegister() {
 
     let location = useLocation()
@@ -35,7 +37,18 @@ function QuoterRegister() {
     const [errorAlertMessage, setErrorAlertMessage] = useState("")
     const [successAlertMessage, setSuccessAlertMessage] = useState("")
 
-    const [formObject, setFormObject] = useState({})
+    const [formObject, setFormObject] = useState({
+        description: "",
+        idAseguradora: "",
+        productId: "",
+        idPlan: "",
+        tipoBien: "",
+        status: "",
+        lesionesCorporales: "",
+        danosPropiedad: "",
+        gastosMedico: "",
+        idTipoAplicacion: ""
+    })
     const [pricingData, setPricingData] = useState({
         subTotal: null,
         impuesto: null,
@@ -60,6 +73,7 @@ function QuoterRegister() {
     const [listOfToppingsSelected, setListOfToppingsSelected] = useState([])
     const [listOfLimits, setListOfLimits] = useState([])
     const [listOfPlansOfInsurence, setListOfPlansOfInsurence] = useState([])
+    const [listOfRequired, setListOfRequired] = useState([])
 
     let listOfTypeOfToppings = [listOfBodilyInjury, listOfMedicalExpenses, listOfPropertyDamage]
 
@@ -248,7 +262,7 @@ function QuoterRegister() {
 
         let object = {...location.state}
 
-        apiProvider.getDTPlans(`?IdCompania=${object["idCompania"]}&TokenCorredor=${localStorage.getItem("token_api")}`).then((res)=>{
+        apiProvider.getDTPlans(`?IdCompania=${object["idCompania"] ?? formObject["idAseguradora"]}&TokenCorredor=${localStorage.getItem("token_api")}`).then((res)=>{
             if(res.data.length > 0){
                 setListOfPlansOfInsurence(res.data)
             }
@@ -385,6 +399,11 @@ function QuoterRegister() {
             apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
+                    setSuccessAlert(true)
+                    setSuccessAlertMessage("Beneficio eliminado exitosamente")
+                    setTimeout(() => {
+                        setSuccessAlert(false)
+                    }, 2000);
                 }
             })
         }
@@ -403,6 +422,11 @@ function QuoterRegister() {
             apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
+                    setSuccessAlert(true)
+                    setSuccessAlertMessage("Beneficio actualizado exitosamente")
+                    setTimeout(() => {
+                        setSuccessAlert(false)
+                    }, 2000);
                 }
             })
         }
@@ -471,6 +495,12 @@ function QuoterRegister() {
                 <p className={`font-semibold`}>{type === "1" ? "Exitos" : "Error"}</p>
                 <p className={`font-light`}>{msg !== "" ? msg : "Mensaje de prueba para creacion de plan"}</p>
             </div>
+        )
+    }
+
+    const ErrorText = () => {
+        return(
+            <p className='text-[0.8rem] mt-2 text-red-700'>Campo requerido (*)</p>
         )
     }
 
@@ -572,7 +602,6 @@ function QuoterRegister() {
 
             setDisabledSubTotal([...res.data].length > 0 ? true : false)
             setListOfTypePlan(res.data)
-            console.log(res.data)
         }).catch((e)=>{
             console.log(e)
         })
@@ -659,7 +688,6 @@ function QuoterRegister() {
         apiProvider.getCotizacionEndPoint(query).then((res)=>{
             let list = [...res.data]
             if(list.length > 0){
-                console.log(list)
                 setDisabledSubTotal(true)
                 setListOfTypePlan(list)
                 setSuccessStatus(true)
@@ -793,7 +821,7 @@ function QuoterRegister() {
         
         
         listMainToppingList.forEach((prv, i)=>{
-            let findedLimitInSelected = listToFormat.find((selectedLimit) => (selectedLimit["cobertura"] === prv["cobertura"]))
+            let findedLimitInSelected = listToFormat.find((selectedLimit) => (selectedLimit["idCobertura"] === prv["idCobertura"]))
             if(findedLimitInSelected){
                 listMainToppingList[i] = {
                     ...listMainToppingList[i],
@@ -821,11 +849,37 @@ function QuoterRegister() {
         })
     }
 
+    useMemo(()=> {
+        if(formObject["idAseguradora"]){
+            getDTPlans()
+            setPricingData({
+                subTotal: 0.0,
+                impuesto: 0.0,
+                totalPlan: 0.0,
+                montoDescuento: 0.0
+            })
+            setFormObject({
+                ...formObject,
+                description: "",
+                productId: "",
+                idPlan: "",
+                tipoBien: "",
+                status: "",
+                lesionesCorporales: "",
+                danosPropiedad: "",
+                gastosMedico: "",
+                idTipoAplicacion: ""
+            })
+        }
+    },[formObject["idAseguradora"]])
+
     useEffect(() => {
         if(location.state !== null){
             formatPlanToUpdate()
         }
     }, [updatedPlan])
+
+
 
     useEffect(() => {
         changeBackground()
@@ -888,7 +942,6 @@ function QuoterRegister() {
                     <SidebarLinkComponent ownRef={secondRef} title={"Cotizar"} number={"2"} />
                     <SidebarLinkComponent ownRef={thirdRef} title={"Tipo de Plan"} number={"3"} />
                     <SidebarLinkComponent ownRef={fourthRef} title={"Beneficios"} number={"4"} />
-                    {/* <div onClick={()=>{}} className="btn btn-primary mb-3">Buscar</div> */}
                     <div onClick={()=>{ 
                         manageQuoterRegister()
                     }} className="transition cursor-pointer w-auto px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Guardar</div>
@@ -899,76 +952,103 @@ function QuoterRegister() {
                         <p className={`title-section text-slate-900 px-3 mb-3`}>Definición de Planes por CIA</p>
                         <div className="flex flex-wrap content-start">
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Descripcion</p>
-                                <input value={formObject.description} placeholder="Ingrese la descripcion" onChange={(e)=>{setFormObject({...formObject, description: e.target.value}) }} type="text" className="form-control" />
-                            </div>
-                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Aseguradora</p>
-                                <select value={formObject.idAseguradora} onChange={(e)=>{setFormObject({...formObject, idAseguradora: e.target.value}), getDataFromValue(e.target.value, "compania") }} className="form-control">
+                                <p className="input-label">Aseguradora (*)</p>
+                                <select disabled={ location.state !== null } value={formObject.idAseguradora} onChange={(e)=>{
+                                    setShowPricings(false)
+                                    setFormObject({...formObject, idAseguradora: e.target.value}), 
+                                    getDataFromValue(e.target.value, "compania") 
+                                    setListOfRequired([])
+                                }} 
+                                className="form-control">
                                     <option value="">Ingrese el nombre de la aseguradora</option>
                                     {listOfInsurances.map((type)=> <option 
                                     value={type["idCompania"]}>{type["nombreCompleto"]}</option> )}
                                 </select>
+                                {listOfRequired.includes("idAseguradora") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Productos</p>
-                                <select value={formObject.productId} onChange={(e)=>{setFormObject({...formObject, productId: e.target.value}), getDataFromValue(e.target.value, "tipo") }} className="form-control">
+                                <p className="input-label">Descripción (*)</p>
+                                <input value={formObject.description} placeholder="Ingrese la descripción" onChange={(e)=>{setFormObject({...formObject, description: e.target.value}) }} type="text" 
+                                className="form-control" />
+                                {listOfRequired.includes("description") && <ErrorText/>}
+                            </div>
+                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                                <p className="input-label">Productos (*)</p>
+                                <select value={formObject.productId} onChange={(e)=>{setFormObject({...formObject, productId: e.target.value}), getDataFromValue(e.target.value, "tipo") }} 
+                                className="form-control">
                                     <option value="">Selecciona los productos</option>
                                     {listOfProducts.map((type)=> <option 
                                     value={type["idProducto"]}>{type["titulo"]}</option> )}
                                 </select>
+                                {listOfRequired.includes("productId") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Plan</p>
-                                <select value={formObject.idPlan} onChange={(e)=>{ setFormObject({...formObject, idPlan: e.target.value}) }} className="form-control">
+                                <p className="input-label">Plan (*)</p>
+                                <select value={formObject.idPlan} onChange={(e)=>{ setFormObject({...formObject, idPlan: e.target.value}) }} 
+                                className="form-control">
                                     <option value="">Selecciona el plan</option>
                                     {listOfPlanOptions.map((type)=> <option 
                                     value={type["idOpcionPlan"]}>{type["plan"]}</option> )}
                                 </select>
+                                {listOfRequired.includes("idPlan") && <ErrorText/>}
                             </div>
-                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Tipo</p>
-                                <select value={formObject.tipoBien} onChange={(e)=>{ setFormObject({...formObject, tipoBien: e.target.value}) }} className="form-control">
+                            {showPricings && <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                                <p className="input-label">Tipo (*)</p>
+                                <select value={formObject.tipoBien} onChange={(e)=>{ setFormObject({...formObject, tipoBien: e.target.value}) }} 
+                                className="form-control">
                                     <option value="">Selecciona el tipo</option>
                                     {listOfPropertyTypes.map((type)=> <option 
                                     value={type["idTipoBien"]}>{type["tipoBien"]}</option> )}
                                 </select>
-                            </div>
+                                {listOfRequired.includes("tipoBien") && <ErrorText/>}
+                            </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Estatus</p>
-                                <select value={formObject.status} onChange={(e)=>{ setFormObject({...formObject, status: e.target.value}) }} className="form-control">
+                                <p className="input-label">Estatus (*)</p>
+                                <select value={formObject.status} onChange={(e)=>{ setFormObject({...formObject, status: e.target.value}) }} 
+                               className="form-control">
                                     <option value="">Selecciona el status</option>
                                     {listOfStatusPlan.map((type)=> <option 
                                     value={type["idEstatus"]}>{type["estatus"]}</option> )}
                                 </select>
+                                {listOfRequired.includes("status") && <ErrorText/>}
                             </div>
-                            {showPricings && <><div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Lesiones Corporales</p>
-                                <select value={formObject.lesionesCorporales} onChange={(e)=>{ setFormObject({...formObject, lesionesCorporales: e.target.value}) }} className="form-control">
-                                    <option value="">Selecciona el limite</option>
-                                    {listOfBodilyInjury.map((type)=> <option 
-                                    value={type["idLimite"]}>{type["descripcion"]}</option> )}
-                                </select>
-                            </div>
-                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Daños a la propiedad</p>
-                                <select value={formObject.danosPropiedad} onChange={(e)=>{ setFormObject({...formObject, danosPropiedad: e.target.value}) }} className="form-control">
-                                    <option value="">Selecciona el status</option>
-                                    {listOfPropertyDamage.map((type)=> <option 
-                                    value={type["idLimite"]}>{type["descripcion"]}</option> )}
-                                </select>
-                            </div>
-                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
-                                <p className="input-label">Gastos Medicos</p>
-                                <select value={formObject.gastosMedico} onChange={(e)=>{ setFormObject({...formObject, gastosMedico: e.target.value}) }} className="form-control">
-                                    <option value="">Selecciona el status</option>
-                                    {listOfMedicalExpenses.map((type)=> <option 
-                                    value={type["idLimite"]}>{type["descripcion"]}</option> )}
-                                </select>
-                            </div></>}
+                            {showPricings && <>
+                                <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                                    <p className="input-label">Lesiones Corporales (*)</p>
+                                    <select value={formObject.lesionesCorporales} onChange={(e)=>{ setFormObject({...formObject, lesionesCorporales: e.target.value}) }} 
+                                    className="form-control">
+                                        <option value="">Selecciona el limite</option>
+                                        {listOfBodilyInjury.map((type)=> <option 
+                                        value={type["idLimite"]}>{type["descripcion"]}</option> )}
+                                    </select>
+                                    {listOfRequired.includes("lesionesCorporales") && <ErrorText/>}
+                                </div>
+                                {listOfRequired.includes("NombreComercialContratante") && <ErrorText/>}
+                                <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                                    <p className="input-label">Daños a la propiedad (*)</p>
+                                    <select value={formObject.danosPropiedad} onChange={(e)=>{ setFormObject({...formObject, danosPropiedad: e.target.value}) }} 
+                                    className="form-control">
+                                        <option value="">Selecciona el status</option>
+                                        {listOfPropertyDamage.map((type)=> <option 
+                                        value={type["idLimite"]}>{type["descripcion"]}</option> )}
+                                    </select>
+                                    {listOfRequired.includes("danosPropiedad") && <ErrorText/>}
+                                </div>
+                                <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                                    <p className="input-label">Gastos Medicos (*)</p>
+                                    <select value={formObject.gastosMedico} onChange={(e)=>{ setFormObject({...formObject, gastosMedico: e.target.value}) }} 
+                                    className="form-control">
+                                        <option value="">Selecciona el status</option>
+                                        {listOfMedicalExpenses.map((type)=> <option 
+                                        value={type["idLimite"]}>{type["descripcion"]}</option> )}
+                                    </select>
+                                    {listOfRequired.includes("gastosMedico") && <ErrorText/>}
+                                </div>
+                            </>}
                             { endosoApplies && <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
-                                <p className="input-label">Aplica endoso</p>
-                                <select onChange={(e)=>{setFormObject({...formObject, aplicaEndoso: e.target.value})}} className="form-control">
+                                <p className="input-label">Aplica endoso (*)</p>
+                                <select onChange={(e)=>{setFormObject({...formObject, aplicaEndoso: e.target.value})}} 
+                                className="form-control">
                                     <option value="">Selecciona si aplica el endoso</option>
                                     <option value="SI">Si</option>
                                     <option value="NO">No</option>
@@ -1068,15 +1148,21 @@ function QuoterRegister() {
                     </div>
                     <div className="my-4" ref={thirdRef}>
                         <p className='w-1/3 title-section text-slate-900 px-3 mb-3'>Tipo de Plan</p>
-                        <div className="w-1/2 grid grid-cols-2 justify-start items-center gap-5">
-                            <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
-                                <option value="">{"Seleccionar"}</option>
-                                {listOfPlanTypes.map((type)=> <option value={type["Id"]}>{type["Descripcion"]}</option> )}
-                            </select>
-                            { listOfPlansOfInsurence.length > 0 && <select defaultValue={location.state["planAseguradora"]} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
-                                <option value="">{"Planes aseguradora"}</option>
-                                {listOfPlansOfInsurence.map((type)=> <option value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - ${type['prima']} `}</option> )}
-                            </select>}
+                        <div className="w-1/2 grid grid-cols-2 justify-start items-start gap-5">
+                            <div className='flex flex-col justify-start items-start'>
+                                <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
+                                    <option value="">{"Seleccionar"}</option>
+                                    {listOfPlanTypes.map((type)=> <option value={type["Id"]}>{type["Descripcion"]}</option> )}
+                                </select>
+                                {listOfRequired.includes("idTipoAplicacion") && <ErrorText/>}
+                            </div>
+                            <div className='flex flex-col justify-start items-start'>
+                                <select defaultValue={location.state ? location.state["planAseguradora"] : ""} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
+                                    <option value="">{"Planes aseguradora"}</option>
+                                    {listOfPlansOfInsurence.map((type)=> <option value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - $${type['prima']} `}</option> )}
+                                </select>
+                                {(errorAlertMessage === "Se debe seleccionar un plan de la aseguradora" && (!formObject["planAseguradora"] || formObject["planAseguradora"] === "")) && <ErrorText/>}
+                            </div>
                         </div>
                         <TypePlanLabelsComponent/>
                         {listOfTypePlan.length > 0 
@@ -1119,7 +1205,9 @@ function QuoterRegister() {
                         <p className={`w-1/3 title-section text-slate-900 px-3 mb-3`}>Beneficios</p>
                         <div className="w-1/2 flex justify-between">
                             <input placeholder='Agregar nuevo beneficio' value={benefitData} onChange={(e)=>{ setBenefitData(e.target.value) }} className="form-control w-[48%!important]"/>
-                            <div onClick={()=>{ handleAddBenefit() }} className="btn btn-primary w-[48%!important]">Agregar beneficio</div>
+                            <button disabled={formObject.idAseguradora === "" || benefitData === ""} onClick={()=>{ formObject.idAseguradora !== "" && handleAddBenefit() }} className={`
+                                btn btn-primary w-[48%!important]
+                            `}>Agregar beneficio</button>
                         </div>
                         <div className="w-full grid grid-cols-3 gap-5 justify-start content-start">
                             {listOfBenefits.length > 0 ? 
@@ -1153,6 +1241,11 @@ function QuoterRegister() {
             apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
+                    setSuccessAlert(true)
+                    setSuccessAlertMessage("Beneficio agregado exitosamente")
+                    setTimeout(() => {
+                        setSuccessAlert(false)
+                    }, 2000);
                 }
             })
             setBenefitData("")
@@ -1161,6 +1254,7 @@ function QuoterRegister() {
     }
 
     function formatQuotesList(){
+
         let idL = showPricings ? "Limite" : "idLimite"
         let id = "idCobertura"
         let cobertura = "cobertura"
@@ -1183,21 +1277,44 @@ function QuoterRegister() {
 
         }
 
-        let list = selectedList.map((prv, i)=>({
-            IdPlan: null,
-            IdPlanLimite: null,
-            SumaAseguradaDesde: null,
-            SumaAseguradaHasta: null,
-            Deducible: null,
-            idPlanLimite: null,
-            IdLimite: parseInt(prv["idLimite"]),
-            Limite: findLimitInList(prv["idLimite"]),
-            Cobertura: prv[cobertura],
-            Orden: i + 1,
-            IdCobertura: parseInt(prv[id]),
-            Prima: handleGetPriceInList(prv["prima"], prv["PrimaCobertura"]),
-            PrimaCobertura: handleGetPriceInList(prv["prima"], prv["PrimaCobertura"]),
-        }))
+        let list;
+
+        if(showPricings && listOfTypePlan.length > 0){
+            list = listOfTypePlan.map((prv, i)=>({
+                IdPlan: null,
+                IdPlanLimite: null,
+                SumaAseguradaDesde: null,
+                SumaAseguradaHasta: null,
+                Deducible: null,
+                idPlanLimite: null,
+                IdLimite: findIdLimitInList(prv["Limite"]),
+                Limite: prv["Limite"],
+                Cobertura: prv["Cobertura"],
+                Orden: i + 1,
+                IdCobertura: parseInt(prv["IdCobertura"]),
+                Prima: parseInt(prv["PrimaCobertura"]),
+                PrimaCobertura: parseInt(prv["PrimaCobertura"]),
+            }))
+        }else{
+            list = selectedList.map((prv, i)=>({
+                IdPlan: null,
+                IdPlanLimite: null,
+                SumaAseguradaDesde: null,
+                SumaAseguradaHasta: null,
+                Deducible: null,
+                idPlanLimite: null,
+                IdLimite: parseInt(prv["idLimite"]),
+                Limite: findLimitInList(prv["idLimite"]),
+                Cobertura: prv[cobertura],
+                Orden: i + 1,
+                IdCobertura: parseInt(prv[id]),
+                Prima: handleGetPriceInList(prv["prima"], prv["PrimaCobertura"]),
+                PrimaCobertura: handleGetPriceInList(prv["prima"], prv["PrimaCobertura"]),
+            }))
+        }
+        
+        console.log(list)
+
         return list
     }
 
@@ -1260,13 +1377,85 @@ function QuoterRegister() {
         return postObject
     }
 
+    
     function manageQuoterRegister(){
+        
+        let listValidation = [
+            "description",
+            "idAseguradora",
+            "productId",
+            "idPlan",
+            "status",
+            "idTipoPlan",
+            "idTipoAplicacion"
+        ]
+
+        let listValidationWithPricing = [
+            "description",
+            "idAseguradora",
+            "productId",
+            "idPlan",
+            "status",
+            "tipoBien",
+            "lesionesCorporales",
+            "danosPropiedad",
+            "gastosMedico",
+            "idTipoPlan",
+            "idTipoAplicacion"
+        ]
+        
+        let validateList = validators.validateObjectWithList((showPricings ? listValidationWithPricing : listValidation), formObject)
+
+        setListOfRequired(validateList)
+
+        if( validateList.length > 0 ) return;
+
+        if(showPricings && pricingData["totalPlan"] === 0){
+            setErrorAlert(true)
+            setErrorAlertMessage("El precio total debe ser mayor a cero")
+            setTimeout(() => {
+                setErrorAlert(false)
+            }, 2000);
+            return;
+        }
+
+        if(!showPricings && listOfToppingsSelected.length === 0){
+            setErrorAlert(true)
+            setErrorAlertMessage("Se debe seleccionar al menos una cobertura")
+            setTimeout(() => {
+                setErrorAlert(false)
+            }, 2000);
+            return;
+        }
+
+        if(listOfPlansOfInsurence.length > 0 && (!formObject["planAseguradora"] || formObject["planAseguradora"] === "")){
+            setErrorAlert(true)
+            setErrorAlertMessage("Se debe seleccionar un plan de la aseguradora")
+            setTimeout(() => {
+                setErrorAlert(false)
+            }, 2000);
+            return;
+        }
+
+        if(listOfPlansOfInsurence.length > 0){
+            let findedPlanInsurencePrice = listOfPlansOfInsurence.find(elem => elem["codigo_plan"] === formObject["planAseguradora"])
+    
+            if(parseInt(findedPlanInsurencePrice["prima"]) !== parseInt(pricingData["totalPlan"])){
+                setErrorAlert(true)
+                setErrorAlertMessage("La prima total debe ser igual a la prima del plan")
+                setTimeout(() => {
+                    setErrorAlert(false)
+                }, 4000);
+                return;
+            }
+        }
+
+
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify(handleValidationFunction());
-        console.log(formatQuotesList())
         var requestOptions = {
             method: 'POST',
             headers: myHeaders,
@@ -1283,10 +1472,9 @@ function QuoterRegister() {
                 setErrorAlert(false)
                 setSuccessAlertMessage( location.state !== null ? "Plan actualizado exitosamente" : "Plan creado exitosamente")
                 setSuccessAlert(true)
-                console.log(data)
-                setTimeout(() => {
-                    window.location.reload()
-                }, 2000);
+                //setTimeout(() => {
+                //    window.location.reload()
+                //}, 2000);
             }else{
                 setSuccessAlert(false)
                 setErrorAlertMessage(location.state !== null  ? "Ha ocurrido un problema con la actualizacion" : "Ha ocurrido un problema con la creacion")

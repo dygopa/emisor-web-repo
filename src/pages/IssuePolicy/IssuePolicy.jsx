@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import apiProvider from '../../services/apiProvider'
 import { useNavigate } from 'react-router-dom'
+import { RiCarFill, RiCaravanFill, RiMotorbikeFill, RiTruckFill } from 'react-icons/ri'
 
 function IssuePolicy() {
 
@@ -50,9 +51,13 @@ function IssuePolicy() {
             <div onClick={()=>{
                 history("/to-emmit-policy", {state: `idTipoInteres=2&idProducto=${searchObject.idProducto}&idTipoBien=${data["idTipoBien"]}`})
             }}
-            className='overflow-hidden border border-primary w-[300px] h-[300px] bg-primary/10 rounded-lg flex flex-col justify-center items-center cursor-pointer shadow-xl hover:shadow-sm transition'>
-                <img src={`/images/${data["imagen"]}`} className="w-full h-full object-cover z-10"/>
-                <p className='text-primary font-semibold text-xl tracking-wider absolute'>{data["tipoBien"] ?? "-"}</p>
+            className='overflow-hidden border border-primary w-[300px] h-[300px] bg-white rounded-lg flex flex-col gap-3 justify-center items-center cursor-pointer shadow-xl hover:shadow-sm transition'>
+                <span className='text-[7rem] text-primary mx-auto relative'>
+                    {data["idTipoBien"] === 1 && <RiMotorbikeFill/>}
+                    {data["idTipoBien"] === 2 && <RiCarFill/>}
+                    {data["idTipoBien"] === 5 && <RiCaravanFill/>}
+                </span>
+                <p className='text-primary font-semibold text-xl tracking-wider relative'>{data["tipoBien"] ?? "-"}</p>
             </div>
         )
     }
