@@ -88,7 +88,7 @@ function ValidityPolicy() {
                 
                 <div className="w-fit flex justify-start items-center gap-3 mb-3">
                     <div 
-                    onClick={()=>{ history("/to-emmit-policy-register", {state: data.state[2]}) }}
+                    onClick={()=>{ history("/to-emmit-policy-register", {state: {...data.state[2], formObject: data.state[3]}, }) }}
                     className="mr-3 cursor-pointer w-fit flex justify-start items-center gap-3">
                         <span className="text-2xl text-primary">
                             <FiChevronLeft/>
