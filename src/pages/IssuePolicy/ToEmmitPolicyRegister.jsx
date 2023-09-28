@@ -1435,7 +1435,7 @@ function ToEmmitPolicyRegister() {
             IdCorregimiento: formObject["IdCorregimiento"] ?? "",
             IdDistrito: formObject["IdDistrito"] ?? "",
             IdEntidadOperador: localStorage.getItem("IdEntidadOperador"),
-            IdEntidadVendedor: localStorage.getItem("IdEntidadVendedor"),
+            IdEntidadVendedor: 0,
             IdOcupacion: formObject["IdOcupacion"] ?? "",
             IdPais: formObject["IdPais"] ?? "",
             IdProfesion: formObject["IdProfesion"] ?? "",

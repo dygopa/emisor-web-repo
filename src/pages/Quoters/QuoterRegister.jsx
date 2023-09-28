@@ -1463,7 +1463,7 @@ function QuoterRegister() {
             redirect: 'follow'
         };
 
-        let url = "https://emisorapi.azurewebsites.net/api/Configuration/add_plan"
+        let url = `${process.env.VITE_API_URL}api/Configuration/add_plan`
 
         fetch(url, requestOptions)
         .then(async(response)=>{
@@ -1472,9 +1472,6 @@ function QuoterRegister() {
                 setErrorAlert(false)
                 setSuccessAlertMessage( location.state !== null ? "Plan actualizado exitosamente" : "Plan creado exitosamente")
                 setSuccessAlert(true)
-                //setTimeout(() => {
-                //    window.location.reload()
-                //}, 2000);
             }else{
                 setSuccessAlert(false)
                 setErrorAlertMessage(location.state !== null  ? "Ha ocurrido un problema con la actualizacion" : "Ha ocurrido un problema con la creacion")
