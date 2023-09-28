@@ -1,6 +1,6 @@
 import axios from "axios"
 
-let urlAPI = process.env.VITE_API_URL ?? ""
+let urlAPI = import.meta.env.VITE_API_URL ?? ""
 
 let loginEndPoint = "api/Configuration/login"
 let getProductEndPoint = "api/Configuration/get_product?IdTipoInteres=2"

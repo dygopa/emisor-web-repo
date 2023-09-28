@@ -1463,7 +1463,7 @@ function QuoterRegister() {
             redirect: 'follow'
         };
 
-        let url = `${process.env.VITE_API_URL}api/Configuration/add_plan`
+        let url = `${import.meta.env.VITE_API_URL}api/Configuration/add_plan`
 
         fetch(url, requestOptions)
         .then(async(response)=>{
