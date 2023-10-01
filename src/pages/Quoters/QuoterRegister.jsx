@@ -43,6 +43,7 @@ function QuoterRegister() {
         productId: "",
         idPlan: "",
         tipoBien: "",
+        planAseguradora: "",
         status: "",
         lesionesCorporales: "",
         danosPropiedad: "",
@@ -746,6 +747,7 @@ function QuoterRegister() {
         setFormObject({
             description: object["descripcion"],
             idAseguradora: object["idCompania"],
+            planAseguradora: object["planAseguradora"],
             idPlan: object["idOpcionPlan"],
             productId: object["idProducto"],
             tipoBien: object["idTipoBien"],
@@ -879,8 +881,6 @@ function QuoterRegister() {
         }
     }, [updatedPlan])
 
-
-
     useEffect(() => {
         changeBackground()
         window.addEventListener("scroll", changeBackground)
@@ -992,7 +992,7 @@ function QuoterRegister() {
                                 </select>
                                 {listOfRequired.includes("idPlan") && <ErrorText/>}
                             </div>
-                            {showPricings && <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
+                            <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
                                 <p className="input-label">Tipo (*)</p>
                                 <select value={formObject.tipoBien} onChange={(e)=>{ setFormObject({...formObject, tipoBien: e.target.value}) }} 
                                 className="form-control">
@@ -1001,7 +1001,7 @@ function QuoterRegister() {
                                     value={type["idTipoBien"]}>{type["tipoBien"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("tipoBien") && <ErrorText/>}
-                            </div>}
+                            </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
                                 <p className="input-label">Estatus (*)</p>
                                 <select value={formObject.status} onChange={(e)=>{ setFormObject({...formObject, status: e.target.value}) }} 
@@ -1157,7 +1157,7 @@ function QuoterRegister() {
                                 {listOfRequired.includes("idTipoAplicacion") && <ErrorText/>}
                             </div>
                             <div className='flex flex-col justify-start items-start'>
-                                <select defaultValue={location.state ? location.state["planAseguradora"] : ""} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
+                                <select value={formObject.planAseguradora} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
                                     <option value="">{"Planes aseguradora"}</option>
                                     {listOfPlansOfInsurence.map((type)=> <option value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - $${type['prima']} `}</option> )}
                                 </select>
@@ -1211,7 +1211,7 @@ function QuoterRegister() {
                         </div>
                         <div className="w-full grid grid-cols-3 gap-5 justify-start content-start">
                             {listOfBenefits.length > 0 ? 
-                                listOfBenefits.map((d, i)=><BenefitsDataComponent data={d}/>)
+                                listOfBenefits.map((d, i)=><BenefitsDataComponent key={i} data={d}/>)
                             : 
                                 <div className="text-center col-span-3 flex justify-center items-center h-10">
                                     <p className="font-light text-xl text-primary mt-6">No hay beneficios todavia</p>
