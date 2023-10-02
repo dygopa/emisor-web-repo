@@ -14,6 +14,8 @@ function QuoterRegister() {
     const thirdRef = useRef(null)
     const fourthRef = useRef(null)
 
+    const [idPlan, setIdPlan] = useState(null)
+
     const [navbarOnTop, setNavbarOnTop] = useState(false)
     const [toggledSidebar, setToggledSidebar] = useState(false)    
     const [loadedAPI, setLoadedAPI] = useState(false)
@@ -839,6 +841,10 @@ function QuoterRegister() {
     }
 
     function chargePlansAPI(){
+        //apiProvider.getPropertyTypeEndPoint(`2`).then((res)=>{
+        //    setListOfPropertyTypes(res.data)
+        //})
+
         apiProvider.getLimitEndPoint(``).then((res)=>{
             setListOfLimits(res.data)
         })
@@ -1337,41 +1343,45 @@ function QuoterRegister() {
     }
 
     function handleValidationFunction(){
-        
+
+        let id;
+        id = location.state !== null && location.state["idPlan"]
+        id = idPlan
+
         let postObject = {
-          IdPlan: location.state !== null ? location.state["idPlan"] : null,
-          IdPlanPadre: null,
-          nombreCorto: null,
-          producto: null,
-          estatus: null,
-          opcionPlan: null,
-          nombreCompleto: null,
-          IdCompania: parseInt(formObject["idAseguradora"]) ?? 0,
-          IdEstatus: parseInt(formObject["status"]) ?? 0,
-          idCorredor: localStorage.getItem("idCorredor"),
-          IdTipoInteres: 2,
-          IdOpcionPlan: parseInt(formObject["idPlan"]) ?? 0,
-          IdProducto: parseInt(formObject["productId"]) ?? 0,
-          Descripcion: formObject["description"] ?? "",
-          TotalImpuesto: parseFloat(pricingData["impuesto"]) ?? 0.0,
-          totalPlan: parseFloat(pricingData["totalPlan"]) ?? 0.0,
-          Descuento: parseFloat(pricingData["montoDescuento"]) ?? 0.0,
-          Subtotal: parseFloat(pricingData["subTotal"]) ?? 0.0,
-          TotalVentas: parseInt(formObject["polizasVendidas"]) ?? 0,
-          idTipoBien: parseInt(formObject["tipoBien"]) ?? 0,
-          idVigencia: parseInt(formObject["vigenciaPoliza"]) ?? 0,
-          idTipoAplicacion: parseInt(formObject["idTipoAplicacion"]) ?? 0,
-          AplicaEndoso: "SI",
-          CantidadLetras: 1,
-          idEntidad: 1,
-          planAseguradora: formObject["planAseguradora"] ?? null,
-          detalle: formatQuotesList().length > 0 ? formatQuotesList() : [],
-          Beneficio: listOfBenefitsSelected.length > 0 ? listOfBenefitsSelected.map((b)=>({
-            IdBeneficio: b["idBeneficio"],
-            descripcion: b["descripcion"] ?? null,
-            Imagen: null,
-            IdCompania: null,
-          })) : []
+            IdPlan: id,
+            IdPlanPadre: null,
+            nombreCorto: null,
+            producto: null,
+            estatus: null,
+            opcionPlan: null,
+            nombreCompleto: null,
+            IdCompania: parseInt(formObject["idAseguradora"]) ?? 0,
+            IdEstatus: parseInt(formObject["status"]) ?? 0,
+            idCorredor: localStorage.getItem("idCorredor"),
+            IdTipoInteres: 2,
+            IdOpcionPlan: parseInt(formObject["idPlan"]) ?? 0,
+            IdProducto: parseInt(formObject["productId"]) ?? 0,
+            Descripcion: formObject["description"] ?? "",
+            TotalImpuesto: parseFloat(pricingData["impuesto"]) ?? 0.0,
+            totalPlan: parseFloat(pricingData["totalPlan"]) ?? 0.0,
+            Descuento: parseFloat(pricingData["montoDescuento"]) ?? 0.0,
+            Subtotal: parseFloat(pricingData["subTotal"]) ?? 0.0,
+            TotalVentas: parseInt(formObject["polizasVendidas"]) ?? 0,
+            idTipoBien: parseInt(formObject["tipoBien"]) ?? 0,
+            idVigencia: parseInt(formObject["vigenciaPoliza"]) ?? 0,
+            idTipoAplicacion: parseInt(formObject["idTipoAplicacion"]) ?? 0,
+            AplicaEndoso: "SI",
+            CantidadLetras: 1,
+            idEntidad: 1,
+            planAseguradora: formObject["planAseguradora"] ?? null,
+            detalle: formatQuotesList().length > 0 ? formatQuotesList() : [],
+            Beneficio: listOfBenefitsSelected.length > 0 ? listOfBenefitsSelected.map((b)=>({
+                IdBeneficio: b["idBeneficio"],
+                descripcion: b["descripcion"] ?? null,
+                Imagen: null,
+                IdCompania: null,
+            })) : []
         };
 
         return postObject
@@ -1469,6 +1479,7 @@ function QuoterRegister() {
         .then(async(response)=>{
             let data = await response.json()
             if(response.ok){
+                setIdPlan(data["idPlan"])
                 setErrorAlert(false)
                 setSuccessAlertMessage( location.state !== null ? "Plan actualizado exitosamente" : "Plan creado exitosamente")
                 setSuccessAlert(true)
