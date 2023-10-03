@@ -745,6 +745,8 @@ function QuoterRegister() {
     function formatPlanToUpdate(){
         
         let object = {...location.state}
+        
+        setIdPlan(object["idPlan"])
 
         setFormObject({
             description: object["descripcion"],
@@ -967,8 +969,7 @@ function QuoterRegister() {
                                 }} 
                                 className="form-control">
                                     <option value="">Ingrese el nombre de la aseguradora</option>
-                                    {listOfInsurances.map((type)=> <option 
-                                    value={type["idCompania"]}>{type["nombreCompleto"]}</option> )}
+                                    {listOfInsurances.map((type, i)=> <option key={i} value={type["idCompania"]}>{type["nombreCompleto"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("idAseguradora") && <ErrorText/>}
                             </div>
@@ -983,8 +984,7 @@ function QuoterRegister() {
                                 <select value={formObject.productId} onChange={(e)=>{setFormObject({...formObject, productId: e.target.value}), getDataFromValue(e.target.value, "tipo") }} 
                                 className="form-control">
                                     <option value="">Selecciona los productos</option>
-                                    {listOfProducts.map((type)=> <option 
-                                    value={type["idProducto"]}>{type["titulo"]}</option> )}
+                                    {listOfProducts.map((type, i)=> <option key={i} value={type["idProducto"]}>{type["titulo"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("productId") && <ErrorText/>}
                             </div>
@@ -1003,8 +1003,7 @@ function QuoterRegister() {
                                 <select value={formObject.tipoBien} onChange={(e)=>{ setFormObject({...formObject, tipoBien: e.target.value}) }} 
                                 className="form-control">
                                     <option value="">Selecciona el tipo</option>
-                                    {listOfPropertyTypes.map((type)=> <option 
-                                    value={type["idTipoBien"]}>{type["tipoBien"]}</option> )}
+                                    {listOfPropertyTypes.map((type, i)=> <option key={i} value={type["idTipoBien"]}>{type["tipoBien"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("tipoBien") && <ErrorText/>}
                             </div>
@@ -1013,8 +1012,7 @@ function QuoterRegister() {
                                 <select value={formObject.status} onChange={(e)=>{ setFormObject({...formObject, status: e.target.value}) }} 
                                className="form-control">
                                     <option value="">Selecciona el status</option>
-                                    {listOfStatusPlan.map((type)=> <option 
-                                    value={type["idEstatus"]}>{type["estatus"]}</option> )}
+                                    {listOfStatusPlan.map((type, i)=> <option key={i} value={type["idEstatus"]}>{type["estatus"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("status") && <ErrorText/>}
                             </div>
@@ -1024,8 +1022,7 @@ function QuoterRegister() {
                                     <select value={formObject.lesionesCorporales} onChange={(e)=>{ setFormObject({...formObject, lesionesCorporales: e.target.value}) }} 
                                     className="form-control">
                                         <option value="">Selecciona el limite</option>
-                                        {listOfBodilyInjury.map((type)=> <option 
-                                        value={type["idLimite"]}>{type["descripcion"]}</option> )}
+                                        {listOfBodilyInjury.map((type, i)=> <option key={i} value={type["idLimite"]}>{type["descripcion"]}</option> )}
                                     </select>
                                     {listOfRequired.includes("lesionesCorporales") && <ErrorText/>}
                                 </div>
@@ -1344,12 +1341,8 @@ function QuoterRegister() {
 
     function handleValidationFunction(){
 
-        let id;
-        id = location.state !== null && location.state["idPlan"]
-        id = idPlan
-
         let postObject = {
-            IdPlan: id,
+            IdPlan: idPlan,
             IdPlanPadre: null,
             nombreCorto: null,
             producto: null,
@@ -1460,7 +1453,6 @@ function QuoterRegister() {
             }
         }
 
-
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
         myHeaders.append("Content-Type", "application/json");
@@ -1485,11 +1477,13 @@ function QuoterRegister() {
                 setSuccessAlert(true)
             }else{
                 setSuccessAlert(false)
-                setErrorAlertMessage(location.state !== null  ? "Ha ocurrido un problema con la actualizacion" : "Ha ocurrido un problema con la creacion")
+                setErrorAlertMessage(data["error"])
                 setErrorAlert(true)
             }
         }).catch((e)=>{
-            console.log(e)
+            setSuccessAlert(false)
+            setErrorAlertMessage(location.state !== null  ? "Ha ocurrido un problema con la actualizacion" : "Ha ocurrido un problema con la creacion")
+            setErrorAlert(true)
         })
     }
 
