@@ -50,7 +50,8 @@ function QuoterRegister() {
         lesionesCorporales: "",
         danosPropiedad: "",
         gastosMedico: "",
-        idTipoAplicacion: ""
+        idTipoAplicacion: "",
+        vigenciaPoliza: ""
     })
     const [pricingData, setPricingData] = useState({
         subTotal: null,
@@ -1110,6 +1111,7 @@ function QuoterRegister() {
                                         <option key={i} value={v["IdVigencia"]}>{v["Vigencia"]}</option>
                                     ))}
                                 </select>
+                                {listOfRequired.includes("vigenciaPoliza") && <ErrorText/>}
                             </div>
                         </div>}
                         {!showPricings && <div className="flex flex-wrap content-start">
@@ -1146,6 +1148,7 @@ function QuoterRegister() {
                                         <option key={i} value={v["value"]}>{v["valueText"]}</option>
                                     ))}
                                 </select>
+                                {listOfRequired.includes("vigenciaPoliza") && <ErrorText/>}
                             </div>
                         </div>}
                     </div>
@@ -1389,7 +1392,8 @@ function QuoterRegister() {
             "idPlan",
             "status",
             "idTipoPlan",
-            "idTipoAplicacion"
+            "idTipoAplicacion",
+            "vigenciaPoliza"
         ]
 
         let listValidationWithPricing = [
@@ -1403,7 +1407,8 @@ function QuoterRegister() {
             "danosPropiedad",
             "gastosMedico",
             "idTipoPlan",
-            "idTipoAplicacion"
+            "idTipoAplicacion",
+            "vigenciaPoliza"
         ]
         
         let validateList = validators.validateObjectWithList((showPricings ? listValidationWithPricing : listValidation), formObject)
@@ -1412,7 +1417,7 @@ function QuoterRegister() {
 
         if( validateList.length > 0 ) return;
 
-        if(showPricings && pricingData["totalPlan"] === 0){
+        if(pricingData["totalPlan"] < 1){
             setErrorAlert(true)
             setErrorAlertMessage("El precio total debe ser mayor a cero")
             setTimeout(() => {
