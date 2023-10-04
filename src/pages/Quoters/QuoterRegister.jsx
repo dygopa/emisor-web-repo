@@ -402,10 +402,10 @@ function QuoterRegister() {
             apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
-                    setSuccessAlert(true)
+                    setSuccessAlert((prv) => true)
                     setSuccessAlertMessage("Beneficio eliminado exitosamente")
                     setTimeout(() => {
-                        setSuccessAlert(false)
+                        setSuccessAlert((prv) => false)
                     }, 2000);
                 }
             })
@@ -422,13 +422,13 @@ function QuoterRegister() {
 
             setWantsToUpdate(false)
 
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
+            apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"] ?? location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
-                    setSuccessAlert(true)
+                    setSuccessAlert((prv) => true)
                     setSuccessAlertMessage("Beneficio actualizado exitosamente")
                     setTimeout(() => {
-                        setSuccessAlert(false)
+                        setSuccessAlert((prv) => false)
                     }, 2000);
                 }
             })
@@ -1244,10 +1244,10 @@ function QuoterRegister() {
             apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
-                    setSuccessAlert(true)
+                    setSuccessAlert((prv) => true)
                     setSuccessAlertMessage("Beneficio agregado exitosamente")
                     setTimeout(() => {
-                        setSuccessAlert(false)
+                        setSuccessAlert((prv) => false)
                     }, 2000);
                 }
             })
@@ -1285,18 +1285,17 @@ function QuoterRegister() {
         if(showPricings && listOfTypePlan.length > 0){
             list = listOfTypePlan.map((prv, i)=>({
                 IdPlan: null,
-                IdPlanLimite: null,
-                SumaAseguradaDesde: null,
-                SumaAseguradaHasta: null,
-                Deducible: null,
-                idPlanLimite: null,
-                IdLimite: findIdLimitInList(prv["Limite"]),
-                Limite: prv["Limite"],
-                Cobertura: prv["Cobertura"],
-                Orden: i + 1,
-                IdCobertura: parseInt(prv["IdCobertura"]),
-                Prima: parseInt(prv["PrimaCobertura"]),
-                PrimaCobertura: parseInt(prv["PrimaCobertura"]),
+                SumaAseguradaDesde: prv["sumaAseguradaDesde"] ?? null,
+                SumaAseguradaHasta: prv["sumaAseguradaHasta"] ?? null,
+                Deducible: prv["deducible"] ?? null,
+                idPlanLimite: prv["idPlanLimite"] ?? null,
+                IdLimite: prv["idLimite"] ?? findIdLimitInList(prv["Limite"]),
+                Limite: prv["limite"] ?? prv["Limite"],
+                Cobertura: prv["cobertura"] ?? prv["Cobertura"],
+                Orden: prv["orden"] ?? (i + 1),
+                IdCobertura: prv["idCobertura"] ?? parseInt(prv["IdCobertura"]),
+                Prima: prv["prima"] ?? parseFloat(prv["PrimaCobertura"]),
+                PrimaCobertura: prv["primaCobertura"] ?? parseFloat(prv["PrimaCobertura"]),
             }))
         }else{
             list = selectedList.map((prv, i)=>({
@@ -1316,7 +1315,7 @@ function QuoterRegister() {
             }))
         }
         
-        console.log(list)
+        console.log(listOfTypePlan)
 
         return list
     }
