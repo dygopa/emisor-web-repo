@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react'
 import apiProvider from '../../services/apiProvider'
-import { useLocation, useNavigate } from 'react-router-dom'
 import Compress from "react-image-file-resizer"
 import { FiChevronLeft, FiColumns } from 'react-icons/fi';
 import { AiFillLock } from 'react-icons/ai';
@@ -20,6 +19,7 @@ import {
     pep_list 
 } from '../../services/issue-policy/requerired-fields';
 import validators from '../../services/validators';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 function ToEmmitPolicyRegister() {
 
@@ -529,6 +529,7 @@ function ToEmmitPolicyRegister() {
     }, [navbarOnTop])
 
     useEffect(()=>{
+        console.log("data.state", data.state)
         if(data.state["formObject"]){
             setFormObject({...data.state["formObject"]})
 
@@ -550,7 +551,7 @@ function ToEmmitPolicyRegister() {
     },[data.state])
 
     const ErrorText = () => <p className='text-[0.8rem] mt-2 text-red-700'>Campo requerido (*)</p>
-
+    
     return (
         <div className={`ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8 ${termsPopup && "overflow-hidden"}`}>
             {termsPopup && <TermsPopup/>}
@@ -568,7 +569,15 @@ function ToEmmitPolicyRegister() {
             {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-20 fixed bg-white w-[94%] h-fit top-0 right-0">
                 <div className="p-4 flex justify-between relative h-auto w-full items-center overflow-x-auto">
                     <div className="w-fit flex justify-start items-center gap-3">
-                        <div onClick={()=>{ history("/to-emmit-policy") }} className="mr-10 cursor-pointer w-fit flex justify-start items-center gap-3">
+                        <div onClick={()=>{ history("/to-emmit-policy", {
+                            state: {
+                                idTipoInteres: data.state["idTipoInteres"],
+                                idProducto: data.state["idProducto"],
+                                idTipoBien: data.state["idTipoBien"],
+                                idCompania: data.state["idCompania"],
+                                activeTypePlan: data.state["activeTypePlan"]
+                            }
+                        }) }} className="mr-10 cursor-pointer w-fit flex justify-start items-center gap-3">
                             <span className="text-2xl text-primary">
                                 <FiChevronLeft/>
                             </span>
@@ -591,7 +600,15 @@ function ToEmmitPolicyRegister() {
             {/* Horizontal style bar */}
             {!toggledSidebar && <div className="flex justify-between relative items-center h-fit w-full overflow-x-auto">
                 <div className="w-fit flex justify-start items-center gap-4">
-                    <div onClick={()=>{ history("/to-emmit-policy") }} className="bg-white mr-5 rounded-full px-3 py-1 border shadow cursor-pointer w-fit relative flex justify-start items-center gap-3">
+                    <div onClick={()=>{ history("/to-emmit-policy", {
+                            state: {
+                                idTipoInteres: data.state["idTipoInteres"],
+                                idProducto: data.state["idProducto"],
+                                idTipoBien: data.state["idTipoBien"],
+                                idCompania: data.state["idCompania"],
+                                activeTypePlan: data.state["activeTypePlan"]
+                            }
+                        }) }} className="bg-white mr-5 rounded-full px-3 py-1 border shadow cursor-pointer w-fit relative flex justify-start items-center gap-3">
                         <span className="text-2xl text-primary">
                             <FiChevronLeft/>
                         </span>
@@ -691,7 +708,7 @@ function ToEmmitPolicyRegister() {
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
+                                <InputComponent invalidText={"Fecha de nacimiento invalida"} customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Representante Legal <span className='text-primary font-bold'>*</span></p>
@@ -961,7 +978,7 @@ function ToEmmitPolicyRegister() {
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
+                                <InputComponent maxDate={moment().subtract(10, "year").toDate()} customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Nombre(s) <span className='text-primary font-bold'>*</span></p>

@@ -13,6 +13,7 @@ let getVigeniciasEndPoint = "api/Configuration/get_vigenicias"
 let getTipoAplicacionPlanEndPoint = "api/Configuration/get_tipoaplicacion_plan"
 let getPlanEndPoint = "api/Configuration/get_plan"
 let getCompanyEndPoint = "api/Configuration/get_company"
+let getCompanyConPlanEndPoint = "api/Configuration/get_company_con_plan"
 
 let getGenreEndPoint = "api/Configuration/get_genre"
 let getPaisEndPoint = "api/Configuration/get_pais"
@@ -216,6 +217,12 @@ class ApiProvider{
 
     async getPlanEndPoint(queryString){
         let url = urlAPI + getPlanEndPoint + queryString
+
+        return await axios.get(url, config)
+    }
+
+    async getCompanyConPlanEndPoint(queryString){
+        let url = urlAPI + getCompanyConPlanEndPoint + queryString
 
         return await axios.get(url, config)
     }

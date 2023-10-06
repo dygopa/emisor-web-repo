@@ -49,7 +49,14 @@ function IssuePolicy() {
     const TableDataComponent = ({data}) => {
         return(
             <div onClick={()=>{
-                history("/to-emmit-policy", {state: `idTipoInteres=2&idProducto=${searchObject.idProducto}&idTipoBien=${data["idTipoBien"]}`})
+                history("/to-emmit-policy", {
+                    state: {
+                        idTipoInteres: 2,
+                        idProducto: searchObject.idProducto,
+                        idTipoBien: data["idTipoBien"],
+                        activeTypePlan: "BASICO"
+                    }
+                })
             }}
             className='overflow-hidden border border-primary w-[300px] h-[300px] bg-white rounded-lg flex flex-col gap-3 justify-center items-center cursor-pointer shadow-xl hover:shadow-sm transition'>
                 <span className='text-[7rem] text-primary mx-auto relative'>

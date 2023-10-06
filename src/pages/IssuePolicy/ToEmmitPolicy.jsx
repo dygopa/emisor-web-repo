@@ -152,7 +152,13 @@ function ToEmmitPolicy() {
                             </div>
                         }
                     </div>
-                    <div onClick={()=>{ history("/to-emmit-policy-register", {state: data}) }}  
+                    <div onClick={()=>{ history("/to-emmit-policy-register", {
+                        state: {
+                            ...data, 
+                            activeTypePlan,
+                            idCompania: searchObject.idCompania
+                        }
+                    }) }}  
                     className="bg-primary w-full h-fit py-3 rounded-md text-sm text-center text-white cursor-pointer">Comprar</div>
                 </div>
             </div>
@@ -171,7 +177,7 @@ function ToEmmitPolicy() {
     }
 
     function chargeAPI(){
-        apiProvider.getCompanyEndPoint("").then((res)=>{
+        apiProvider.getCompanyConPlanEndPoint("?IdCorredor="+localStorage.getItem("idCorredor")).then((res)=>{
             setListOfInsurances(res.data)
         }).catch((e)=>{
             console.log(e)
@@ -197,16 +203,16 @@ function ToEmmitPolicy() {
                 listOfString.push(queryString)
             }
         }
-        
+
+        let queryFromState = `idProducto=${data.state ? data.state["idProducto"] : 0}&idTipoBien=${data.state ? data.state["idTipoBien"] : 0}&idTipoInteres=${data.state ? data.state["idTipoInteres"] : 0}`
+
         if(listOfString.length > 0){
-            concacQueryString = "?" + data.state + "&" + listOfString.join("&")
+            concacQueryString = "?" + queryFromState + "&" + listOfString.join("&")
         }else{
-            concacQueryString = "?" + data.state
+            concacQueryString = "?" + queryFromState
         }
-        console.log(concacQueryString)
 
         apiProvider.getPlanEndPoint(concacQueryString).then((res)=>{
-            console.log(res.data)
             setListOfData([...res.data].sort((a, b) => b["idPlan"] - a["idPlan"] ))
             setListOfPlans([...res.data].sort((a, b) => b["idPlan"] - a["idPlan"] ))
             setLoadingData(false)
@@ -222,16 +228,29 @@ function ToEmmitPolicy() {
     }
 
     useMemo(()=>{
-        filterPlans()
-    },[activeTypePlan])
-
-    useEffect(() => {
-        chargePlansAPI()
-    }, [searchObject])
+        if(listOfData.length > 0) filterPlans()
+    },[activeTypePlan, listOfData])
 
     useEffect(() => {
         if(!loadedAPI) chargeAPI()
     }, [loadedAPI])
+
+    useEffect(()=>{
+        if(data.state){
+            if(data.state["idCompania"]){
+                setSearchObject({
+                    idCompania: data.state["idCompania"] ?? 0
+                })
+            }else{
+                chargePlansAPI()
+            }
+            setActiveTypePlan(data.state["activeTypePlan"])
+        }
+    },[data])
+
+    useMemo(()=>{
+        if(searchObject["idCompania"]) chargePlansAPI()
+    },[searchObject])
 
     return (
         <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
@@ -245,7 +264,9 @@ function ToEmmitPolicy() {
                 </div>
                 <div className="mb-3 mr-3 w-[25%]">
                     <p className="input-label">Aseguradora</p>
-                    <select value={searchObject.idCompania} onChange={(e)=>{ setSearchObject({...searchObject, idCompania: e.target.value}) }} className="form-control">
+                    <select defaultValue={searchObject.idCompania} value={searchObject.idCompania} onChange={(e)=>{ 
+                        setSearchObject(prvState => ({...prvState, idCompania: e.target.value}))
+                    }} className="form-control">
                         <option value="">Seleccionar</option>
                         {listOfInsurances.map((type)=> <option value={type["idCompania"]}>{type["nombreCompleto"]}</option> )}
                     </select>
