@@ -155,8 +155,7 @@ function ToEmmitPolicy() {
                     <div onClick={()=>{ history("/to-emmit-policy-register", {
                         state: {
                             ...data, 
-                            activeTypePlan,
-                            idCompania: searchObject.idCompania
+                            activeTypePlan
                         }
                     }) }}  
                     className="bg-primary w-full h-fit py-3 rounded-md text-sm text-center text-white cursor-pointer">Comprar</div>

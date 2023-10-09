@@ -6,6 +6,7 @@ import "react-day-picker/dist/style.css";
 import moment from "moment";
 
 import React, { useRef, useEffect } from "react";
+import { IMaskInput } from "react-imask";
 
 export const InputComponent = ({
   daySelected,
@@ -48,7 +49,19 @@ export const InputComponent = ({
 
   return (
     <div className="form-control-date" ref={wrapperRef}>
-      <input
+      <IMaskInput  
+        className="form-control"
+        placeholder="00/00/0000"
+        mask={"00/00/0000"}
+        onClick={() => {
+          setActivePopup(!activePopup);
+        }}
+        onChange={(e)=> handleOnChange(e.target.value) }
+        defaultValue={moment(daySelected).format("DD/MM/YYYY").toString()}
+        value={moment(daySelected).format("DD/MM/YYYY").toString()}
+        type={"text"}
+      />
+      {/* <input
         max={maxDate}
         min={minDate}
         className="form-control"
@@ -58,7 +71,7 @@ export const InputComponent = ({
         onClick={() => {
           setActivePopup(!activePopup);
         }}
-      />
+      /> */}
       {invalidDate && <p className="text-[0.8rem] mt-1 text-red-700">{invalidText}</p>}
       {activePopup && (
         <div className="form-control-date-popup">
