@@ -52,12 +52,10 @@
     --body-bg-rgb: 255, 255, 255;
     --font-sans-serif: "Poppins";
     --font-monospace: "Poppins", Menlo,
-      "Liberation Mono", "Arial";
-    --gradient: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.15),
-      rgba(255, 255, 255, 0)
-    );
+        "Liberation Mono", "Arial";
+    --gradient: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.15),
+            rgba(255, 255, 255, 0));
     --body-font-family: var(--font-sans-serif);
     --body-font-size: 1rem;
     --body-font-weight: 400;
@@ -79,22 +77,28 @@
     --link-hover-color: #163588;
     --code-color: #d63384;
     --highlight-bg: #fff3cd;
-  }  
+}
 
 /* ::-webkit-scrollbar{
     display: none;
 } */
 
-html{
+input[type="date"]::-webkit-inner-spin-button,
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+html {
     font-family: var(--font-monospace);
 }
 
-input:focus{
+input:focus {
     transition: all ease-in-out .3s;
     border: 1px solid var(--primary);
 }
 
-.title-section{
+.title-section {
     font-size: 2.5rem;
     font-weight: 200;
 }
@@ -154,51 +158,51 @@ input:focus{
     cursor: pointer;
     font-weight: 300;
 }
- 
-.btn:disabled{
+
+.btn:disabled {
     cursor: not-allowed;
     opacity: 0.6;
 }
 
-.btn-block{
+.btn-block {
     width: 100%;
 }
- 
-.btn-primary{
+
+.btn-primary {
     border: 1px solid var(--primary);
     background-color: var(--primary);
 }
- 
- 
+
+
 .btn-grey {
     background-color: var(--gray);
 }
- 
-.btn-outline-primary{
+
+.btn-outline-primary {
     background-color: transparent;
     border: 1px solid rgb(255 155 23/ var(--tw-bg-opacity));
-    color:rgb(255 155 23/ var(--tw-bg-opacity));
+    color: rgb(255 155 23/ var(--tw-bg-opacity));
 }
- 
-.btn-outline-grey{
+
+.btn-outline-grey {
     background-color: transparent;
     border: 1px solid var(--gray);
-    color:var(--gray);
+    color: var(--gray);
 }
-  
+
 .input-label {
     font: normal normal normal 14px/30px var(--font-monospace);
     color: #333333;
     margin-bottom: 2px;
 }
 
-.table-label{
+.table-label {
     color: #0e0e0e;
     font-size: 0.875rem;
     font-weight: 600;
 }
 
-.table-data-component{
+.table-data-component {
     cursor: pointer;
     display: grid;
     gap: 1rem;
@@ -210,23 +214,23 @@ input:focus{
     transition: all .3s ease-in-out;
 }
 
-.table-data-component:hover{
+.table-data-component:hover {
     border: 1px solid var(--primary);
 }
 
-.table-data{
+.table-data {
     color: #181818;
     font-size: 0.875rem;
     font-weight: 400;
 }
 
-.table-data-bold{
+.table-data-bold {
     color: #181818;
     font-size: 0.875rem;
     font-weight: 600;
 }
 
-.benefits-component{
+.benefits-component {
     display: flex;
     padding: 1rem;
     border-width: 1px;
@@ -235,18 +239,18 @@ input:focus{
     background-color: var(--white);
 }
 
-.benefits-component.selected{
+.benefits-component.selected {
     border-color: var(--green);
 }
 
-.input-label-disabled{
+.input-label-disabled {
     font: normal normal normal 10px/30px var(--font-monospace);
     color: #c7c7c7;
     margin-bottom: 2px;
 }
 
 .input-label.error {
-    color:#a80c0caf;
+    color: #a80c0caf;
     font-weight: 800;
 }
 
@@ -282,7 +286,7 @@ input:focus{
     display: flex;
     justify-content: center;
     align-items: center;
-    border:3px solid var(--gray-300);
+    border: 3px solid var(--gray-300);
     background-color: transparent;
     padding: 1%;
     border-radius: 100%;
@@ -306,9 +310,9 @@ input:focus{
 }
 
 .checkbox-custom-text.checked {
-    border:3px solid var(--success);
+    border: 3px solid var(--success);
 }
-    
+
 .checkbox-custom-text.checked::before {
     content: '';
     position: relative;
@@ -334,6 +338,8 @@ input:focus{
     box-shadow: 0px 21px 110px -70px #242424;
 }
 
-.rdp-day_selected, .rdp-day_selected:focus-visible, .rdp-day_selected:hover{
-    background-color: var(--primary)!important
+.rdp-day_selected,
+.rdp-day_selected:focus-visible,
+.rdp-day_selected:hover {
+    background-color: var(--primary) !important
 }

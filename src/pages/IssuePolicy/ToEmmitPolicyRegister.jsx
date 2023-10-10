@@ -44,12 +44,8 @@ function ToEmmitPolicyRegister() {
     const [loadedYears, setLoadedYears] = useState(false)
     const [termsPopup, setTermsPopup] = useState(false)
 
-    const minYear = moment().subtract(10, "y").format("YYYY-MM-DD").toString()
-    const maxDateBirth = moment().format("YYYY-MM-DD").toString()
-
-    const [dateBirthClient, setDateBirthClient] = useState(new Date())
-    const [dateBirthClientContractor, setDateBirthClientContractor] = useState(new Date())
-
+    const [dateBirthClient, setDateBirthClient] = useState(moment().subtract(16, "y").format("YYYY-MM-DD"))
+    const [dateBirthClientContractor, setDateBirthClientContractor] = useState(moment().subtract(16, "y").format("YYYY-MM-DD"))
     const [fromPEP, setFromPEP] = useState(new Date())
     const [untilPEP, setUntilPEP] = useState(new Date())
 
@@ -223,7 +219,7 @@ function ToEmmitPolicyRegister() {
                 let listRes = [...res.data]
                 if(listRes.length > 0){
                     
-                    let dateBirth = moment(listRes[0]["FechaNacimiento"]).toDate()
+                    let dateBirth = moment(listRes[0]["FechaNacimiento"]).format("YYYY-MM-DD")
                     setDateBirthClient(dateBirth)
                     let json = {...res.data[0]}
                     console.log(json)
@@ -708,7 +704,13 @@ function ToEmmitPolicyRegister() {
                             </div>}
                             {formObject["typePersona"] !== "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent invalidText={"Fecha de nacimiento invalida"} customOnChange={setDateBirthClient} daySelected={dateBirthClient} fromYear={1950} toYear={2008}/>
+                                <InputComponent 
+                                    invalidText={"Fecha de nacimiento invalida"} 
+                                    customOnChange={setDateBirthClient} 
+                                    daySelected={dateBirthClient} 
+                                    fromYear={moment().subtract(90, "y").year()} 
+                                    toYear={moment().subtract(16, "y").year()}
+                                />
                             </div>}
                             {formObject["typePersona"] === "1" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Representante Legal <span className='text-primary font-bold'>*</span></p>
@@ -978,7 +980,13 @@ function ToEmmitPolicyRegister() {
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Fecha de Nacimiento <span className='text-primary font-bold'>*</span></p>
-                                <InputComponent maxDate={moment().subtract(10, "year").toDate()} customOnChange={setDateBirthClientContractor} daySelected={dateBirthClientContractor} fromYear={1950} toYear={2008}/>
+                                <InputComponent 
+                                    invalidText={"Fecha de nacimiento invalida"} 
+                                    customOnChange={setDateBirthClientContractor} 
+                                    daySelected={dateBirthClientContractor} 
+                                    fromYear={moment().subtract(90, "y").year()} 
+                                    toYear={moment().subtract(16, "y").year()}
+                                />
                             </div>}
                             {formObject["IdTipoDocumentoContratante"] !== "3" && <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className={"input-label"}>Nombre(s) <span className='text-primary font-bold'>*</span></p>
@@ -1427,7 +1435,7 @@ function ToEmmitPolicyRegister() {
 
     function handleDateFormat(prop){
         let returnedDate = prop !== undefined ? 
-            moment(prop).format("YYYY-MM-DD").toString()
+            prop.toString()
         : ""
         return returnedDate
     }
@@ -1465,7 +1473,7 @@ function ToEmmitPolicyRegister() {
             chasis: formObject["numeroChasis"] ?? "",
             dctoPlan: "0",
             email: formObject["email"] ?? "",
-            fechanacimiento: handleDateFormat( dateBirthClient ),
+            fechanacimiento: dateBirthClient ?? "",
             idcompania: data.state["idCompania"],
             identificacion: formObject["numberId"] ?? "",
             idestadocivil: formObject["idestadocivil"] ?? "",
@@ -1486,7 +1494,7 @@ function ToEmmitPolicyRegister() {
             NombreContratante: handleCopyPasteDataContractor( formObject["NombreContratante"], formObject["names"]) ?? "",
             ApellidoContratante: handleCopyPasteDataContractor( formObject["ApellidoContratante"], formObject["lastNames"]) ?? "",
             ApellidoCasadaContratante: handleCopyPasteDataContractor( formObject["ApellidoCasadaContratante"], formObject["marriedLastName"]) ?? "",
-            FechaNacimientoContratante: handleCopyPasteDataContractor( handleDateFormat( dateBirthClient ), handleDateFormat( dateBirthClientContractor )) ?? "",
+            FechaNacimientoContratante: handleCopyPasteDataContractor( dateBirthClient, dateBirthClientContractor) ?? "",
             CedulaRucContratante: handleCopyPasteDataContractor( formObject["CedulaRucContratante"], formObject["numberId"]) ?? "",
             IdTipoDocumentoContratante: sameDataContractor ? "3" : formObject["IdTipoDocumentoContratante"],
             IdTipoPersonaContratante: formObject["IdTipoPersonaContratante"] ?? "",
@@ -1526,14 +1534,14 @@ function ToEmmitPolicyRegister() {
             ValorVehiculo: removeDotsAndCommas(formObject["ValorVehiculo"], ",") ?? 0,
             
             RelacionCargoPep: formObject["RelacionCargoPep"] ?? "",
-            DesdePep: handleDateFormat( fromPEP ) ?? "",
-            HastaPep: handleDateFormat( untilPEP ) ?? "",
+            DesdePep: fromPEP ?? "",
+            HastaPep: untilPEP ?? "",
             ObservacionPep: formObject["ObservacionPep"] ?? "",
             OtrasActividadesComercPep: formObject["OtrasActividadesComercPep"] ?? "",
             
             RelacionCargoPepContratante: handleCopyPasteDataContractor(formObject["RelacionCargoPepContratante"], formObject["RelacionCargoPep"]) ?? "",
-            DesdePepContratante: handleCopyPasteDataContractor(handleDateFormat( fromPEPContractor ), handleDateFormat( fromPEP )) ?? "",
-            HastaPepContratante: handleCopyPasteDataContractor(handleDateFormat( untilPEPContractor ), handleDateFormat( untilPEP )) ?? "",
+            DesdePepContratante: handleCopyPasteDataContractor(fromPEPContractor, fromPEP) ?? "",
+            HastaPepContratante: handleCopyPasteDataContractor(untilPEPContractor, untilPEP) ?? "",
             ObservacionPepContratante: handleCopyPasteDataContractor(formObject["ObservacionPepContratante"], formObject["ObservacionPep"]) ?? "",
             OtrasActividadesComercPepContratante: handleCopyPasteDataContractor(formObject["OtrasActividadesComercPepContratante"], formObject["OtrasActividadesComercPep"]) ?? "",
 

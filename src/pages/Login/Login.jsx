@@ -61,7 +61,6 @@ function Login() {
 
         apiProvider.getUserLogin(form_data).then((res)=>{
             setErrorStatus(false)
-            console.log(res)
             if(res.status === 200){
                 localStorage.setItem('token_api', res.data["token"]);
                 localStorage.setItem('token', res.data["tokenSecurity"]);

@@ -13,12 +13,15 @@ export const InputComponent = ({
   customOnChange,
   fromYear,
   toYear,
-  minDate,
-  maxDate,
   invalidText
 }) => {
   const [activePopup, setActivePopup] = useState(false);
   const [invalidDate, setInvalidDate] = useState(false);
+
+  const [date, setDate] = useState("");
+
+  const minDate = moment().subtract(90, "y").toDate();
+  const maxDate = moment().subtract(16, "y").toDate();
 
   const wrapperRef = useRef(null);
 
@@ -39,40 +42,25 @@ export const InputComponent = ({
   useOutsideAlerter(wrapperRef);
 
   function handleOnChange(e) {
-    
-    let date = moment(e, "DD/MM/YYYY").isAfter(moment().subtract(8, "year"))
-    console.log(e)
-    setInvalidDate(date)
-    customOnChange(e);
+    setDate(moment(e).format("YYYY-MM-DD"))
+    customOnChange(moment(e).format("YYYY-MM-DD"));
     setActivePopup(false);
   }
 
   return (
     <div className="form-control-date" ref={wrapperRef}>
-      <IMaskInput  
+      <input
         className="form-control"
         placeholder="00/00/0000"
-        mask={"00/00/0000"}
+        //mask={"00/00/0000"}
         onClick={() => {
           setActivePopup(!activePopup);
         }}
         onChange={(e)=> handleOnChange(e.target.value) }
-        defaultValue={moment(daySelected).format("DD/MM/YYYY").toString()}
-        value={moment(daySelected).format("DD/MM/YYYY").toString()}
-        type={"text"}
+        value={daySelected}
+        type={"date"}
       />
-      {/* <input
-        max={maxDate}
-        min={minDate}
-        className="form-control"
-        type={"text"}
-        onChange={(e)=> handleOnChange(e.target.value) }
-        value={moment(daySelected).format("DD/MM/YYYY").toString()}
-        onClick={() => {
-          setActivePopup(!activePopup);
-        }}
-      /> */}
-      {invalidDate && <p className="text-[0.8rem] mt-1 text-red-700">{invalidText}</p>}
+      {(moment(daySelected).isBefore(minDate) || moment(daySelected).isAfter(maxDate) ) && <p className="text-[0.8rem] mt-1 text-red-700">{invalidText}</p>}
       {activePopup && (
         <div className="form-control-date-popup">
           <DayPicker
@@ -82,7 +70,7 @@ export const InputComponent = ({
             toYear={toYear}
             captionLayout="dropdown"
             mode="single"
-            selected={daySelected}
+            selected={moment(daySelected, "YYYY-MM-DD").toDate()}
             onSelect={(e) => {
               handleOnChange(e);
             }}

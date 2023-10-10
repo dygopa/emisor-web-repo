@@ -16,7 +16,7 @@ function ValidityPolicy() {
     const [maxDate, setMaxDate] = useState("-")
     const [sinceDate, setSinceDate] = useState("")
 
-    const [selectedDate, setSelectedDate] = useState(new Date())
+    const [selectedDate, setSelectedDate] = useState(moment().utc().format("YYYY-MM-DD"))
 
     var curr = new Date();
     curr.setDate(curr.getDate() - 1);
@@ -58,7 +58,6 @@ function ValidityPolicy() {
             to: moment(value).utc().add(1, "y").format("YYYY-MM-DD"),
             toShow: moment(value).utc().add(1, "y").format("DD/MM/YYYY")
         })
-        console.log(propDate)
     }
 
     const AlertComponent = ({type, msg, state}) => {
