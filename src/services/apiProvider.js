@@ -44,6 +44,7 @@ let getLimitEndPoint = "api/Configuration/get_limit"
 let GetDatosIdentidadxIdentificacionEndPoint = "api/Configuration/Get_DatosIdentidadxIdentificacion"
 let GetDatosContratanteEndPoint = "api/Configuration/Get_DatosContratante"
 let updateBenefitEndPoint = "api/Configuration/Update_benefit"
+let GetPermisoEndPoint = "api/Configuration/Get_Permiso"
 
 let token = localStorage.getItem('token');
 
@@ -199,6 +200,12 @@ class ApiProvider{
 
     async GetProfesionEndPoint(queryString){
         let url = urlAPI + GetProfesionEndPoint + queryString
+
+        return await axios.get(url, config)
+    }
+
+    async GetPermisoEndPoint(queryString){
+        let url = urlAPI + GetPermisoEndPoint + queryString
 
         return await axios.get(url, config)
     }

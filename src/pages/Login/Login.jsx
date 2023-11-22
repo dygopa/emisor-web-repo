@@ -59,9 +59,15 @@ function Login() {
         let stringified = JSON.stringify(json)
         form_data.append('Data', stringified)
 
-        apiProvider.getUserLogin(form_data).then((res)=>{
+        apiProvider.getUserLogin(form_data).then(async(res)=>{
+            
+            
             setErrorStatus(false)
             if(res.status === 200){
+
+                let security = await apiProvider.GetPermisoEndPoint(`?IdUsuario=${res.data["idCorredor"]}`)
+                console.log(security.data)
+
                 localStorage.setItem('token_api', res.data["token"]);
                 localStorage.setItem('token', res.data["tokenSecurity"]);
 
@@ -71,7 +77,10 @@ function Login() {
                 localStorage.setItem('idCorredor', res.data["idCorredor"]);
 
                 localStorage.removeItem('activeLink');
-                
+
+                let permition = JSON.stringify(security.data[0])
+                localStorage.setItem('ja.sjson', permition);
+
                 window.location.href = "/"
                 //window.location.reload()
             }
