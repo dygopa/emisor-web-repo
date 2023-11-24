@@ -66,7 +66,6 @@ function Login() {
             if(res.status === 200){
 
                 let security = await apiProvider.GetPermisoEndPoint(`?IdUsuario=${res.data["idCorredor"]}`)
-                console.log(security.data)
 
                 localStorage.setItem('token_api', res.data["token"]);
                 localStorage.setItem('token', res.data["tokenSecurity"]);
@@ -78,7 +77,11 @@ function Login() {
 
                 localStorage.removeItem('activeLink');
 
-                let permition = JSON.stringify(security.data[0])
+                let permition = JSON.stringify(security.data[0] ?? {
+                    VerConfiguracionDanoDT: 2,
+                    VerEmisionPoliza: 2
+                })
+
                 localStorage.setItem('ja.sjson', permition);
 
                 window.location.href = "/"

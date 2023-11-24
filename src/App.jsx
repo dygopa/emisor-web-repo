@@ -38,7 +38,6 @@ function App() {
     checkIfSessionValid()
   }, [loadedCheck])
   
-
   return (
     <Router>
       { !url.includes("/login") && <Sidebar/> }
