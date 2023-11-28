@@ -65,8 +65,8 @@ function Login() {
             setErrorStatus(false)
             if(res.status === 200){
 
-                let security = await apiProvider.GetPermisoEndPoint(`?IdUsuario=${res.data["idCorredor"]}`)
-
+                let security = await apiProvider.GetPermisoEndPoint(`?IdUsuario=${res.data["idUsuario"]}`)
+                
                 localStorage.setItem('token_api', res.data["token"]);
                 localStorage.setItem('token', res.data["tokenSecurity"]);
 

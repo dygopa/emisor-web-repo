@@ -14,29 +14,11 @@ import ToEmmitPolicyRegister from './pages/IssuePolicy/ToEmmitPolicyRegister';
 import ValidityPolicy from './pages/IssuePolicy/ValidityPolicy';
 import Users from './pages/Users/Users';
 import NewUser from './pages/Users/NewUser';
-import apiProvider from './services/apiProvider';
+import ValidationComponent from './components/ValidationComponent';
 
 function App() {
 
   let url = window.location.href
-  const [loadedCheck, setLoadedCheck] = useState(false)
-
-  function checkIfSessionValid(){
-    apiProvider.getCompanyEndPoint("").then((res)=>{
-      setLoadedCheck(true)
-    }).catch((e)=>{
-      if(e.response["status"] === 401){
-        if(!url.includes("/login")){
-          window.location.href = "/login"
-          setLoadedCheck(true)
-        }
-      }
-    })
-  }
-
-  useEffect(() => {
-    checkIfSessionValid()
-  }, [loadedCheck])
   
   return (
     <Router>
@@ -45,14 +27,14 @@ function App() {
         <Route path="/login" exact element={<Login/>}/>
         {/* <Route path="/quotes" exact element={<Quoters/>}/>
         <Route path="/quoter-register" exact element={<QuoterRegister/>}/> */}
-        <Route path="/" exact element={<Quoters/>}/>
-        <Route path="/quoter-register" exact element={<QuoterRegister/>}/>
-        <Route path="/issue-policy" exact element={<IssuePolicy/>}/>
-        <Route path="/to-emmit-policy" exact element={<ToEmmitPolicy/>}/>
-        <Route path="/to-emmit-policy-register" exact element={<ToEmmitPolicyRegister/>}/>
-        <Route path="/validity-policy" exact element={<ValidityPolicy/>}/>
-        <Route path="/users" exact element={<Users/>}/>
-        <Route path="/new-user" exact element={<NewUser/>}/>
+          <Route path="/" exact element={ <ValidationComponent><Quoters/></ValidationComponent>}/>
+          <Route path="/quoter-register" exact element={ <ValidationComponent><QuoterRegister/> </ValidationComponent>}/>
+          <Route path="/issue-policy" exact element={ <ValidationComponent><IssuePolicy/> </ValidationComponent>}/>
+          <Route path="/to-emmit-policy" exact element={ <ValidationComponent><ToEmmitPolicy/> </ValidationComponent>}/>
+          <Route path="/to-emmit-policy-register" exact element={ <ValidationComponent><ToEmmitPolicyRegister/></ValidationComponent>}/>
+          <Route path="/validity-policy" exact element={ <ValidationComponent><ValidityPolicy/> </ValidationComponent>}/>
+          <Route path="/users" exact element={ <ValidationComponent><Users/> </ValidationComponent>}/>
+          <Route path="/new-user" exact element={ <ValidationComponent><NewUser/> </ValidationComponent>}/>
       </Routes>
     </Router>
   )
