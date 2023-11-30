@@ -27,14 +27,14 @@ function App() {
         <Route path="/login" exact element={<Login/>}/>
         {/* <Route path="/quotes" exact element={<Quoters/>}/>
         <Route path="/quoter-register" exact element={<QuoterRegister/>}/> */}
-          <Route path="/" exact element={ <ValidationComponent><Quoters/></ValidationComponent>}/>
-          <Route path="/quoter-register" exact element={ <ValidationComponent><QuoterRegister/> </ValidationComponent>}/>
-          <Route path="/issue-policy" exact element={ <ValidationComponent><IssuePolicy/> </ValidationComponent>}/>
-          <Route path="/to-emmit-policy" exact element={ <ValidationComponent><ToEmmitPolicy/> </ValidationComponent>}/>
-          <Route path="/to-emmit-policy-register" exact element={ <ValidationComponent><ToEmmitPolicyRegister/></ValidationComponent>}/>
-          <Route path="/validity-policy" exact element={ <ValidationComponent><ValidityPolicy/> </ValidationComponent>}/>
-          <Route path="/users" exact element={ <ValidationComponent><Users/> </ValidationComponent>}/>
-          <Route path="/new-user" exact element={ <ValidationComponent><NewUser/> </ValidationComponent>}/>
+          <Route path="/" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT"><Quoters/></ValidationComponent>}/>
+          <Route path="/quoter-register" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT" ><QuoterRegister/> </ValidationComponent>}/>
+          <Route path="/issue-policy" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><IssuePolicy/> </ValidationComponent>}/>
+          <Route path="/to-emmit-policy" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><ToEmmitPolicy/> </ValidationComponent>}/>
+          <Route path="/to-emmit-policy-register" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><ToEmmitPolicyRegister/></ValidationComponent>}/>
+          <Route path="/validity-policy" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><ValidityPolicy/> </ValidationComponent>}/>
+          <Route path="/users" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT" ><Users/> </ValidationComponent>}/>
+          <Route path="/new-user" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT" ><NewUser/> </ValidationComponent>}/>
       </Routes>
     </Router>
   )
