@@ -15,6 +15,7 @@ import ValidityPolicy from './pages/IssuePolicy/ValidityPolicy';
 import Users from './pages/Users/Users';
 import NewUser from './pages/Users/NewUser';
 import ValidationComponent from './components/ValidationComponent';
+import Home from './pages/Home/Home';
 
 function App() {
 
@@ -25,9 +26,8 @@ function App() {
       { !url.includes("/login") && <Sidebar/> }
       <Routes>
         <Route path="/login" exact element={<Login/>}/>
-        {/* <Route path="/quotes" exact element={<Quoters/>}/>
-        <Route path="/quoter-register" exact element={<QuoterRegister/>}/> */}
-          <Route path="/" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT"><Quoters/></ValidationComponent>}/>
+          <Route path="/" exact element={ <Home/> }/>
+          <Route path="/quotes" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT"><Quoters/></ValidationComponent> }/>
           <Route path="/quoter-register" exact element={ <ValidationComponent nameLink="VerConfiguracionDanoDT" ><QuoterRegister/> </ValidationComponent>}/>
           <Route path="/issue-policy" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><IssuePolicy/> </ValidationComponent>}/>
           <Route path="/to-emmit-policy" exact element={ <ValidationComponent nameLink="VerEmisionPoliza" ><ToEmmitPolicy/> </ValidationComponent>}/>

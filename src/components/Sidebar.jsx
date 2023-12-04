@@ -48,7 +48,7 @@ function Sidebar() {
                 </div>
                 <div className="w-full flex flex-col relative h-[78%] mt-[5rem] justify-center overflow-y-auto">
                     {/* <LinkComponent fromParentLink="" linkTitle="Estadísticas" srcImgActive="/images/estadisticas-ico-active.png" srcImg="/images/estadisticas-ico.png" link={"/a"} hasSublinks={false} thisId={"e"} /> */}
-                    <LinkComponent hidden={permition["VerConfiguracionDanoDT"] === 2} fromParentLink="" linkTitle="Daños a Terceros" srcImgActive="/images/configuracion-ico-active.png" srcImg="/images/configuracion-ico.png" link={"/"} hasSublinks={false} thisId={"ca"} />
+                    <LinkComponent hidden={permition["VerConfiguracionDanoDT"] === 2} fromParentLink="" linkTitle="Daños a Terceros" srcImgActive="/images/configuracion-ico-active.png" srcImg="/images/configuracion-ico.png" link={"/quotes"} hasSublinks={false} thisId={"ca"} />
                     {/* <LinkComponent fromParentLink="" linkTitle="Cotizadores" srcImgActive="/images/cotizadores-ico-active.png" srcImg="/images/cotizadores-ico.png" link={"/quotes"} hasSublinks={false} thisId={"m"} /> */}
                     <LinkComponent hidden={permition["VerEmisionPoliza"] === 2} fromParentLink="" linkTitle="Emitir Póliza" srcImgActive="/images/emitir-ico-active.png" srcImg="/images/emitir-ico.png" link={"/issue-policy"} hasSublinks={false} thisId={"n"} />
 
