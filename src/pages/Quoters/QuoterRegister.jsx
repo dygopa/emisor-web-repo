@@ -399,12 +399,16 @@ function QuoterRegister() {
             })
 
             if(res.status !== 200) console.log(res.data)
+            
+            let list = listOfBenefitsSelected.filter(elem => elem["idBeneficio"] !== data["idBeneficio"])
+            setListOfBenefitsSelected(list)
 
             apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
                 if(res.status === 200){
                     setListOfBenefits(res.data)
-                    setSuccessAlert((prv) => true)
+                    setSuccessAlert(true)
                     setSuccessAlertMessage("Beneficio eliminado exitosamente")
+
                     setTimeout(() => {
                         setSuccessAlert((prv) => false)
                     }, 2000);
@@ -860,7 +864,7 @@ function QuoterRegister() {
         })
     }
 
-    useMemo(()=> {
+    useEffect(()=> {
         if(formObject["idAseguradora"]){
             getDTPlans()
             setPricingData({
@@ -893,7 +897,7 @@ function QuoterRegister() {
     useEffect(() => {
         changeBackground()
         window.addEventListener("scroll", changeBackground)
-    })
+    }, [])
 
     useEffect(() => {
         chargePlansAPI()
@@ -1158,14 +1162,14 @@ function QuoterRegister() {
                             <div className='flex flex-col justify-start items-start'>
                                 <select value={formObject.idTipoAplicacion} onChange={(e)=>{ setFormObject({...formObject, idTipoAplicacion: e.target.value}) }} className="form-control">
                                     <option value="">{"Seleccionar"}</option>
-                                    {listOfPlanTypes.map((type)=> <option value={type["Id"]}>{type["Descripcion"]}</option> )}
+                                    {listOfPlanTypes.map((type, i)=> <option key={i} value={type["Id"]}>{type["Descripcion"]}</option> )}
                                 </select>
                                 {listOfRequired.includes("idTipoAplicacion") && <ErrorText/>}
                             </div>
                             <div className='flex flex-col justify-start items-start'>
-                                <select value={formObject.planAseguradora} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
+                                <select value={formObject.planAseguradora} defaultValue={formObject.planAseguradora} onChange={(e)=>{ setFormObject({...formObject, planAseguradora: e.target.value}) }} className="form-control">
                                     <option value="">{"Planes aseguradora"}</option>
-                                    {listOfPlansOfInsurence.map((type)=> <option value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - $${type['prima']} `}</option> )}
+                                    {listOfPlansOfInsurence.map((type, i)=> <option key={i} value={type["codigo_plan"]}>{`${type["descripcion_plan"]} - $${type['prima']} `}</option> )}
                                 </select>
                                 {(errorAlertMessage === "Se debe seleccionar un plan de la aseguradora" && (!formObject["planAseguradora"] || formObject["planAseguradora"] === "")) && <ErrorText/>}
                             </div>
@@ -1411,9 +1415,12 @@ function QuoterRegister() {
             "vigenciaPoliza"
         ]
         
+        console.log("handleValidationFunction()", handleValidationFunction())
+
         let validateList = validators.validateObjectWithList((showPricings ? listValidationWithPricing : listValidation), formObject)
 
         setListOfRequired(validateList)
+
 
         if( validateList.length > 0 ) return;
 
@@ -1446,7 +1453,7 @@ function QuoterRegister() {
 
         if(listOfPlansOfInsurence.length > 0){
             let findedPlanInsurencePrice = listOfPlansOfInsurence.find(elem => elem["codigo_plan"] === formObject["planAseguradora"])
-    
+            
             if(parseInt(findedPlanInsurencePrice["prima"]) !== parseInt(pricingData["totalPlan"])){
                 setErrorAlert(true)
                 setErrorAlertMessage("La prima total debe ser igual a la prima del plan")
@@ -1456,7 +1463,7 @@ function QuoterRegister() {
                 return;
             }
         }
-
+    
         var myHeaders = new Headers();
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem('token')}`);
         myHeaders.append("Content-Type", "application/json");
