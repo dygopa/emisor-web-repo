@@ -908,7 +908,7 @@ function QuoterRegister() {
     }, [loadedAPI])
 
     return (
-        <div className="ml-[6%] w-[94%] relative block h-auto bg-slate-50 p-8">
+        <div className="lg:ml-[6%] lg:w-[94%] w-full relative block h-auto bg-slate-50 p-8">
             {successAlert && <AlertComponent state={setSuccessAlert} type={"1"} msg={successAlertMessage} />}
             {errorAlert && <AlertComponent state={setErrorAlert} type={"2"} msg={errorAlertMessage} />}
             {(navbarOnTop && !toggledSidebar) && <div className="shadow-[#7777772f] shadow-2xl transition z-10 fixed bg-white w-[94%] h-fit top-0 right-0">

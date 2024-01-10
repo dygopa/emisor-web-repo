@@ -41,8 +41,12 @@ function Sidebar() {
     }
 
     return (
-        <div className="w-[6%] h-screen block fixed top-0 left-0 bg-white z-20 shadow-xl shadow-slate-100 border-r border-slate-200">
-            <div className="flex flex-col relative justify-between h-full">
+        <div className={[
+            "w-[6%] h-screen lg:block hidden fixed top-0 left-0 bg-white z-20 shadow-xl shadow-slate-100 border-r border-slate-200",
+        ]}>
+            <div className={[
+                "flex flex-col relative justify-between h-full"
+            ]}>
                 <div className="z-10 w-full h-[18vh] p-4 bg-white absolute top-0 left-0">
                     <img src={import.meta.env.VITE_ISOTIPO_APP} className='my-0 mx-auto h-full box-border w-full object-contain' />
                 </div>

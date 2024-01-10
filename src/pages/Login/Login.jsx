@@ -31,8 +31,8 @@ function Login() {
         <div className="relative flex h-screen flex-wrap justify-center items-center bg-gray-50">
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}
             {errorStatus && <AlertComponent state={setErrorStatus} type={"2"} msg={errorMessage} />}
-            <div className="h-full relative justify-center flex-col flex lg:w-1/2 md:w-1/2 sm:w-full p-40">
-                <img className='my-0 mx-auto h-1/2 w-full object-contain' src={import.meta.env.VITE_LOGO_APP} />
+            <div className="h-full relative justify-center flex-col flex lg:w-1/2 md:w-1/2 sm:w-full lg:p-40 p-20">
+                <img className='lg:my-0 mb-4 mx-auto lg:h-1/2 w-full object-contain' src={import.meta.env.VITE_LOGO_APP} />
                 <div className="mb-4">
                     <p className="input-label">{"Usuario"}</p>
                     <input placeholder={"Ingresa tu usuario"} value={userObject.username} onChange={(e)=>{ setUserObject({...userObject, username: e.target.value}) }} type="text" className="focus:border-secondary outline-none hover:border-secondary transition block relative rounded-md mb-4 border-2 border-primary/40 w-full p-2" />
@@ -43,7 +43,7 @@ function Login() {
                 </div>
                 <div onClick={()=>{ manageSesionLogin() }} className="transition cursor-pointer w-full relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Iniciar sesion</div>
             </div>
-            <div className="h-full relative block lg:w-1/2 md:w-1/2 sm:w-full">
+            <div className="lg:block hidden h-full relative lg:w-1/2 md:w-1/2 sm:w-full">
                 <img className='w-full h-full' src={import.meta.env.VITE_COVER_APP} />
             </div>
         </div>

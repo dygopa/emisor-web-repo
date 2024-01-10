@@ -77,7 +77,7 @@ function NewUser() {
     })
 
     return (
-        <div className="ml-[6%] w-[94%] relative block h-screen bg-primary/20 p-8">
+        <div className="lg:ml-[6%] lg:w-[94%] w-full relative block h-screen bg-primary/20 p-8">
             <div onClick={()=>{ setToggledSidebar(!toggledSidebar) }} className="fixed right-8 bottom-8 z-10 bg-primary p-5 rounded cursor-pointer hover:bg-secondary transition shadow-xl">
                 <span className="text-white material-symbols-outlined">
                     {toggledSidebar ? "view_agenda" : "view_column_2"}

@@ -252,7 +252,7 @@ function ToEmmitPolicy() {
     },[searchObject])
 
     return (
-        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
+        <div className="lg:ml-[6%] lg:w-[94%] w-full relative block h-screen bg-gray-50 p-8">
             <p className='title-section text-slate-900 mb-6'>Planes por Aseguradora​</p>
             <div className="my-3 relative flex flex-wrap justify-start items-end">
                 <div className="mb-3 mr-3 w-fit">

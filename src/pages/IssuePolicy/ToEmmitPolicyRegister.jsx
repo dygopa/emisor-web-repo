@@ -549,7 +549,7 @@ function ToEmmitPolicyRegister() {
     const ErrorText = () => <p className='text-[0.8rem] mt-2 text-red-700'>Campo requerido (*)</p>
     
     return (
-        <div className={`ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8 ${termsPopup && "overflow-hidden"}`}>
+        <div className={`lg:ml-[6%] lg:w-[94%] w-full relative block h-screen bg-gray-50 p-8 ${termsPopup && "overflow-hidden"}`}>
             {termsPopup && <TermsPopup/>}
             {warningStatus && <AlertComponent state={setWarningStatus} type={"3"} msg={warningMessage} />}
             {successStatus && <AlertComponent state={setSuccessStatus} type={"1"} msg={successMessage} />}

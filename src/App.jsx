@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 //Components
 import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 
 //Pages
 import Login from './pages/Login/Login';
@@ -24,6 +25,7 @@ function App() {
   return (
     <Router>
       { !url.includes("/login") && <Sidebar/> }
+      { !url.includes("/login") && <Navbar/> }
       <Routes>
         <Route path="/login" exact element={<Login/>}/>
           <Route path="/" exact element={ <Home/> }/>

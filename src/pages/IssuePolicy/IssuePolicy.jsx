@@ -78,7 +78,7 @@ function IssuePolicy() {
     }, [loadedProducts])
 
     return (
-        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
+        <div className="lg:ml-[6%] lg:w-[94%] w-full relative block h-screen bg-gray-50 p-8">
             <div className="flex w-full justify-start items-center mb-5">
                 <p className='title-section text-slate-900'>Emitir Póliza</p>
             </div>

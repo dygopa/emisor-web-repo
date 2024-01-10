@@ -143,7 +143,7 @@ function Quoters() {
     }, [searchObject])
 
     return (
-        <div className="ml-[6%] w-[94%] relative block h-screen bg-gray-50 p-8">
+        <div className="lg:ml-[6%] lg:w-[94%] w-full relative block h-screen bg-gray-50 p-8">
             <p className='title-section text-slate-900'>Consulta para la creación de planes DT</p>
             <div className="my-3 relative flex flex-wrap items-end">
                 {listOfInputs.map((v, i)=>{
