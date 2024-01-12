@@ -967,6 +967,7 @@ function QuoterRegister() {
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} block mb-3 px-3`}>
                                 <p className="input-label">Aseguradora (*)</p>
                                 <select disabled={ location.state !== null } value={formObject.idAseguradora} onChange={(e)=>{
+                                    setListOfPlansOfInsurence([])
                                     setShowPricings(false)
                                     setFormObject({...formObject, idAseguradora: e.target.value}), 
                                     getDataFromValue(e.target.value, "compania") 
@@ -1055,7 +1056,7 @@ function QuoterRegister() {
                             </>}
                             { endosoApplies && <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
                                 <p className="input-label">Aplica endoso (*)</p>
-                                <select onChange={(e)=>{setFormObject({...formObject, aplicaEndoso: e.target.value})}} 
+                                <select value={formObject.aplicaEndoso} onChange={(e)=>{setFormObject({...formObject, aplicaEndoso: e.target.value})}} 
                                 className="form-control">
                                     <option value="">Selecciona si aplica el endoso</option>
                                     <option value="SI">Si</option>
