@@ -1083,7 +1083,7 @@ function QuoterRegister() {
                             <>
                                 {disabledSubTotal ? <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
                                         <p className="input-label">Sub Total</p>
-                                        <div className="bg-slate-200 cursor-default form-control">{pricingData.subTotal ? parseInt(pricingData.subTotal).toFixed(2) : pricingData.subTotal}</div>
+                                        <div className="bg-slate-200 cursor-default form-control">{pricingData.subTotal ? parseFloat(pricingData.subTotal).toFixed(2) : pricingData.subTotal}</div>
                                     </div> : 
                                     <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
                                         <p className="input-label">Sub Total</p>
@@ -1126,7 +1126,7 @@ function QuoterRegister() {
                         {!showPricings && <div className="flex flex-wrap content-start">
                             {disabledSubTotal ? <div className={`${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
                                     <p className="input-label">Sub Total</p>
-                                    <div className="bg-slate-200 cursor-default form-control">{pricingData.subTotal ? parseInt(pricingData.subTotal).toFixed(2) : pricingData.subTotal}</div>
+                                    <div className="bg-slate-200 cursor-default form-control">{pricingData.subTotal ? parseFloat(pricingData.subTotal).toFixed(2) : pricingData.subTotal}</div>
                                 </div> : 
                                 <div className={`block ${toggledSidebar ? "w-1/2" : "w-1/3"} mb-3 px-3`}>
                                     <p className="input-label">Sub Total</p>
