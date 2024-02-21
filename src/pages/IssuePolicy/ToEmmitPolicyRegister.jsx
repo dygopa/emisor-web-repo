@@ -1239,9 +1239,8 @@ function ToEmmitPolicyRegister() {
                                 <input value={formObject["ApartamentoCasa"]} placeholder={"Escriba el apartamento / casa"} onChange={(e)=>{ setFormObject({...formObject, ApartamentoCasa: e.target.value}) }} type="text" className="form-control" />
                             </div>}
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
-                                <p className="input-label">Dirección <span className='text-primary font-bold'>*</span></p>
+                                <p className="input-label">Dirección</p>
                                 <input value={formObject["Direccion"]}  placeholder={"Escriba la dirección"} onChange={(e)=>{ setFormObject({...formObject, Direccion: e.target.value}) }} type="text" className="form-control" />
-                                {fieldsClient.includes("Direccion") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Observación</p>

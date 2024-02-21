@@ -3,7 +3,6 @@ export const client_natural_list = [
     "Apellidos",
     "nombres",
     "Calle",
-    "Direccion",
     "IdCorregimiento",
     "IdDistrito",
     "IdPais",
