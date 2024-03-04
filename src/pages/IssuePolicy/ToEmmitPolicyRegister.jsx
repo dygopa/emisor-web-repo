@@ -312,7 +312,7 @@ function ToEmmitPolicyRegister() {
 
     function getDataFromValue(value, type){
         if(type === "model"){
-            apiProvider.getVehiculeModelEndPoint(`?idMarca=${value}`).then((res)=>{
+            apiProvider.getVehiculeModelEndPoint(`?idMarca=${value}&idCompania=${data.state["idCompania"]}`).then((res)=>{
                 console.log(value)
                 setFormObject({...formObject, marcaid: value})
                 setListOfVehiculeModels(res.data)
@@ -410,13 +410,7 @@ function ToEmmitPolicyRegister() {
         }).catch((e)=>{
             console.log(e)
         })
-
-        apiProvider.getVehiculeModelEndPoint("").then((res)=>{
-            setListOfVehiculeModels(res.data)
-        }).catch((e)=>{
-            console.log(e)
-        })
-        apiProvider.getVehiculeBrandEndPoint("").then((res)=>{
+        apiProvider.getVehiculeBrandEndPoint(`?idCompania=${data.state["idCompania"]}`).then((res)=>{
             setListOfVehiculeBrands(res.data)
         }).catch((e)=>{
             console.log(e)
