@@ -20,6 +20,7 @@ import {
 } from '../../services/issue-policy/requerired-fields';
 import validators from '../../services/validators';
 import { useLocation, useNavigate } from 'react-router-dom';
+import InputMask from 'react-input-mask';
 
 function ToEmmitPolicyRegister() {
 
@@ -1375,7 +1376,16 @@ function ToEmmitPolicyRegister() {
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Placa <span className='text-primary font-bold'>*</span></p>
-                                <input value={formObject["Placa"]} placeholder={"Ingrese la placa"} onChange={(e)=>{ setFormObject({...formObject, Placa: e.target.value}) }} type={"text"} className="form-control" />
+                                <InputMask
+                                    type='text'
+                                    maskChar={null}
+                                    className="form-control"
+                                    mask="******"
+                                    placeholder={"Ingrese la placa"}
+                                    value={formObject["Placa"]}
+                                    onChange={e => setFormObject({...formObject, Placa: e.target.value}) }
+                                />
+                                {(formObject["Placa"] && formObject["Placa"].length < 6) && <p className='text-[0.8rem] mt-2 text-red-700'>La placa debe ser mayor a 5 digitos</p>}
                                 {fieldsClient.includes("Placa") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
@@ -1596,6 +1606,12 @@ function ToEmmitPolicyRegister() {
         //Email Validation
         if(!validators.validateField("email", object["email"])){
             setErrorMessage("El email no es correcto")
+            setErrorStatus(true)
+            return false
+        }
+        
+        if(object["Placa"].length !== 6){
+            setErrorMessage("La placa no es correcta")
             setErrorStatus(true)
             return false
         }
