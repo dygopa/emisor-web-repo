@@ -434,13 +434,14 @@ function ToEmmitPolicyRegister() {
     function chargeYears(){
         let list = []
         
-        for (let i = 0; i < 11; i++) {
-            const yearNumber = i;
-            const year = moment().subtract(yearNumber, "y").format("YYYY").toString()
-            list.push(year)
+        let yearBegin = 1960
+        let yearEnd = new Date().getFullYear()
+
+        for (let i = yearBegin; i <= yearEnd; i++) {
+            list.push(i)
         }
 
-        setListOfYears(list)
+        setListOfYears(list.reverse())
         setLoadedYears(true)
     }
 
