@@ -389,7 +389,8 @@ function QuoterRegister() {
         const [field, setField] = useState(data["descripcion"])
 
         const [wantsToUpdate, setWantsToUpdate] = useState(false)
-        let isSelected = listOfBenefitsSelected.some((prv)=>( prv["idBeneficio"] === data["idBeneficio"] ))
+
+        let isSelected = listOfBenefitsSelected.find((prv)=>( prv["idBeneficio"] === data["idBeneficio"] ))
 
         async function deleteBenefit(){
             let res = await apiProvider.updateBenefit({
@@ -398,22 +399,36 @@ function QuoterRegister() {
                 Accion: "E"
             })
 
-            if(res.status !== 200) console.log(res.data)
+            if(res.status !== 200){
+                setErrorAlert(prv => true);
+                setErrorAlertMessage("No se pudo eliminar el beneficio.")
+                setTimeout(() => {
+                    setErrorAlert(prv => false)
+                }, 2000);
+            }
             
             let list = listOfBenefitsSelected.filter(elem => elem["idBeneficio"] !== data["idBeneficio"])
+            
             setListOfBenefitsSelected(list)
 
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
-                if(res.status === 200){
-                    setListOfBenefits(res.data)
-                    setSuccessAlert(true)
-                    setSuccessAlertMessage("Beneficio eliminado exitosamente")
+            let getBenefitsRes = await apiProvider.getBeneficiosEndPoint(`?idCompania=${location.state["idCompania"]}&IdCorredor=${localStorage.getItem("idCorredor")}`)
 
-                    setTimeout(() => {
-                        setSuccessAlert((prv) => false)
-                    }, 2000);
-                }
-            })
+            if(getBenefitsRes.status !== 200){
+                setErrorAlert(prv => true);
+                setErrorAlertMessage("No se pudo obtener la lista de beneficios.")
+                setTimeout(() => {
+                    setErrorAlert(prv => false)
+                }, 2000);
+            }
+
+            
+
+            setListOfBenefits(getBenefitsRes.data)
+            setSuccessAlert(true)
+            setSuccessAlertMessage("Beneficio eliminado exitosamente")
+            setTimeout(() => {
+                setSuccessAlert((prv) => false)
+            }, 2000);
         }
 
         async function saveBenefit(){
@@ -864,10 +879,6 @@ function QuoterRegister() {
         })
     }
 
-    useMemo(()=>{
-        console.table(pricingData)
-    },[pricingData])
-
     useEffect(()=> {
         if(formObject["idAseguradora"]){
             getDTPlans()
@@ -1239,7 +1250,7 @@ function QuoterRegister() {
         </div>
     )
 
-    function handleAddBenefit(){
+    async function handleAddBenefit(){
 
         let object = {
             Imagen: "",
@@ -1252,20 +1263,34 @@ function QuoterRegister() {
         const form_data = new FormData()
         form_data.append("Json", JSON.stringify(object))
 
-        apiProvider.addBenefitEndPoint(object).then((res)=>{
-            apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}&IdCorredor=${localStorage.getItem("idCorredor")}`).then((res)=>{
-                if(res.status === 200){
-                    setListOfBenefits(res.data)
-                    setSuccessAlert((prv) => true)
-                    setSuccessAlertMessage("Beneficio agregado exitosamente")
-                    setTimeout(() => {
-                        setSuccessAlert((prv) => false)
-                    }, 2000);
-                }
-            })
-            setBenefitData("")
-        })
+        let res = await apiProvider.addBenefitEndPoint(object);
 
+        if(res.status !== 200){
+            setErrorAlert(prv => true)
+            setErrorAlertMessage("No se pudo agregar el beneficio.")
+            setTimeout(() => {
+                setErrorAlert(prv => false)
+            }, 2000);
+        }
+
+        setBenefitData("")
+
+        let getBenefitsRes = await apiProvider.getBeneficiosEndPoint(`?idCompania=${formObject["idAseguradora"]}&IdCorredor=${localStorage.getItem("idCorredor")}`);
+
+        if(getBenefitsRes.status !== 200){
+            setErrorAlert(prv => true)
+            setErrorAlertMessage("No se pudo obtener la lista de beneficios.")
+            setTimeout(() => {
+                setErrorAlert(prv => false)
+            }, 2000);
+        }
+
+        setListOfBenefits(getBenefitsRes.data)
+        setSuccessAlert(prv => true)
+        setSuccessAlertMessage("Beneficio agregado exitosamente")
+        setTimeout(() => {
+            setSuccessAlert(prv => false)
+        }, 2000);
     }
 
     function formatQuotesList(){
