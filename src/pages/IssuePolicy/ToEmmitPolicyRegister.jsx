@@ -1222,7 +1222,10 @@ function ToEmmitPolicyRegister() {
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
                                 <p className="input-label">Urbanización <span className='text-primary font-bold'>*</span></p>
-                                <input value={formObject["Urbanizacion"]} placeholder='Escriba la urbanización' onChange={(e)=>{ setFormObject({...formObject, Urbanizacion: e.target.value})  }} type="text" className="form-control"/>
+                                <select defaultValue={formObject["Urbanizacion"]} onChange={(e)=>{ setFormObject({...formObject, Urbanizacion: e.target.value}) }} className="form-control">
+                                    <option value="">Seleccione la urbanización</option>
+                                    {listOfUrbanizacion.map((type)=> <option value={type["id"]}>{type["descripcion"]}</option> )}
+                                </select>
                                 {fieldsClient.includes("Urbanizacion") && <ErrorText/>}
                             </div>
                             <div className={`${toggledSidebar ? "w-1/2" : "w-1/4"} mb-3 px-3`}>
@@ -1470,7 +1473,7 @@ function ToEmmitPolicyRegister() {
             IdProfesion: formObject["IdProfesion"] ?? "",
             IdProvincia: formObject["IdProvincia"] ?? "",
             IdTipoEmision: 2,
-            Urbanizacion: formObject["Urbanizacion"] ?? "",
+            IdUrbanizacion: formObject["Urbanizacion"] ?? "",
             idCorredor: localStorage.getItem("idCorredor"),
             Placa: formObject["Placa"] ?? "",
             Token: localStorage.getItem("token_api"),
