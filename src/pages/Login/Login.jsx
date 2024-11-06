@@ -36,17 +36,20 @@ function Login() {
                     <img src={import.meta.env.VITE_LOGO_APP} className="w-full h-full object-contain" />
                 </span>
             </div>
-            <div className="h-full relative justify-center flex-col flex lg:w-1/2 md:w-1/2 sm:w-full lg:p-40 p-20">
-                <img className='lg:my-0 mb-4 mx-auto lg:h-1/2 w-full object-contain' src={import.meta.env.VITE_LOGO_APP} />
-                <div className="mb-4">
+            <div className="lg:w-1/2 md:w-1/2 sm:w-full h-screen relative bg-[#F8F8F8] flex flex-col space-y-5 justify-center items-center p-[0%_9%]">
+                <div className="w-full h-fit flex flex-col justify-center items-start text-left">
+                    <h3 className="text-dark text-4xl font-bold">Bienvenidos</h3>
+                    <p className="text-paragraph text-base font-normal">Introduzca su usuario y contraseña de acceso</p>
+                </div>
+                <div className="w-full">
                     <p className="input-label">{"Usuario"}</p>
                     <input placeholder={"Ingresa tu usuario"} value={userObject.username} onChange={(e)=>{ setUserObject({...userObject, username: e.target.value}) }} type="text" className="focus:border-secondary outline-none hover:border-secondary transition block relative rounded-md mb-4 border-2 border-primary/40 w-full p-2" />
                 </div>
-                <div className="mb-10">
+                <div className="w-full">
                     <p className="input-label">{"Contraseña"}</p>
                     <input placeholder={"Ingresa tu contraseña"} value={userObject.password} onChange={(e)=>{ setUserObject({...userObject, password: e.target.value}) }} type="password" className="focus:border-secondary outline-none hover:border-secondary transition block relative rounded-md mb-4 border-2 border-primary/40 w-full p-2" />
                 </div>
-                <div onClick={()=>{ manageSesionLogin() }} className="transition cursor-pointer w-full relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Iniciar sesion</div>
+                <div onClick={()=>{ manageSesionLogin() }} className="transition cursor-pointer w-full relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Entrar</div>
             </div>
         </div>
     )
