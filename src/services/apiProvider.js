@@ -8,6 +8,7 @@ let getPlanPropertyTypeEndPoint = "api/Companies/get_plan_property_type"
 let getPlanOpcionEndPoint = "api/Configuration/get_plan_opcion"
 let getPropertyTypeEndPoint = "api/Configuration/get_property_type?IdProducto="
 let getDTPlansEndpoint = "api/Companies/GetPlanesDT"
+let getDocumentAfterPolicyEmmitionEndpoint = "api/Companies/Emisor_Interno_Generar_Poliza_V2"
 let getStatusPlanEndPoint = "api/Configuration/get_status_plan"
 let getVigeniciasEndPoint = "api/Configuration/get_vigenicias"
 let getTipoAplicacionPlanEndPoint = "api/Configuration/get_tipoaplicacion_plan"
@@ -45,6 +46,7 @@ let GetDatosIdentidadxIdentificacionEndPoint = "api/Configuration/Get_DatosIdent
 let GetDatosContratanteEndPoint = "api/Configuration/Get_DatosContratante"
 let updateBenefitEndPoint = "api/Configuration/Update_benefit"
 let GetPermisoEndPoint = "api/Configuration/Get_Permiso"
+let validateSiteConfigEndpoint = "api/Configuration/get_configuracion_site_web"
 
 let token = localStorage.getItem('token');
 
@@ -256,6 +258,18 @@ class ApiProvider{
         let url = urlAPI + getDTPlansEndpoint + queryString
 
         return await axios.get(url, config)
+    }
+
+    async validateSiteConfig(){
+        let url = urlAPI + validateSiteConfigEndpoint
+
+        return await axios.get(url, config)
+    }
+
+    async getDocumentAfterPolicyEmmition(data){
+        let url = urlAPI + getDocumentAfterPolicyEmmitionEndpoint
+
+        return await axios.post(url, data, config)
     }
 
     async getPropertyTypeEndPoint(queryString){

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import apiProvider from '../../services/apiProvider'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import DatePicker from "react-datepicker";
@@ -45,7 +45,12 @@ function ValidityPolicy() {
         paymentAccepted: data.state ? data.state[0]["totalplan"] : 0
     })
 
-    const [policy, setPolicy] = useState({})
+    const [siteConfig, setSiteConfig] = useState({
+        appliesLinkPayment: false,
+        appliesPaymentGateway: false
+    })
+
+    const [policy, setPolicy] = useState(0)
 
     const [errorMessage, setErrorMessage] = useState("Ocurrio un error, intentelo otra vez ")
     const [successMessage, setSuccessMessage] = useState("")
@@ -58,6 +63,26 @@ function ValidityPolicy() {
             to: moment(value).utc().add(1, "y").format("YYYY-MM-DD"),
             toShow: moment(value).utc().add(1, "y").format("DD/MM/YYYY")
         })
+    }
+
+    function validateSiteConfig(){
+        apiProvider.validateSiteConfig().then((res)=>{
+            setSiteConfig(prv => ({
+                ...prv,
+                appliesLinkPayment: res.data[0]["IdAplicaLinkPago"] == "1",
+                appliesPaymentGateway: res.data[0]["IdAplicaPasarelaDePago"] == "1"
+            }))
+        }).catch(function (e) {
+            if (e.response) {
+                let status = e.response.status
+                console.log(e.response)
+                if(status === 401){
+                    setErrorMessage("Hubo un error, intentelo mas tarde")    
+                }else{
+                    setErrorMessage(e.response.data[0].Error)
+                }
+            }
+        });
     }
 
     const AlertComponent = ({type, msg, state}) => {
@@ -76,6 +101,16 @@ function ValidityPolicy() {
     useEffect(()=>{
         setErrorInNumber(paymentObject.paymentAccepted > paymentObject.total)
     }, [paymentObject.paymentAccepted, paymentObject.total])
+
+    const effectRef = useRef(false);
+
+    useEffect(()=>{
+        if(!effectRef.current){
+            validateSiteConfig()
+        }
+
+        return()=>{ effectRef.current = true }
+    },[])
 
     return (
         <div className="lg:ml-[6%] lg:w-[94%] w-full relative flex justify-center items-center h-screen bg-gray-50 p-8">
@@ -164,7 +199,10 @@ function ValidityPolicy() {
                     <p className="font-bold text-sm text-primary/40 mb">Vigencia Hasta</p>
                     <p className="font-light text-2xl text-secondary">{policy?.fechaHasta}</p>
                 </div>
-                <div onClick={()=>{ !errorInNumber && controllPrint() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Imprimir Póliza</div>
+                <div className="w-full flex flex-col justify-center items-center relative gap-4">
+                    { siteConfig.appliesLinkPayment && <a href={policy["paymentLink"] ?? policy["linkPago"]} target='_blank' className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Link de pago</a>}
+                    <button disabled={errorInNumber} onClick={()=>{ getDocumentToDownload() }} className="transition cursor-pointer w-full px-16 mr-2 relative block text-center rounded-md text-white py-3 bg-primary hover:bg-secondary">Imprimir Póliza</button>
+                </div>
             </div>}
         </div>
     )
@@ -197,6 +235,7 @@ function ValidityPolicy() {
         
         apiProvider.EmisorInternoEndPoint(form_data).then((res)=>{
             if(res.data){
+                console.log("data emisor interno:", res.data)
                 manageShowPolice(res.data)
             }
         }).catch(function (e) {
@@ -223,7 +262,10 @@ function ValidityPolicy() {
             setSuccessStatus(true)
             setErrorStatus(false)
 
-            setPolicy(res.data[0])
+            setPolicy(prv => ({
+                ...res.data[0],
+                paymentLink: res.data[0]["linkPago"]
+            }))
         }).catch(function (e) {
             setValidatingPolicy(false)
             setSuccessStatus(false)
@@ -240,8 +282,30 @@ function ValidityPolicy() {
         });
     }
 
-    function controllPrint(){
-        let pdfText = policy["docpoliza"].replace(" ", "")
+    function getDocumentToDownload(){
+        const formData = new FormData();
+
+        formData.append("IdPoliza", policy["idPoliza"]);
+        formData.append("IdProductoProspecto", policy["idProductoProspecto"]);
+
+        apiProvider.getDocumentAfterPolicyEmmition(formData).then((res)=>{
+            controllPrint(res.data[0])
+        }).catch(function (e) {
+            setErrorStatus(true)
+            if (e.response) {
+                let status = e.response.status
+                console.log(e.response)
+                if(status === 401){
+                    setErrorMessage("Hubo un error, intentelo mas tarde")    
+                }else{
+                    setErrorMessage(e.response.data[0].Error)
+                }
+            }
+        });
+    }
+
+    function controllPrint(value){
+        let pdfText = value["docpoliza"].replace(" ", "")
         const linkSource = `data:application/pdf;base64,${pdfText}`;
         const downloadLink = document.createElement("a");
         const fileName = "file.pdf";
