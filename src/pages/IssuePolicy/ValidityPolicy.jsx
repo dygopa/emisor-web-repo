@@ -255,6 +255,7 @@ function ValidityPolicy() {
     }
 
     function manageShowPolice(id){
+        //Utilizar el campo idPolizaYS para la funcion de getDocumentAfterPolicyEmmition y asi pasarlo por formData
         apiProvider.getPolizaEndPoint(`?IdPoliza=${id}`).then((res)=>{
 
             setEmmitedPolicy(true)
@@ -285,12 +286,40 @@ function ValidityPolicy() {
     function getDocumentToDownload(){
         const formData = new FormData();
 
-        formData.append("IdPoliza", policy["idPoliza"]);
+        formData.append("IdPoliza", policy["idPolizaYS"]);
         formData.append("IdProductoProspecto", policy["idProductoProspecto"]);
-
+        
         apiProvider.getDocumentAfterPolicyEmmition(formData).then((res)=>{
-            controllPrint(res.data[0])
+            controllPrint(res.data)
         }).catch(function (e) {
+            setErrorStatus(true)
+            if (e.response) {
+                let status = e.response.status
+
+                const errorMessage = JSON.parse(e.response.data["error"])["error"];
+
+                if(status === 401){
+                    setErrorMessage("Hubo un error, intentelo mas tarde")    
+                }else{
+                    setErrorMessage(errorMessage)
+                }
+            }
+        });
+    }
+
+    function controllPrint(value){
+        apiProvider.getPolizaEndPoint(`?IdPoliza=${value}`).then((res)=>{
+            const response = res.data[0]
+            let pdfText = response["docpoliza"].replace(" ", "")
+            const linkSource = `data:application/pdf;base64,${pdfText}`;
+            const downloadLink = document.createElement("a");
+            const fileName = "file.pdf";
+            downloadLink.href = linkSource;
+            downloadLink.download = fileName;
+            downloadLink.click();
+        }).catch(function (e) {
+            setValidatingPolicy(false)
+            setSuccessStatus(false)
             setErrorStatus(true)
             if (e.response) {
                 let status = e.response.status
@@ -302,16 +331,6 @@ function ValidityPolicy() {
                 }
             }
         });
-    }
-
-    function controllPrint(value){
-        let pdfText = value["docpoliza"].replace(" ", "")
-        const linkSource = `data:application/pdf;base64,${pdfText}`;
-        const downloadLink = document.createElement("a");
-        const fileName = "file.pdf";
-        downloadLink.href = linkSource;
-        downloadLink.download = fileName;
-        downloadLink.click();
     }
 
 }
